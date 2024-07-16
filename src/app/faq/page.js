@@ -6,11 +6,11 @@ import PageTitle from "../components/PageTitle";
 const faqData = {
   General: [
     {
-      header: "How does the CarDoor online shopping process work?",
+      header: "How does the Radiant Auto online shopping process work?",
       text: "Browse our inventory, estimate payments, and save configurations in 'My Garage'. Submit a credit application, get a trade-in value, or 'buy now'. Our concierge team will assist with the details and schedule your vehicle delivery.",
     },
     {
-      header: "Are the vehicles on CarDoor sold certified?",
+      header: "Are the vehicles on Radiant Auto sold certified?",
       text: "Vehicles undergo a rigorous inspection, come safety certified and licensed, and include a 90-day Complimentary Warranty.",
     },
     {
@@ -74,7 +74,7 @@ const faqData = {
       text: "We'll come to you, provide you with payment, and pick up the vehicle.",
     },
     {
-      header: "Can I sell my vehicle to CarDoor if I am a co-owner?",
+      header: "Can I sell my vehicle to Radiant Auto if I am a co-owner?",
       text: "Yes, but both owners must sign the paperwork and be present at the time of pickup.",
     },
     {
@@ -87,8 +87,8 @@ const faqData = {
     },
     {
       header:
-        "Will I be able to sell my car with CarDoor if it has an outstanding loan balance?",
-      text: "Yes. CarDoor will pay off the loan balance with your lender and then pay you the remaining value when we pick up the vehicle.",
+        "Will I be able to sell my car with Radiant Auto if it has an outstanding loan balance?",
+      text: "Yes. Radiant Auto will pay off the loan balance with your lender and then pay you the remaining value when we pick up the vehicle.",
     },
   ],
   Financing: [
@@ -135,13 +135,13 @@ const faqData = {
     },
     {
       header: "Is there a finance fee?",
-      text: "While CarDoor does not charge a fee to obtain financing, your loan will be subject to the agreed upon interest rate.",
+      text: "While Radiant Auto does not charge a fee to obtain financing, your loan will be subject to the agreed upon interest rate.",
     },
   ],
   Warranty: [
     {
       header: "Is there a fee for the 90-day Warranty?",
-      text: "Not at all! Our vehicles come with a 90-day Complimentary Warranty. We also offer the opportunity to purchase extended coverage with our CarDoor Warranty plans.",
+      text: "Not at all! Our vehicles come with a 90-day Complimentary Warranty. We also offer the opportunity to purchase extended coverage with our Radiant Auto Warranty plans.",
     },
     {
       header: "What components are covered by the 90-day Warranty?",
@@ -153,11 +153,11 @@ const faqData = {
     },
     {
       header: "How do I obtain service under my 90-day Complimentary Warranty?",
-      text: "Contact us at CarDoor, and we'll make arrangements with you to get the issues diagnosed and resolved.",
+      text: "Contact us at Radiant Auto, and we'll make arrangements with you to get the issues diagnosed and resolved.",
     },
     {
       header: "Do you offer extended warranty?",
-      text: "Yes, in addition to the 90-day Complimentary Warranty, you may choose to purchase extended coverage with CarDoor Warranty and Gap Protection.",
+      text: "Yes, in addition to the 90-day Complimentary Warranty, you may choose to purchase extended coverage with Radiant Auto Warranty and Gap Protection.",
     },
     {
       header: "What is covered under my extended warranty?",
@@ -182,7 +182,7 @@ const faqData = {
     },
     {
       header: "What is GAP Protection? Why would I need it?",
-      text: "GAP Protection covers the deficit up to $50,000 plus up to $1000 deductible if your insurance doesn't cover the entire value of your outstanding loan in the event of a total loss. You also get $500 towards your downpayment if you return to CarDoor for a replacement vehicle.",
+      text: "GAP Protection covers the deficit up to $50,000 plus up to $1000 deductible if your insurance doesn't cover the entire value of your outstanding loan in the event of a total loss. You also get $500 towards your downpayment if you return to Radiant Auto for a replacement vehicle.",
     },
   ],
 };

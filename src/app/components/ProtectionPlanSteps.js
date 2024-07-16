@@ -1,35 +1,35 @@
 export default function ProtectionPlanSteps() {
   return (
-    <section class="pt-20 dark:bg-dark lg:pt-[120px]">
-      <div class="container mx-auto">
-        <div class="-mx-4 flex flex-wrap">
-          <div class="w-full px-4">
-            <div class="mx-auto mb-12 max-w-[510px] text-center lg:mb-20">
-              <span class="mb-2 block text-lg font-semibold text-primary">
+    <section className="pt-20 dark:bg-dark lg:pt-[120px]">
+      <div className="container mx-auto">
+        <div className="-mx-4 flex flex-wrap">
+          <div className="w-full px-4">
+            <div className="mx-auto mb-12 max-w-[510px] text-center lg:mb-20">
+              <span className="mb-2 block text-lg font-semibold text-primary">
                 Protection
               </span>
-              <h2 class="mb-3 text-3xl font-bold leading-[1.2] text-dark dark:text-white sm:text-4xl md:text-[40px]">
+              <h2 className="mb-3 text-3xl font-bold leading-[1.2] text-dark dark:text-white sm:text-4xl md:text-[40px]">
                 Vehicle Protection
               </h2>
-              <p class="dark:text-dark-6 text-base text-body-color">
+              <p className="dark:text-dark-6 text-base text-body-color">
                 We offer a variety of protection plans beyond the 90-day
                 Complimentary Warranty included on all vehicles.
               </p>
             </div>
           </div>
         </div>
-        <div class="-mx-4 flex flex-wrap">
-          <div class="w-full px-4 md:w-1/2 xl:w-1/4">
-            <div class="relative mx-auto mb-10 max-w-[370px] text-center">
-              <div class="absolute -right-4 top-12 hidden h-1 w-16 border-t-2 border-dashed border-primary xl:block 2xl:w-[75px]"></div>
-              <div class="relative mx-auto mb-8 flex h-[100px] w-[100px] items-center justify-center rounded-[20px] bg-primary text-white">
+        <div className="-mx-4 flex flex-wrap">
+          <div className="w-full px-4 md:w-1/2 xl:w-1/4">
+            <div className="relative mx-auto mb-10 max-w-[370px] text-center">
+              <div className="absolute -right-4 top-12 hidden h-1 w-16 border-t-2 border-dashed border-primary xl:block 2xl:w-[75px]"></div>
+              <div className="relative mx-auto mb-8 flex h-[100px] w-[100px] items-center justify-center rounded-[20px] bg-primary text-white">
                 <svg
                   width="44"
                   height="44"
                   viewBox="0 0 44 44"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  class="fill-current"
+                  className="fill-current"
                 >
                   <g clipPath="url(#clip0_1697_2534)">
                     <path
@@ -56,23 +56,23 @@ export default function ProtectionPlanSteps() {
                   </defs>
                 </svg>
               </div>
-              <h3 class="mb-5 text-2xl font-semibold text-dark dark:text-white">
+              <h3 className="mb-5 text-2xl font-semibold text-dark dark:text-white">
                 10 Day Money Back
               </h3>
             </div>
           </div>
-          <div class="w-full px-4 md:w-1/2 xl:w-1/4">
-            <div class="relative mx-auto mb-10 max-w-[370px] text-center">
-              <div class="absolute -left-4 top-12 hidden h-1 w-16 border-t-2 border-dashed border-primary xl:block 2xl:w-[75px]"></div>
-              <div class="absolute right-[-14px] top-12 hidden h-1 w-16 border-t-2 border-dashed border-primary xl:block 2xl:w-[75px]"></div>
-              <div class="mx-auto mb-8 flex h-[100px] w-[100px] items-center justify-center rounded-[20px] bg-primary text-white">
+          <div className="w-full px-4 md:w-1/2 xl:w-1/4">
+            <div className="relative mx-auto mb-10 max-w-[370px] text-center">
+              <div className="absolute -left-4 top-12 hidden h-1 w-16 border-t-2 border-dashed border-primary xl:block 2xl:w-[75px]"></div>
+              <div className="absolute right-[-14px] top-12 hidden h-1 w-16 border-t-2 border-dashed border-primary xl:block 2xl:w-[75px]"></div>
+              <div className="mx-auto mb-8 flex h-[100px] w-[100px] items-center justify-center rounded-[20px] bg-primary text-white">
                 <svg
                   width="44"
                   height="44"
                   viewBox="0 0 44 44"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  class="fill-current"
+                  className="fill-current"
                 >
                   <path
                     d="M37.7437 6.46255H37.5375V5.50005C37.5375 3.16255 35.6125 1.23755 33.275 1.23755H14.2312C11.8937 1.23755 9.96874 3.16255 9.96874 5.50005V6.46255H7.56249C5.98124 6.46255 4.67499 7.7688 4.67499 9.35005V18.9751C4.67499 20.5563 5.98124 21.8626 7.56249 21.8626H25.7125V24.0626C23.7187 24.4063 22.2062 26.1938 22.2062 28.2563V38.5001C22.2062 40.8376 24.1312 42.7626 26.4687 42.7626H27.9812C30.3187 42.7626 32.2437 40.8376 32.2437 38.5001V28.2563C32.2437 26.1938 30.7312 24.4063 28.7375 24.0626V21.5876C28.7375 20.0063 27.4312 18.7001 25.85 18.7001H7.76874V9.5563H9.89999V10.5188C9.89999 12.8563 11.825 14.7813 14.1625 14.7813H33.1375C35.475 14.7813 37.4 12.8563 37.4 10.5188V9.5563H37.6062C38.4312 9.5563 39.1187 8.8688 39.1187 8.0438C39.1187 7.2188 38.6375 6.46255 37.7437 6.46255ZM29.2187 28.2563V38.5001C29.2187 39.1876 28.6687 39.7376 27.9812 39.7376H26.4687C25.7812 39.7376 25.2312 39.1876 25.2312 38.5001V28.2563C25.2312 27.5688 25.7812 27.0188 26.4687 27.0188H27.9812C28.6687 27.0188 29.2187 27.5688 29.2187 28.2563ZM34.4437 10.5188C34.4437 11.2063 33.8937 11.7563 33.2062 11.7563H14.2312C13.5437 11.7563 12.9937 11.2063 12.9937 10.5188V5.50005C12.9937 4.81255 13.5437 4.26255 14.2312 4.26255H33.2062C33.8937 4.26255 34.4437 4.81255 34.4437 5.50005V10.5188V10.5188Z"
@@ -80,23 +80,23 @@ export default function ProtectionPlanSteps() {
                   ></path>
                 </svg>
               </div>
-              <h3 class="mb-5 text-2xl font-semibold text-dark dark:text-white">
+              <h3 className="mb-5 text-2xl font-semibold text-dark dark:text-white">
                 90 Day Warranty
               </h3>
             </div>
           </div>
-          <div class="w-full px-4 md:w-1/2 xl:w-1/4">
-            <div class="relative mx-auto mb-10 max-w-[370px] text-center">
-              <div class="absolute -left-4 top-12 hidden h-1 w-16 border-t-2 border-dashed border-primary xl:block 2xl:w-[75px]"></div>
-              <div class="absolute right-[-14px] top-12 hidden h-1 w-16 border-t-2 border-dashed border-primary xl:block 2xl:w-[75px]"></div>
-              <div class="mx-auto mb-8 flex h-[100px] w-[100px] items-center justify-center rounded-[20px] bg-primary text-white">
+          <div className="w-full px-4 md:w-1/2 xl:w-1/4">
+            <div className="relative mx-auto mb-10 max-w-[370px] text-center">
+              <div className="absolute -left-4 top-12 hidden h-1 w-16 border-t-2 border-dashed border-primary xl:block 2xl:w-[75px]"></div>
+              <div className="absolute right-[-14px] top-12 hidden h-1 w-16 border-t-2 border-dashed border-primary xl:block 2xl:w-[75px]"></div>
+              <div className="mx-auto mb-8 flex h-[100px] w-[100px] items-center justify-center rounded-[20px] bg-primary text-white">
                 <svg
                   width="44"
                   height="44"
                   viewBox="0 0 44 44"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  class="fill-current"
+                  className="fill-current"
                 >
                   <path
                     d="M14.9188 2.3374H6.1875C3.85 2.3374 1.925 4.2624 1.925 6.5999V15.3312C1.925 17.6687 3.85 19.5937 6.1875 19.5937H14.9188C17.2563 19.5937 19.1813 17.6687 19.1813 15.3312V6.66865C19.25 4.2624 17.325 2.3374 14.9188 2.3374ZM16.1563 15.3999C16.1563 16.0874 15.6063 16.6374 14.9188 16.6374H6.1875C5.5 16.6374 4.95 16.0874 4.95 15.3999V6.66865C4.95 5.98115 5.5 5.43115 6.1875 5.43115H14.9188C15.6063 5.43115 16.1563 5.98115 16.1563 6.66865V15.3999Z"
@@ -116,22 +116,22 @@ export default function ProtectionPlanSteps() {
                   ></path>
                 </svg>
               </div>
-              <h3 class="mb-5 text-2xl font-semibold text-dark dark:text-white">
+              <h3 className="mb-5 text-2xl font-semibold text-dark dark:text-white">
                 Radiant Auto Warranty
               </h3>
             </div>
           </div>
-          <div class="w-full px-4 md:w-1/2 xl:w-1/4">
-            <div class="relative mx-auto mb-10 max-w-[370px] text-center">
-              <div class="absolute left-[-14px] top-12 hidden h-1 w-16 border-t-2 border-dashed border-primary xl:block 2xl:w-[75px]"></div>
-              <div class="mx-auto mb-8 flex h-[100px] w-[100px] items-center justify-center rounded-[20px] bg-primary text-white">
+          <div className="w-full px-4 md:w-1/2 xl:w-1/4">
+            <div className="relative mx-auto mb-10 max-w-[370px] text-center">
+              <div className="absolute left-[-14px] top-12 hidden h-1 w-16 border-t-2 border-dashed border-primary xl:block 2xl:w-[75px]"></div>
+              <div className="mx-auto mb-8 flex h-[100px] w-[100px] items-center justify-center rounded-[20px] bg-primary text-white">
                 <svg
                   width="44"
                   height="44"
                   viewBox="0 0 44 44"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  class="fill-current"
+                  className="fill-current"
                 >
                   <path
                     d="M36.4375 7.35627C32.1062 2.95627 26.0562 0.82502 19.9375 1.51252C10.3813 2.47502 2.81875 10.1063 1.7875 19.5938C1.375 23.9938 2.26875 28.2563 4.46875 31.9688L1.71875 39.1188C1.30625 40.0813 1.58125 41.25 2.40625 41.9375C2.8875 42.35 3.50625 42.625 4.125 42.625C4.5375 42.625 4.88125 42.5563 5.29375 42.35L11.55 39.1875C15.3312 41.4563 19.5937 42.4188 24.0625 42.0063C33.6875 41.1125 41.3875 33.4813 42.35 23.7875C42.9687 17.6688 40.8375 11.6875 36.4375 7.35627ZM39.2562 23.5125C38.4312 31.6938 31.9 38.1563 23.7187 38.9125C19.6625 39.325 15.8125 38.2938 12.4438 36.0938C12.1688 35.8875 11.8938 35.8188 11.6187 35.8188C11.4125 35.8188 11.1375 35.8875 10.9312 35.9563L5.0875 38.8438L7.63125 32.2438C7.8375 31.7625 7.76875 31.2813 7.49375 30.8688C5.3625 27.5688 4.46875 23.7188 4.88125 19.7313C5.70625 11.825 12.1688 5.43127 20.2125 4.60627C25.4375 4.05627 30.5937 5.84377 34.2375 9.55627C37.95 13.2 39.8062 18.2875 39.2562 23.5125Z"
@@ -151,7 +151,7 @@ export default function ProtectionPlanSteps() {
                   ></path>
                 </svg>
               </div>
-              <h3 class="mb-5 text-2xl font-semibold text-dark dark:text-white">
+              <h3 className="mb-5 text-2xl font-semibold text-dark dark:text-white">
                 Gap Coverage
               </h3>
             </div>

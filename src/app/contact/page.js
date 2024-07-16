@@ -1,9 +1,37 @@
+"use client";
 import React from "react";
 import PageTitle from "../components/PageTitle";
-import ContactInputBox from "../components/ContactInputBox";
-import TextArea from "../components/Textarea";
+import { useForm } from "react-hook-form";
+import axios from "axios";
+import axiosInstance from "@/api/axiosInstance";
+import toast from "react-hot-toast";
 
 const Contact = () => {
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = async (data) => {
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/contact`,
+        data
+      );
+      if (res.data.success) {
+        toast.success("Message sent successfully!");
+        reset(); // This will reset the form fields
+      } else {
+        toast.error("Something went wrong!");
+      }
+    } catch (error) {
+      toast.error("An error occurred!");
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <PageTitle
@@ -122,28 +150,40 @@ const Contact = () => {
             </div>
             <div className="w-full px-4 lg:w-1/2 xl:w-5/12">
               <div className="relative rounded-lg bg-white p-8 shadow-lg dark:bg-dark-2 sm:p-12">
-                <form>
-                  <ContactInputBox
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <input
                     type="text"
                     name="name"
                     placeholder="Your Name"
+                    className="input"
+                    {...register("name", { required: true })}
                   />
-                  <ContactInputBox
+                  {errors.name && <span>This field is required</span>}
+                  <input
                     type="text"
                     name="email"
+                    className="input"
                     placeholder="Your Email"
+                    {...register("email", { required: true })}
                   />
-                  <ContactInputBox
+                  {errors.email && <span>This field is required</span>}
+                  <input
                     type="text"
                     name="phone"
                     placeholder="Your Phone"
+                    className="input"
+                    {...register("phone", { required: true })}
                   />
-                  <TextArea
-                    row="6"
+                  {errors.phone && <span>This field is required</span>}
+                  <textarea
+                    rows="6"
                     placeholder="Your Message"
-                    name="details"
+                    name="content"
                     defaultValue=""
+                    className="input"
+                    {...register("content", { required: true })}
                   />
+                  {errors.content && <span>This field is required</span>}
                   <div>
                     <button
                       type="submit"

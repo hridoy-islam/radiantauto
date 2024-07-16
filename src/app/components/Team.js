@@ -1,17 +1,17 @@
 export default function Team() {
   return (
-    <section class="bg-tg-bg dark:bg-dark-2 pt-20 pb-10 lg:pt-[120px] lg:pb-20">
-      <div class="container mx-auto">
-        <div class="flex flex-wrap -mx-4">
-          <div class="w-full px-4">
-            <div class="mx-auto mb-[60px] max-w-[510px] text-center">
-              <span class="block mb-2 text-lg font-semibold text-primary">
+    <section className="bg-tg-bg dark:bg-dark-2 pt-20 pb-10 lg:pt-[120px] lg:pb-20">
+      <div className="container mx-auto">
+        <div className="flex flex-wrap -mx-4">
+          <div className="w-full px-4">
+            <div className="mx-auto mb-[60px] max-w-[510px] text-center">
+              <span className="block mb-2 text-lg font-semibold text-primary">
                 Team Spotlight
               </span>
-              <h2 class="text-dark dark:text-white mb-3 text-3xl leading-[1.2] font-bold sm:text-4xl md:text-[40px]">
+              <h2 className="text-dark dark:text-white mb-3 text-3xl leading-[1.2] font-bold sm:text-4xl md:text-[40px]">
                 Our Awesome Team
               </h2>
-              <p class="text-base text-body-color dark:text-dark-6">
+              <p className="text-base text-body-color dark:text-dark-6">
                 There are many variations of passages of Lorem Ipsum available
                 but the majority have suffered alteration in some form.
               </p>
@@ -19,25 +19,25 @@ export default function Team() {
           </div>
         </div>
 
-        <div class="flex flex-wrap justify-center -mx-4">
-          <div class="w-full px-4 md:w-1/2 xl:w-1/4">
-            <div class="mx-auto mb-10 w-full max-w-[370px]">
-              <div class="relative overflow-hidden rounded-lg">
+        <div className="flex flex-wrap justify-center -mx-4">
+          <div className="w-full px-4 md:w-1/2 xl:w-1/4">
+            <div className="mx-auto mb-10 w-full max-w-[370px]">
+              <div className="relative overflow-hidden rounded-lg">
                 <img
                   src="https://demo.tailgrids.com/templates/business/build/src/assets/images/team/team-01/image-01.jpg"
                   alt="image"
-                  class="w-full"
+                  className="w-full"
                 />
-                <div class="absolute left-0 w-full text-center bottom-5">
-                  <div class="relative px-3 py-5 mx-5 overflow-hidden bg-white rounded-lg dark:bg-dark-2">
-                    <h3 class="text-base font-semibold text-dark dark:text-white">
+                <div className="absolute left-0 w-full text-center bottom-5">
+                  <div className="relative px-3 py-5 mx-5 overflow-hidden bg-white rounded-lg dark:bg-dark-2">
+                    <h3 className="text-base font-semibold text-dark dark:text-white">
                       Coriss Ambady
                     </h3>
-                    <p class="text-xs text-body-color dark:text-dark-6">
+                    <p className="text-xs text-body-color dark:text-dark-6">
                       Web Developer
                     </p>
                     <div>
-                      <span class="absolute bottom-0 left-0">
+                      <span className="absolute bottom-0 left-0">
                         <svg
                           width="61"
                           height="30"
@@ -54,7 +54,7 @@ export default function Team() {
                           ></circle>
                         </svg>
                       </span>
-                      <span class="absolute top-0 right-0">
+                      <span className="absolute top-0 right-0">
                         <svg
                           width="20"
                           height="25"
@@ -210,24 +210,24 @@ export default function Team() {
               </div>
             </div>
           </div>
-          <div class="w-full px-4 md:w-1/2 xl:w-1/4">
-            <div class="mx-auto mb-10 w-full max-w-[370px]">
-              <div class="relative overflow-hidden rounded-lg">
+          <div className="w-full px-4 md:w-1/2 xl:w-1/4">
+            <div className="mx-auto mb-10 w-full max-w-[370px]">
+              <div className="relative overflow-hidden rounded-lg">
                 <img
                   src="https://demo.tailgrids.com/templates/business/build/src/assets/images/team/team-01/image-02.jpg"
                   alt="image"
-                  class="w-full"
+                  className="w-full"
                 />
-                <div class="absolute left-0 w-full text-center bottom-5">
-                  <div class="relative px-3 py-5 mx-5 overflow-hidden bg-white rounded-lg dark:bg-dark-2">
-                    <h3 class="text-base font-semibold text-dark dark:text-white">
+                <div className="absolute left-0 w-full text-center bottom-5">
+                  <div className="relative px-3 py-5 mx-5 overflow-hidden bg-white rounded-lg dark:bg-dark-2">
+                    <h3 className="text-base font-semibold text-dark dark:text-white">
                       Glorius Cristian
                     </h3>
-                    <p class="text-xs text-body-color dark:text-dark-6">
+                    <p className="text-xs text-body-color dark:text-dark-6">
                       App Developer
                     </p>
                     <div>
-                      <span class="absolute bottom-0 left-0">
+                      <span className="absolute bottom-0 left-0">
                         <svg
                           width="61"
                           height="30"
@@ -244,7 +244,7 @@ export default function Team() {
                           ></circle>
                         </svg>
                       </span>
-                      <span class="absolute top-0 right-0">
+                      <span className="absolute top-0 right-0">
                         <svg
                           width="20"
                           height="25"
@@ -400,24 +400,24 @@ export default function Team() {
               </div>
             </div>
           </div>
-          <div class="w-full px-4 md:w-1/2 xl:w-1/4">
-            <div class="mx-auto mb-10 w-full max-w-[370px]">
-              <div class="relative overflow-hidden rounded-lg">
+          <div className="w-full px-4 md:w-1/2 xl:w-1/4">
+            <div className="mx-auto mb-10 w-full max-w-[370px]">
+              <div className="relative overflow-hidden rounded-lg">
                 <img
                   src="https://demo.tailgrids.com/templates/business/build/src/assets/images/team/team-01/image-03.jpg"
                   alt="image"
-                  class="w-full"
+                  className="w-full"
                 />
-                <div class="absolute left-0 w-full text-center bottom-5">
-                  <div class="relative px-3 py-5 mx-5 overflow-hidden bg-white rounded-lg dark:bg-dark-2">
-                    <h3 class="text-base font-semibold text-dark dark:text-white">
+                <div className="absolute left-0 w-full text-center bottom-5">
+                  <div className="relative px-3 py-5 mx-5 overflow-hidden bg-white rounded-lg dark:bg-dark-2">
+                    <h3 className="text-base font-semibold text-dark dark:text-white">
                       Jackie Sanders
                     </h3>
-                    <p class="text-xs text-body-color dark:text-dark-6">
+                    <p className="text-xs text-body-color dark:text-dark-6">
                       UI/UX Designer
                     </p>
                     <div>
-                      <span class="absolute bottom-0 left-0">
+                      <span className="absolute bottom-0 left-0">
                         <svg
                           width="61"
                           height="30"
@@ -434,7 +434,7 @@ export default function Team() {
                           ></circle>
                         </svg>
                       </span>
-                      <span class="absolute top-0 right-0">
+                      <span className="absolute top-0 right-0">
                         <svg
                           width="20"
                           height="25"
@@ -590,24 +590,24 @@ export default function Team() {
               </div>
             </div>
           </div>
-          <div class="w-full px-4 md:w-1/2 xl:w-1/4">
-            <div class="mx-auto mb-10 w-full max-w-[370px]">
-              <div class="relative overflow-hidden rounded-lg">
+          <div className="w-full px-4 md:w-1/2 xl:w-1/4">
+            <div className="mx-auto mb-10 w-full max-w-[370px]">
+              <div className="relative overflow-hidden rounded-lg">
                 <img
                   src="https://demo.tailgrids.com/templates/business/build/src/assets/images/team/team-01/image-04.jpg"
                   alt="image"
-                  class="w-full"
+                  className="w-full"
                 />
-                <div class="absolute left-0 w-full text-center bottom-5">
-                  <div class="relative px-3 py-5 mx-5 overflow-hidden bg-white rounded-lg dark:bg-dark-2">
-                    <h3 class="text-base font-semibold text-dark dark:text-white">
+                <div className="absolute left-0 w-full text-center bottom-5">
+                  <div className="relative px-3 py-5 mx-5 overflow-hidden bg-white rounded-lg dark:bg-dark-2">
+                    <h3 className="text-base font-semibold text-dark dark:text-white">
                       Nikolas Brooten
                     </h3>
-                    <p class="text-xs text-body-color dark:text-dark-6">
+                    <p className="text-xs text-body-color dark:text-dark-6">
                       Sales Manager
                     </p>
                     <div>
-                      <span class="absolute bottom-0 left-0">
+                      <span className="absolute bottom-0 left-0">
                         <svg
                           width="61"
                           height="30"
@@ -624,7 +624,7 @@ export default function Team() {
                           ></circle>
                         </svg>
                       </span>
-                      <span class="absolute top-0 right-0">
+                      <span className="absolute top-0 right-0">
                         <svg
                           width="20"
                           height="25"

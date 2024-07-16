@@ -11,7 +11,7 @@ const Reviews = () => {
         "This is an amazing service! Highly recommend to anyone. This is an amazing service! Highly recommend to anyone.This is an amazing service! Highly recommend to anyone.This is an amazing service! Highly recommend to anyone.",
       stars: 5,
       image:
-        "https://www.cardoor.ca/wp-content/plugins/dealerinspire/images/reviews/googlepluscircle.png",
+        "https://www.Radiant Auto.ca/wp-content/plugins/dealerinspire/images/reviews/googlepluscircle.png",
     },
     {
       author: "Jane Smith",
@@ -19,7 +19,7 @@ const Reviews = () => {
       message: "Absolutely loved the experience, the service was excellent.",
       stars: 5,
       image:
-        "https://www.cardoor.ca/wp-content/plugins/dealerinspire/images/reviews/googlepluscircle.png",
+        "https://www.Radiant Auto.ca/wp-content/plugins/dealerinspire/images/reviews/googlepluscircle.png",
     },
     {
       author: "Nickolas Goldring",
@@ -27,7 +27,7 @@ const Reviews = () => {
       message: "Great selection of cars and seamless buying process.",
       stars: 5,
       image:
-        "https://www.cardoor.ca/wp-content/plugins/dealerinspire/images/reviews/googlepluscircle.png",
+        "https://www.Radiant Auto.ca/wp-content/plugins/dealerinspire/images/reviews/googlepluscircle.png",
     },
   ];
   return (

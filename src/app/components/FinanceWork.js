@@ -2,18 +2,18 @@ import List from "./List";
 
 export default function FinanceWork() {
   return (
-    <section class="overflow-hidden bg-white dark:bg-dark pt-20 pb-12 lg:pt-[120px] lg:pb-[90px]">
-      <div class="container mx-auto">
-        <div class="flex flex-wrap items-center justify-between -mx-4">
-          <div class="w-full px-4 lg:w-6/12">
-            <div class="relative mx-auto flex h-[500px] max-w-[440px]">
-              <div class="absolute left-0 z-30 mr-14 max-w-[270px] rounded-lg">
+    <section className="overflow-hidden bg-white dark:bg-dark pt-20 pb-12 lg:pt-[120px] lg:pb-[90px]">
+      <div className="container mx-auto">
+        <div className="flex flex-wrap items-center justify-between -mx-4">
+          <div className="w-full px-4 lg:w-6/12">
+            <div className="relative mx-auto flex h-[500px] max-w-[440px]">
+              <div className="absolute left-0 z-30 mr-14 max-w-[270px] rounded-lg">
                 <img
                   src="/images/buycar.jpeg"
                   alt="about image"
-                  class="w-full rounded-lg"
+                  className="w-full rounded-lg"
                 />
-                <span class="absolute top-6 -right-14 -z-10">
+                <span className="absolute top-6 -right-14 -z-10">
                   <svg
                     width="61"
                     height="47"
@@ -164,7 +164,7 @@ export default function FinanceWork() {
                   </svg>
                 </span>
 
-                <span class="absolute left-5 -bottom-10 z-[-1] sm:left-16">
+                <span className="absolute left-5 -bottom-10 z-[-1] sm:left-16">
                   <svg
                     width="112"
                     height="112"
@@ -173,33 +173,33 @@ export default function FinanceWork() {
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
+                      fillRule="evenodd"
+                      clipRule="evenodd"
                       d="M56 96C78.0914 96 96 78.0914 96 56C96 33.9086 78.0914 16 56 16C33.9086 16 16 33.9086 16 56C16 78.0914 33.9086 96 56 96ZM56 112C86.9279 112 112 86.9279 112 56C112 25.0721 86.9279 0 56 0C25.0721 0 0 25.0721 0 56C0 86.9279 25.0721 112 56 112Z"
                       fill="#13C296"
                     ></path>
                   </svg>
                 </span>
               </div>
-              <div class="absolute right-0 top-20 z-30 ml-14 max-w-[300px] rounded-lg">
+              <div className="absolute right-0 top-20 z-30 ml-14 max-w-[300px] rounded-lg">
                 <img
                   src="/images/buywithconfidance.jpeg"
                   alt="about image"
-                  class="w-full rounded-lg"
+                  className="w-full rounded-lg"
                 />
               </div>
             </div>
           </div>
-          <div class="w-full px-4 lg:w-1/2 2xl:w-5/12">
-            <div class="sm:mt-10 xs:mt-14 lg:mt-0">
-              <span class="block mb-2 text-lg font-semibold uppercase text-primary">
+          <div className="w-full px-4 lg:w-1/2 2xl:w-5/12">
+            <div className="sm:mt-10 xs:mt-14 lg:mt-0">
+              <span className="block mb-2 text-lg font-semibold uppercase text-primary">
                 Buy With Confidance
               </span>
-              <h2 class="mb-11 text-3xl font-bold leading-tight text-dark dark:text-white sm:text-4xl sm:leading-tight md:text-[40px]/[48px]">
+              <h2 className="mb-11 text-3xl font-bold leading-tight text-dark dark:text-white sm:text-4xl sm:leading-tight md:text-[40px]/[48px]">
                 How does financing work?
               </h2>
 
-              <p class="text-base text-body-color dark:text-dark-6 mb-9">
+              <p className="text-base text-body-color dark:text-dark-6 mb-9">
                 Financing your vehicle with Radiant Auto is straightforward,
                 secure, and pressure-free. Our online application and approval
                 process ensures transparency, and our dedicated Concierge team

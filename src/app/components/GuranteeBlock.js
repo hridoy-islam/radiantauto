@@ -4,14 +4,14 @@ export default function GuaranteeBlock() {
       <SingleCard
         CardTitle={"10-day money back guarantee"}
         CardDescription={
-          "When you buy a vehicle from CarDoor, we want to ensure the vehicle is absolutely the right one for you. If it is not perfect, you have 10 days / 750km, which ever expires first, to return it and we will refund you, no questions asked. We unfortunately cannot offer your money back if the car has been in an accident, damaged, modified or altered from the condition it was delivered in."
+          "When you buy a vehicle from Radiant Auto, we want to ensure the vehicle is absolutely the right one for you. If it is not perfect, you have 10 days / 750km, which ever expires first, to return it and we will refund you, no questions asked. We unfortunately cannot offer your money back if the car has been in an accident, damaged, modified or altered from the condition it was delivered in."
         }
         image={"/images/dollar.png"}
       />
       <SingleCard
         CardTitle={"90-day complimentary warranty"}
         CardDescription={
-          "When you purchase a CarDoor vehicle you will receive a free 90 day / 4,000 km, which ever expires first, guarantee. Our warranty covers engine transmission, supercharger/turbocharger, drive axle, roadside recovery and substitute transportation. We also cover defects in materials or workmanship for many parts of the car but excludes wear items like brakes and tires, as well as environmental damage like external rust or windshields. The guarantee does not cover routine maintenance or damage from lack of maintenance. Damage from misuse isn’t covered, and acts of God, like flooding from a natural disaster, are also not covered. We unfortunately cannot offer our warranty if the car has been in an accident, damaged, modified or altered from the condition it was delivered in."
+          "When you purchase a Radiant Auto vehicle you will receive a free 90 day / 4,000 km, which ever expires first, guarantee. Our warranty covers engine transmission, supercharger/turbocharger, drive axle, roadside recovery and substitute transportation. We also cover defects in materials or workmanship for many parts of the car but excludes wear items like brakes and tires, as well as environmental damage like external rust or windshields. The guarantee does not cover routine maintenance or damage from lack of maintenance. Damage from misuse isn’t covered, and acts of God, like flooding from a natural disaster, are also not covered. We unfortunately cannot offer our warranty if the car has been in an accident, damaged, modified or altered from the condition it was delivered in."
         }
         image={"/images/warrenty.png"}
       />

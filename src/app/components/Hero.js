@@ -18,10 +18,7 @@ const Hero = () => {
                 </p> */}
                 <ul className="flex flex-wrap items-center">
                   <li>
-                    <a
-                      href="/#"
-                      className="inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-center text-base font-medium text-white hover:bg-blue-dark lg:px-7"
-                    >
+                    <a href="/#" className="button">
                       Get Started
                     </a>
                   </li>

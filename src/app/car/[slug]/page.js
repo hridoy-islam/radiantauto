@@ -1,17 +1,46 @@
 "use client";
-import Button from "@/app/components/Button";
+import axiosInstance from "@/api/axiosInstance";
 import { CarDataDetails } from "@/app/components/CarDataDetails";
 import RelatedCars from "@/app/components/RelatedCars";
 import { VehicleInfo } from "@/app/components/VehicleInfo";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function Page() {
+export default async function Page({ params }) {
+  const { slug } = params;
+  const [car, setCar] = useState();
+  const [relatedCars, setRelatedCars] = useState();
+  const fetchData = async () => {
+    const res = await axiosInstance.get(`/cars/${slug}`);
+    setCar(res.data.data);
+  };
+  const fetchRelatedCars = async () => {
+    const res = await axiosInstance.get(`/cars?limit=4`);
+    setRelatedCars(res.data.data.result);
+  };
+  useEffect(() => {
+    fetchData();
+    fetchRelatedCars();
+  }, []);
+
+  try {
+    //const exteriorArray = JSON.parse(car?.exterior);
+    //arr = JSON.parse(car?.exterior);
+    // arr2 = JSON.parse(car?.interior);
+    // arr3 = JSON.parse(car?.entertainment);
+    // arr4 = JSON.parse(car?.mechanical);
+    // arr5 = JSON.parse(car?.safety);
+    // arr6 = JSON.parse(car?.techspecs);
+    // const featuresData = JSON.parse(car?.features);
+  } catch (error) {
+    console.error("Error parsing JSON:", error);
+  }
+
   return (
     <>
       <div className="bg-primary">
         <h1 className="container py-6 mb-3 text-3xl font-bold leading-[1.208] text-white md:text-4xl">
-          2020 Nissan Qashqai SV AWD
+          {car?.title}
         </h1>
       </div>
       <div className="container">
@@ -25,22 +54,24 @@ export default function Page() {
               className="w-full h-auto"
             />
             <h2 className="my-2 text-xl font-semibold text-dark">Overview</h2>
-            <p className="my-2">
-              Check out this certified pre-owned 2021 Chrysler Grand Caravan
-              SXT! Nicely equipped with: heated seating, Cold Weather package,
-              heated steering wheel, push button start, rear climate control,
-              touch display, smart device integration, remote start, Stow 'n Go
-              buckets, Uconnect 4, keyless-go, ParkView back-up camera,
-              siriusXM, Mp3/Aux/USB media hub, traction control, power
-              windows/locks/mirrors, stability control, keyless entry with
-              security, alloy wheels, and much more! Looking for a specific
-              vehicle? Let us know and well find it for you!
-            </p>
+
+            <p dangerouslySetInnerHTML={{ __html: car?.overview }}></p>
 
             <h2 className="my-2 text-xl font-semibold text-dark">
               Vehicle Info
             </h2>
-            <VehicleInfo />
+            <VehicleInfo
+              exterior_colour={car?.exterior_colour}
+              body_style={car?.body_style}
+              drivetrain={car?.drivetrain}
+              engine={car?.engine}
+              fuel_efficiency={car?.fuel_efficiency}
+              interior_colour={car?.interior_colour}
+              km={car?.km}
+              stock={car?.stock}
+              transmission={car?.transmission}
+              vin={car?.vin}
+            />
 
             <h2 className="my-2 text-xl font-semibold text-dark">
               Key Features
@@ -131,20 +162,131 @@ export default function Page() {
             <h2 className="my-2 text-xl font-semibold text-dark">
               Vehicle Details
             </h2>
-            <AccordionItem header="Exterior" text={<CarDataDetails />} />
-            <AccordionItem header="Interior" text={<CarDataDetails />} />
-            <AccordionItem header="Entertainment" text={<CarDataDetails />} />
+            {/* <AccordionItem
+              header="Exterior"
+              text={<CarDataDetails data={arr} />}
+            /> */}
+            {/* <AccordionItem
+              header="Interior"
+              text={<CarDataDetails data={car?.interior} />}
+            />
+            <AccordionItem
+              header="Entertainment"
+              text={<CarDataDetails data={car?.entertainment} />}
+            />
 
-            <AccordionItem header="Mechanical" text={<CarDataDetails />} />
+            <AccordionItem
+              header="Mechanical"
+              text={<CarDataDetails data={car?.mechanical} />}
+            />
 
-            <AccordionItem header={"Safety"} text={<CarDataDetails />} />
+            <AccordionItem
+              header={"Safety"}
+              text={<CarDataDetails data={car?.safety} />}
+            />
 
-            <AccordionItem header="Tech Specs" text={<CarDataDetails />} />
+            <AccordionItem
+              header="Tech Specs"
+              text={<CarDataDetails data={car?.techspecs} />}
+            /> */}
+
+            {/* <h3>Exterior</h3>
+             */}
+            {/* <div className="bg-white shadow-xl my-4 p-4">
+              <h4 className="my-1 text-lg font-semibold text-dark dark:text-white">
+                Exterior
+              </h4>
+              <div className="grid lg:grid-cols-2 sm:grid-cols-1 xs:grid-cols-1 gap-x-4">
+                {arr?.map((item, index) => (
+                  <p
+                    key={index}
+                    className="p-3 bg-white shadow-sm border border-gray-300"
+                  >
+                    {item}
+                  </p>
+                ))}
+              </div>
+            </div>
+            <div className="bg-white shadow-xl my-4 p-4">
+              <h4 className="my-1 text-lg font-semibold text-dark dark:text-white">
+                Interior
+              </h4>
+              <div className="grid lg:grid-cols-2 sm:grid-cols-1 xs:grid-cols-1 gap-x-4">
+                {arr2?.map((item, index) => (
+                  <p
+                    key={index}
+                    className="p-3 bg-white shadow-sm border border-gray-300"
+                  >
+                    {item}
+                  </p>
+                ))}
+              </div>
+            </div>
+            <div className="bg-white shadow-xl my-4 p-4">
+              <h4 className="my-1 text-lg font-semibold text-dark dark:text-white">
+                Entertainment
+              </h4>
+              <div className="grid lg:grid-cols-2 sm:grid-cols-1 xs:grid-cols-1 gap-x-4">
+                {arr3?.map((item, index) => (
+                  <p
+                    key={index}
+                    className="p-3 bg-white shadow-sm border border-gray-300"
+                  >
+                    {item}
+                  </p>
+                ))}
+              </div>
+            </div>
+            <div className="bg-white shadow-xl my-4 p-4">
+              <h4 className="my-1 text-lg font-semibold text-dark dark:text-white">
+                Mechanical
+              </h4>
+              <div className="grid lg:grid-cols-2 sm:grid-cols-1 xs:grid-cols-1 gap-x-4">
+                {arr4?.map((item, index) => (
+                  <p
+                    key={index}
+                    className="p-3 bg-white shadow-sm border border-gray-300"
+                  >
+                    {item}
+                  </p>
+                ))}
+              </div>
+            </div>
+            <div className="bg-white shadow-xl my-4 p-4">
+              <h4 className="my-1 text-lg font-semibold text-dark dark:text-white">
+                Safety
+              </h4>
+              <div className="grid lg:grid-cols-2 sm:grid-cols-1 xs:grid-cols-1 gap-x-4">
+                {arr5?.map((item, index) => (
+                  <p
+                    key={index}
+                    className="p-3 bg-white shadow-sm border border-gray-300"
+                  >
+                    {item}
+                  </p>
+                ))}
+              </div>
+            </div>
+            <div className="bg-white shadow-xl my-4 p-4">
+              <h4 className="my-1 text-lg font-semibold text-dark dark:text-white">
+                Tech Specs
+              </h4>
+              <div className="grid lg:grid-cols-2 sm:grid-cols-1 xs:grid-cols-1 gap-x-4">
+                {arr6?.map((item, index) => (
+                  <p
+                    key={index}
+                    className="p-3 bg-white shadow-sm border border-gray-300"
+                  >
+                    {item}
+                  </p>
+                ))}
+              </div>
+            </div> */}
           </div>
           <div className="lg:w-3/12 sm:w-full">
             <h2 className="mb-4 text-xl">
               Sale Price:
-              <br /> <span className="text-5xl font-bold">$32,980</span>
+              <br /> <span className="text-5xl font-bold">${car?.price}</span>
             </h2>
             <button className="w-full mb-4 bg-primary py-3 px-7 text-center text-base font-medium text-white">
               Trade In
@@ -226,92 +368,57 @@ export default function Page() {
             </div>
           </div>
         </div>
-        <p>
-          All prices listed in Canada are in Canadian Dollars, unless otherwise
-          indicated. All Automaxx locations are AMVIC licensed and approved
-          automotive retailers. For the provinces of Ontario, Alberta, and
-          British Columbia, the prices displayed include dealer-installed
-          accessories, pre-installed products and services, optional equipment
-          that is physically attached to the vehicle, freight charges, emissions
-          testing fees, applicable administration fees, pre-delivery expenses
-          such as inspection, and AMVIC levy. However, these prices do not
-          include taxes, insurance, licensing fees, or any costs associated with
-          financing or leasing. For all other provinces in Canada (excluding
-          Quebec), the prices listed do not include taxes, insurance, licensing,
-          or any other applicable fees. Additionally, the price may not include
-          dealer-installed options, accessories, administration fees, or any
-          other dealer charges. Please note the following additional
-          information: All vehicles come with one key unless otherwise noted at
-          the time of sale. Carfax vehicle history report and AMVIC mechanical
-          fitness certification are included with each sale. Pricing is subject
-          to change due to constantly changing market conditions. All vehicle
-          pricing does not include taxes, license, document preparation fee, and
-          financing charges if available. Vehicles may be in transit or
-          currently getting reconditioned to our high standards. Although we try
-          to ensure pricing and photos are correct, we are not responsible for
-          any typographical or mechanical errors. Please see the actual vehicle
-          for accuracy of features, or contact one of our sales consultants to
-          confirm equipment or for more information. We recommend that you
-          contact us at the dealership for verification or if you require more
-          information about a specific vehicle. Please note that pricing and
-          availability may vary by location, and the dealership can provide you
-          with the most up-to-date information. Effective September 1st, 2022,
-          vehicles sold in Canada above $100,000 pre-tax retail price may be
-          subject to a luxury tax of either 20% on the amount above $100,000 or
-          a flat 10% on the full value. This tax is in addition to the
-          Provincial Sales Tax (PST) and the Goods and Services Tax (GST). For
-          official information, refer to the Government of Canada website.
-        </p>
-        <RelatedCars />
+
+        <RelatedCars data={relatedCars} />
       </div>
     </>
   );
 }
 
-const AccordionItem = ({ header, text }) => {
-  const [active, setActive] = useState(false);
+// const AccordionItem = ({ header, text }) => {
+//   const [active, setActive] = useState(false);
 
-  const handleToggle = () => {
-    event.preventDefault();
-    setActive(!active);
-  };
-  return (
-    <div className="mb-4 w-full rounded-lg bg-white p-4 shadow-[0px_20px_95px_0px_rgba(201,203,204,0.30)]">
-      <button
-        className={`faq-btn flex w-full text-left`}
-        onClick={() => handleToggle()}
-      >
-        <div className="w-full">
-          <h4 className="mt-1 text-lg font-semibold text-dark dark:text-white">
-            {header}
-          </h4>
-        </div>
-        <div className="mr-5 flex h-10 w-full max-w-[40px] items-center justify-center rounded-lg bg-primary/5 text-primary dark:bg-white/5">
-          <svg
-            className={`fill-primary stroke-primary duration-200 ease-in-out ${
-              active ? "rotate-180" : ""
-            }`}
-            width="17"
-            height="10"
-            viewBox="0 0 17 10"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M7.28687 8.43257L7.28679 8.43265L7.29496 8.43985C7.62576 8.73124 8.02464 8.86001 8.41472 8.86001C8.83092 8.86001 9.22376 8.69083 9.53447 8.41713L9.53454 8.41721L9.54184 8.41052L15.7631 2.70784L15.7691 2.70231L15.7749 2.69659C16.0981 2.38028 16.1985 1.80579 15.7981 1.41393C15.4803 1.1028 14.9167 1.00854 14.5249 1.38489L8.41472 7.00806L2.29995 1.38063L2.29151 1.37286L2.28271 1.36548C1.93092 1.07036 1.38469 1.06804 1.03129 1.41393L1.01755 1.42738L1.00488 1.44184C0.69687 1.79355 0.695778 2.34549 1.0545 2.69659L1.05999 2.70196L1.06565 2.70717L7.28687 8.43257Z"
-              fill=""
-              stroke=""
-            />
-          </svg>
-        </div>
-      </button>
+//   const handleToggle = () => {
+//     event.preventDefault();
+//     setActive(!active);
+//   };
+//   return (
+//     <div className="mb-4 w-full rounded-lg bg-white p-4 shadow-[0px_20px_95px_0px_rgba(201,203,204,0.30)]">
+//       <button
+//         className={`faq-btn flex w-full text-left`}
+//         onClick={() => handleToggle()}
+//       >
+//         <div className="w-full">
+//           <h4 className="mt-1 text-lg font-semibold text-dark dark:text-white">
+//             {header}
+//           </h4>
+//         </div>
+//         <div className="mr-5 flex h-10 w-full max-w-[40px] items-center justify-center rounded-lg bg-primary/5 text-primary dark:bg-white/5">
+//           <svg
+//             className={`fill-primary stroke-primary duration-200 ease-in-out ${
+//               active ? "rotate-180" : ""
+//             }`}
+//             width="17"
+//             height="10"
+//             viewBox="0 0 17 10"
+//             xmlns="http://www.w3.org/2000/svg"
+//           >
+//             <path
+//               d="M7.28687 8.43257L7.28679 8.43265L7.29496 8.43985C7.62576 8.73124 8.02464 8.86001 8.41472 8.86001C8.83092 8.86001 9.22376 8.69083 9.53447 8.41713L9.53454 8.41721L9.54184 8.41052L15.7631 2.70784L15.7691 2.70231L15.7749 2.69659C16.0981 2.38028 16.1985 1.80579 15.7981 1.41393C15.4803 1.1028 14.9167 1.00854 14.5249 1.38489L8.41472 7.00806L2.29995 1.38063L2.29151 1.37286L2.28271 1.36548C1.93092 1.07036 1.38469 1.06804 1.03129 1.41393L1.01755 1.42738L1.00488 1.44184C0.69687 1.79355 0.695778 2.34549 1.0545 2.69659L1.05999 2.70196L1.06565 2.70717L7.28687 8.43257Z"
+//               fill=""
+//               stroke=""
+//             />
+//           </svg>
+//         </div>
+//       </button>
 
-      <div
-        className={`duration-200 ease-in-out ${active ? "block" : "hidden"}`}
-      >
-        <p className="py-3 text-base text-body-color dark:text-dark-6">
-          {text}
-        </p>
-      </div>
-    </div>
-  );
-};
+//       <div
+//         className={`duration-200 ease-in-out ${active ? "block" : "hidden"}`}
+//       >
+//         <p className="py-3 text-base text-body-color dark:text-dark-6">
+//           {text}
+//         </p>
+//       </div>
+//     </div>
+//   );
+// };

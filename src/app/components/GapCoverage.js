@@ -1,21 +1,21 @@
 export default function GapCoverage() {
   return (
-    <section class="overflow-hidden pb-12 pt-20 dark:bg-dark lg:pb-[90px] lg:pt-[120px]">
-      <div class="container mx-auto">
-        <div class="-mx-4 flex flex-wrap items-center justify-between">
-          <div class="w-full px-4 lg:w-6/12">
-            <div class="relative mb-12 lg:mb-0">
-              <div class="mx-auto max-w-[430px] rounded-tl-[50px] sm:rounded-tl-[70px]">
+    <section className="overflow-hidden pb-12 pt-20 dark:bg-dark lg:pb-[90px] lg:pt-[120px]">
+      <div className="container mx-auto">
+        <div className="-mx-4 flex flex-wrap items-center justify-between">
+          <div className="w-full px-4 lg:w-6/12">
+            <div className="relative mb-12 lg:mb-0">
+              <div className="mx-auto max-w-[430px] rounded-tl-[50px] sm:rounded-tl-[70px]">
                 <img
                   src="https://demo.tailgrids.com/templates/agency/build/src/assets/images/about/about-08/image-01.jpg"
                   alt="about image"
-                  class="w-full rounded-tl-[50px] sm:rounded-tl-[70px]"
+                  className="w-full rounded-tl-[50px] sm:rounded-tl-[70px]"
                 />
               </div>
-              <div class="absolute bottom-0 right-0 z-10 max-w-[320px] overflow-hidden rounded-tr-[50px] bg-primary px-6 py-10 text-xl font-bold text-white sm:px-10 sm:text-2xl">
+              <div className="absolute bottom-0 right-0 z-10 max-w-[320px] overflow-hidden rounded-tr-[50px] bg-primary px-6 py-10 text-xl font-bold text-white sm:px-10 sm:text-2xl">
                 Gap Coverage
                 <div>
-                  <span class="absolute left-0 top-0 -z-10">
+                  <span className="absolute left-0 top-0 -z-10">
                     <svg
                       width="115"
                       height="117"
@@ -51,7 +51,7 @@ export default function GapCoverage() {
                       </defs>
                     </svg>
                   </span>
-                  <span class="absolute right-0 top-0 -z-10">
+                  <span className="absolute right-0 top-0 -z-10">
                     <svg
                       width="239"
                       height="144"
@@ -87,7 +87,7 @@ export default function GapCoverage() {
                       </defs>
                     </svg>
                   </span>
-                  <span class="absolute bottom-0 right-5 -z-10">
+                  <span className="absolute bottom-0 right-5 -z-10">
                     <svg
                       width="185"
                       height="116"
@@ -127,9 +127,9 @@ export default function GapCoverage() {
               </div>
             </div>
           </div>
-          <div class="w-full px-4 lg:w-1/2 2xl:w-5/12">
-            <div class="mt-10 lg:mt-0">
-              <h2 class="mb-11 text-3xl font-bold leading-tight text-dark dark:text-white sm:text-4xl sm:leading-tight md:text-5xl lg:text-4xl lg:leading-tight xl:text-5xl">
+          <div className="w-full px-4 lg:w-1/2 2xl:w-5/12">
+            <div className="mt-10 lg:mt-0">
+              <h2 className="mb-11 text-3xl font-bold leading-tight text-dark dark:text-white sm:text-4xl sm:leading-tight md:text-5xl lg:text-4xl lg:leading-tight xl:text-5xl">
                 Gap Coverage
               </h2>
               <p className="text-body-color mb-9">
@@ -138,44 +138,44 @@ export default function GapCoverage() {
                 loss is less than the outstanding loan or lease balance.
               </p>
 
-              <div class="flex">
-                <span class="w-full max-w-[45px] pr-4 text-lg font-bold text-primary">
+              <div className="flex">
+                <span className="w-full max-w-[45px] pr-4 text-lg font-bold text-primary">
                   01
                 </span>
-                <div class="w-full">
-                  <h3 class="mb-4 text-lg font-bold text-dark">
+                <div className="w-full">
+                  <h3 className="mb-4 text-lg font-bold text-dark">
                     Covers up to $50,000 loan deficit
                   </h3>
                 </div>
               </div>
 
-              <div class="flex">
-                <span class="w-full max-w-[45px] pr-4 text-lg font-bold text-primary">
+              <div className="flex">
+                <span className="w-full max-w-[45px] pr-4 text-lg font-bold text-primary">
                   02
                 </span>
-                <div class="w-full">
-                  <h3 class="mb-4 text-lg font-bold text-dark">
-                    Pays you $500 when returning to CarDoor to purchase
+                <div className="w-full">
+                  <h3 className="mb-4 text-lg font-bold text-dark">
+                    Pays you $500 when returning to Radiant Auto to purchase
                     replacement vehicle
                   </h3>
                 </div>
               </div>
-              <div class="flex">
-                <span class="w-full max-w-[45px] pr-4 text-lg font-bold text-primary">
+              <div className="flex">
+                <span className="w-full max-w-[45px] pr-4 text-lg font-bold text-primary">
                   03
                 </span>
-                <div class="w-full">
-                  <h3 class="mb-4 text-lg font-bold text-dark ">
+                <div className="w-full">
+                  <h3 className="mb-4 text-lg font-bold text-dark ">
                     Reimburses your primary insurance deductible (up to $1,000)
                   </h3>
                 </div>
               </div>
-              <div class="flex">
-                <span class="w-full max-w-[45px] pr-4 text-lg font-bold text-primary">
+              <div className="flex">
+                <span className="w-full max-w-[45px] pr-4 text-lg font-bold text-primary">
                   04
                 </span>
-                <div class="w-full">
-                  <h3 class="mb-4 text-lg font-bold text-dark  ">
+                <div className="w-full">
+                  <h3 className="mb-4 text-lg font-bold text-dark  ">
                     Covers up to 150% of vehicle purchase price
                   </h3>
                 </div>

@@ -1,31 +1,84 @@
 "use client";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { useState } from "react";
 import ContactInputBox from "../components/ContactInputBox";
 import PageTitle from "../components/PageTitle";
 // import Testimonial from "../components/Testimonial";
-import TextArea from "../components/Textarea";
+
+import toast from "react-hot-toast";
+import axios from "axios";
 
 export default function SellYourCar() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
   const [images, setImages] = useState([]);
 
-  const onSubmit = (data) => {
-    // Handle form submission with API call
-    console.log(data);
+  const {
+    control,
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = async (data) => {
+    try {
+      const formData = new FormData();
+      formData.append("firstname", data.firstname);
+      formData.append("lastname", data.lastname);
+      formData.append("phone", data.phone);
+      formData.append("email", data.email);
+      formData.append("brand", data.brand);
+      formData.append("model", data.model);
+      formData.append("year", data.year);
+      formData.append("mileage", data.mileage);
+      formData.append("transmissiontype", data.transmissiontype);
+      formData.append("comment", data.comment);
+
+      images.forEach((image) => {
+        formData.append("images", image);
+      });
+
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/sellcar`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      if (res.data.success) {
+        toast.success("Thanks! Request Submitted successfully!");
+        reset(); // This will reset the form fields
+        setImages([]); // Clear uploaded images
+      } else {
+        toast.error("Something went wrong!");
+      }
+    } catch (error) {
+      toast.error("An error occurred!");
+      console.error(error);
+    }
+  };
+
+  const validateMaxFiles = (files) => {
+    if (!files || files.length === 0) {
+      return "Please upload at least one image";
+    }
+    if (files.length > 10) {
+      return "Maximum of 10 images allowed";
+    }
+    return true;
   };
 
   const handleImageChange = (e) => {
-    // Add new images to the existing array
-    setImages([...images, ...Array.from(e.target.files)]);
+    const files = Array.from(e.target.files);
+    if (files.length + images.length > 10) {
+      toast.error("Max 10 images allowed");
+      return;
+    }
+    setImages([...images, ...files]);
   };
 
   const handleDeleteImage = (index) => {
-    // Remove image from the array based on index
     setImages(images.filter((_, i) => i !== index));
   };
   return (
@@ -42,47 +95,78 @@ export default function SellYourCar() {
           <div className="rounded-lg bg-white p-8 shadow-lg sm:p-12">
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="flex gap-4">
-                <ContactInputBox
+                <input
                   type="text"
                   name="firstname"
+                  className="input"
                   placeholder="First Name"
+                  {...register("firstname", { required: true })}
                 />
-                <ContactInputBox
+                <input
                   type="text"
                   name="lasttname"
                   placeholder="Last Name"
+                  className="input"
+                  {...register("lastname", { required: true })}
                 />
               </div>
               <div className="flex gap-4">
-                <ContactInputBox
+                <input
                   type="text"
                   name="phone"
                   placeholder="Phone Number"
+                  className="input"
+                  {...register("phone", { required: true })}
                 />
-                <ContactInputBox
+                <input
                   type="text"
                   name="email"
-                  placeholder="Your Email"
+                  placeholder="Email"
+                  className="input"
+                  {...register("email", { required: true })}
                 />
               </div>
               <div className="flex gap-4">
-                <ContactInputBox type="text" name="brand" placeholder="Brand" />
-                <ContactInputBox type="text" name="model" placeholder="Model" />
+                <input
+                  type="text"
+                  name="brand"
+                  placeholder="Brand"
+                  className="input"
+                  {...register("brand", { required: true })}
+                />
+                <input
+                  type="text"
+                  name="model"
+                  placeholder="Model"
+                  className="input"
+                  {...register("model", { required: true })}
+                />
               </div>
 
               <div className="flex gap-4">
-                <ContactInputBox type="text" name="year" placeholder="Year" />
-                <ContactInputBox
+                <input
                   type="text"
+                  name="year"
+                  placeholder="Year"
+                  className="input"
+                  {...register("year", { required: true })}
+                />
+                <input
+                  type="number"
                   name="mileage"
                   placeholder="Mileage"
+                  className="input"
+                  {...register("mileage", { required: true })}
                 />
               </div>
 
               <label>Transmition Type</label>
-              <select className="w-full my-5 resize-none rounded border border-stroke px-[14px] py-3 text-base text-body-color outline-none focus:border-primary dark:border-dark-3 dark:bg-dark dark:text-dark-6">
-                <option>Automatic</option>
-                <option>Manual</option>
+              <select
+                {...register("transmissiontype", { required: true })}
+                className="w-full my-5 resize-none rounded border border-stroke px-[14px] py-3 text-base text-body-color outline-none focus:border-primary dark:border-dark-3 dark:bg-dark dark:text-dark-6"
+              >
+                <option value="automatic">Automatic</option>
+                <option value="manual">Manual</option>
               </select>
 
               <div>
@@ -92,23 +176,32 @@ export default function SellYourCar() {
                 >
                   Upload Car Photos (Max 10 Photos)
                 </label>
-                <input
-                  type="file"
-                  id="images"
+                <Controller
+                  control={control}
+                  rules={{
+                    required: "Please upload at least one image",
+                    validate: validateMaxFiles,
+                  }}
                   name="images"
-                  accept="image/*"
-                  multiple
-                  onChange={handleImageChange}
-                  className="mt-1 block w-full text-sm text-gray-500
-                  file:mr-4 file:py-2 file:px-4
-                  file:rounded file:border-0
-                  file:text-sm file:font-semibold
-                  file:bg-primary file:text-white
-                  hover:file:bg-opacity-90"
+                  render={({ field: { onChange, onBlur, value, ref } }) => (
+                    <input
+                      type="file"
+                      id="images"
+                      accept="image/*"
+                      multiple
+                      onChange={(e) => {
+                        handleImageChange(e);
+                        onChange(e.target.files);
+                      }}
+                      onBlur={onBlur}
+                      ref={ref}
+                      className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-opacity-90"
+                    />
+                  )}
                 />
                 {errors.images && (
                   <p className="text-red-500 text-xs italic">
-                    Please upload up to 10 images.
+                    {errors.images.message}
                   </p>
                 )}
               </div>
@@ -136,11 +229,13 @@ export default function SellYourCar() {
                 ))}
               </div>
 
-              <TextArea
-                row="6"
+              <textarea
+                rows="6"
                 placeholder="Any Special Notes (ex: any damage you want to mention)"
                 name="details"
                 defaultValue=""
+                className="input"
+                {...register("comment")}
               />
 
               <div>

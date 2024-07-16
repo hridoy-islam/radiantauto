@@ -1,31 +1,23 @@
-import React from "react";
+const CarDataDetails = ({ data }) => {
+  let arr = [];
 
-export const CarDataDetails = () => {
+  try {
+    arr = JSON.parse(data);
+  } catch (error) {
+    console.error("Error parsing JSON:", error);
+  }
+  console.log(arr);
   return (
     <div className="grid lg:grid-cols-2 sm:grid-cols-1 xs:grid-cols-1 gap-x-4">
-      <p className="p-3 bg-white shadow-sm border border-gray-300">
-        Wheels: 17" Aluminum Alloy
-      </p>
-      <p className="p-3 bg-white shadow-sm border border-gray-300">
-        Intelligent Auto Headlights (i-Ah) Auto On/Off Projector Beam Halogen
-        Daytime Running Auto High-Beam Headlamps w/Delay-Off
-      </p>
-      <p className="p-3 bg-white shadow-sm border border-gray-300">
-        Intelligent Auto Headlights (i-Ah) Auto On/Off Projector Beam Halogen
-        Daytime Running Auto High-Beam Headlamps w/Delay-Off
-      </p>
-      <p className="p-3 bg-white shadow-sm border border-gray-300">
-        Intelligent Auto Headlights (i-Ah) Auto On/Off Projector Beam Halogen
-        Daytime Running Auto High-Beam Headlamps w/Delay-Off
-      </p>
-      <p className="p-3 bg-white shadow-sm border border-gray-300">
-        Intelligent Auto Headlights (i-Ah) Auto On/Off Projector Beam Halogen
-        Daytime Running Auto High-Beam Headlamps w/Delay-Off
-      </p>
-      <p className="p-3 bg-white shadow-sm border border-gray-300">
-        Intelligent Auto Headlights (i-Ah) Auto On/Off Projector Beam Halogen
-        Daytime Running Auto High-Beam Headlamps w/Delay-Off
-      </p>
+      {/* {data?.map((item, index) => (
+        <p
+          key={index}
+          className="p-3 bg-white shadow-sm border border-gray-300"
+        >
+          {item}
+        </p>
+      ))} */}{" "}
+      ok
     </div>
   );
 };

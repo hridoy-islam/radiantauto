@@ -1,9 +1,21 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import PageTitle from "../components/PageTitle";
 import Pagination from "../components/Pagination";
 import BlogCard from "../components/BlogCard";
+import axiosInstance from "@/api/axiosInstance";
 
 const Blog = () => {
+  const [posts, setPosts] = useState();
+  const fetchData = async () => {
+    const res = await axiosInstance.get("/posts?limit=12");
+    setPosts(res.data.data.result);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <>
       <PageTitle
@@ -16,24 +28,15 @@ const Blog = () => {
       <section className="bg-white pb-10 pt-20 dark:bg-dark lg:pb-20 lg:pt-[120px]">
         <div className="container">
           <div className="-mx-4 flex flex-wrap">
-            <BlogCard
-              date="Dec 22, 2023"
-              CardTitle="Meet AutoManage, the best AI management tools"
-              CardDescription="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-              image="https://i.ibb.co/Cnwd4q6/image-01.jpg"
-            />
-            <BlogCard
-              date="Dec 22, 2023"
-              CardTitle="Meet AutoManage, the best AI management tools"
-              CardDescription="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-              image="https://i.ibb.co/Y23YC07/image-02.jpg"
-            />
-            <BlogCard
-              date="Dec 22, 2023"
-              CardTitle="Meet AutoManage, the best AI management tools"
-              CardDescription="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-              image="https://i.ibb.co/7jdcnwn/image-03.jpg"
-            />
+            {posts?.map((post) => (
+              <BlogCard
+                key={post.id} // Assuming each post has a unique 'id'
+                date={post.created_at}
+                CardTitle={post.title}
+                CardDescription={"text"}
+                image={`${process.env.NEXT_PUBLIC_IMG_URL}/${post.thumbnail}`}
+              />
+            ))}
           </div>
           <Pagination />
         </div>
