@@ -1,6 +1,19 @@
+import { useEffect, useState } from "react";
 import BlogCard from "./BlogCard";
+import axiosInstance from "@/api/axiosInstance";
 
 export default function RelatedArticles() {
+  const [relatedArticles, setRelatedArticles] = useState();
+  const fetchRelatedArticles = async () => {
+    const res = await axiosInstance.get(
+      `/posts?sortDirection=asc&sortBy=id&select=title,slug,created_at,content&limit=3`
+    );
+    setRelatedArticles(res.data.data.result);
+  };
+
+  useEffect(() => {
+    fetchRelatedArticles();
+  }, []);
   return (
     <div className="flex flex-wrap -mx-4">
       <div className="w-full px-4 wow fadeInUp mt-14" data-wow-delay=".2s">
@@ -10,24 +23,15 @@ export default function RelatedArticles() {
         <span className="mb-10 inline-block h-[2px] w-20 bg-primary"></span>
       </div>
       <div className="flex flex-wrap">
-        <BlogCard
-          date="Dec 22, 2023"
-          CardTitle="Meet AutoManage, the best AI management tools"
-          CardDescription="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-          image="https://i.ibb.co/Cnwd4q6/image-01.jpg"
-        />
-        <BlogCard
-          date="Dec 22, 2023"
-          CardTitle="Meet AutoManage, the best AI management tools"
-          CardDescription="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-          image="https://i.ibb.co/Y23YC07/image-02.jpg"
-        />
-        <BlogCard
-          date="Dec 22, 2023"
-          CardTitle="Meet AutoManage, the best AI management tools"
-          CardDescription="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-          image="https://i.ibb.co/7jdcnwn/image-03.jpg"
-        />
+        {relatedArticles?.map((item, index) => (
+          <BlogCard
+            key={index}
+            date={item?.created_at}
+            CardTitle={item?.title}
+            CardDescription={item?.content}
+            image="https://i.ibb.co/Cnwd4q6/image-01.jpg"
+          />
+        ))}
       </div>
     </div>
   );

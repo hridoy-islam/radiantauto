@@ -50,7 +50,7 @@ export default function Team() {
                             cy="45"
                             r="45"
                             fill="#13C296"
-                            fill-opacity="0.11"
+                            fillOpacity="0.11"
                           ></circle>
                         </svg>
                       </span>
@@ -240,7 +240,7 @@ export default function Team() {
                             cy="45"
                             r="45"
                             fill="#13C296"
-                            fill-opacity="0.11"
+                            fillOpacity="0.11"
                           ></circle>
                         </svg>
                       </span>
@@ -430,7 +430,7 @@ export default function Team() {
                             cy="45"
                             r="45"
                             fill="#13C296"
-                            fill-opacity="0.11"
+                            fillOpacity="0.11"
                           ></circle>
                         </svg>
                       </span>
@@ -620,7 +620,7 @@ export default function Team() {
                             cy="45"
                             r="45"
                             fill="#13C296"
-                            fill-opacity="0.11"
+                            fillOpacity="0.11"
                           ></circle>
                         </svg>
                       </span>

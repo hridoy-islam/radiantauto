@@ -9,13 +9,16 @@ export default function Car({ car }) {
             <div className="relative">
               <Link href={`/car/${car?.url}`}>
                 <img
-                  src="https://vehicle-images.dealerinspire.com/f2b1-210007713/thumbnails/large/JN1BJ1CW1LW379204/e0782d13748be5004ea6af474731f948.jpg"
+                  src={`${process.env.NEXT_PUBLIC_IMG_URL}/${car?.image_gallery[0]}`}
                   alt="product"
-                  className="w-full"
+                  className="h-auto w-full max-w-full object-cover object-center md:h-[500px]"
                 />
               </Link>
             </div>
             <div className="px-6 pb-8 pt-6">
+              <p className="text-sm font-medium text-dark dark:text-white mb-1">
+                Year {car?.year}
+              </p>
               <h3>
                 <Link
                   href={`/car/${car?.url}`}

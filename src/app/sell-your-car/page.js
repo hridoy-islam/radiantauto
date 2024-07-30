@@ -6,13 +6,12 @@ import PageTitle from "../components/PageTitle";
 // import Testimonial from "../components/Testimonial";
 
 import toast from "react-hot-toast";
-import axios from "axios";
+import axiosInstance from "@/api/axiosInstance";
 
 export default function SellYourCar() {
   const [images, setImages] = useState([]);
 
   const {
-    control,
     register,
     handleSubmit,
     reset,
@@ -33,40 +32,20 @@ export default function SellYourCar() {
       formData.append("transmissiontype", data.transmissiontype);
       formData.append("comment", data.comment);
 
-      images.forEach((image) => {
-        formData.append("images", image);
-      });
-
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/sellcar`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      if (res.data.success) {
+      for (let i = 0; i < images.length; i++) {
+        formData.append("images[]", images[i]);
+      }
+      const response = await axiosInstance.post("/sellcar", formData);
+      if (response.data.success) {
         toast.success("Thanks! Request Submitted successfully!");
-        reset(); // This will reset the form fields
-        setImages([]); // Clear uploaded images
+        reset();
+        setImages([]);
       } else {
         toast.error("Something went wrong!");
       }
     } catch (error) {
-      toast.error("An error occurred!");
       console.error(error);
     }
-  };
-
-  const validateMaxFiles = (files) => {
-    if (!files || files.length === 0) {
-      return "Please upload at least one image";
-    }
-    if (files.length > 10) {
-      return "Maximum of 10 images allowed";
-    }
-    return true;
   };
 
   const handleImageChange = (e) => {
@@ -102,6 +81,7 @@ export default function SellYourCar() {
                   placeholder="First Name"
                   {...register("firstname", { required: true })}
                 />
+
                 <input
                   type="text"
                   name="lasttname"
@@ -110,6 +90,7 @@ export default function SellYourCar() {
                   {...register("lastname", { required: true })}
                 />
               </div>
+
               <div className="flex gap-4">
                 <input
                   type="text"
@@ -176,29 +157,17 @@ export default function SellYourCar() {
                 >
                   Upload Car Photos (Max 10 Photos)
                 </label>
-                <Controller
-                  control={control}
-                  rules={{
-                    required: "Please upload at least one image",
-                    validate: validateMaxFiles,
-                  }}
-                  name="images"
-                  render={({ field: { onChange, onBlur, value, ref } }) => (
-                    <input
-                      type="file"
-                      id="images"
-                      accept="image/*"
-                      multiple
-                      onChange={(e) => {
-                        handleImageChange(e);
-                        onChange(e.target.files);
-                      }}
-                      onBlur={onBlur}
-                      ref={ref}
-                      className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-opacity-90"
-                    />
-                  )}
+
+                <input
+                  {...register("images", { required: true })}
+                  type="file"
+                  id="images"
+                  accept="image/*"
+                  multiple
+                  onChange={handleImageChange}
+                  className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-opacity-90"
                 />
+
                 {errors.images && (
                   <p className="text-red-500 text-xs italic">
                     {errors.images.message}

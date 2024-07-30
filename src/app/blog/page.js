@@ -7,14 +7,22 @@ import axiosInstance from "@/api/axiosInstance";
 
 const Blog = () => {
   const [posts, setPosts] = useState();
-  const fetchData = async () => {
-    const res = await axiosInstance.get("/posts?limit=12");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+  const fetchData = async (page) => {
+    const res = await axiosInstance.get(`/posts?page=${page}&limit=12`);
     setPosts(res.data.data.result);
+    setTotalPages(res.data.data.meta.totalPage);
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    //alert(currentPage);
+    fetchData(currentPage);
+  }, [currentPage]);
 
   return (
     <>
@@ -30,6 +38,7 @@ const Blog = () => {
           <div className="-mx-4 flex flex-wrap">
             {posts?.map((post) => (
               <BlogCard
+                slug={post.slug}
                 key={post.id} // Assuming each post has a unique 'id'
                 date={post.created_at}
                 CardTitle={post.title}
@@ -38,7 +47,11 @@ const Blog = () => {
               />
             ))}
           </div>
-          <Pagination />
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
         </div>
       </section>
     </>

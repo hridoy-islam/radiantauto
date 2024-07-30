@@ -1,4 +1,20 @@
+import axiosInstance from "@/api/axiosInstance";
+import { sliceWords } from "@/api/helper";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+
 export default function BlogSidebar() {
+  const [popularPost, setPopularPost] = useState();
+  const fetchPopularArticles = async () => {
+    const res = await axiosInstance.get(
+      `/posts?sortDirection=desc&sortBy=id&select=title,slug,content&limit=4`
+    );
+    setPopularPost(res.data.data.result);
+  };
+
+  useEffect(() => {
+    fetchPopularArticles();
+  }, []);
   return (
     <div className="w-full px-4 lg:w-4/12">
       <div>
@@ -32,7 +48,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 1.39737 44.6026)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
                 <circle
                   cx="1.39737"
@@ -40,7 +56,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 1.39737 7.9913)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
                 <circle
                   cx="13.6943"
@@ -48,7 +64,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 13.6943 44.6026)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
                 <circle
                   cx="13.6943"
@@ -56,7 +72,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 13.6943 7.9913)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
                 <circle
                   cx="25.9911"
@@ -64,7 +80,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 25.9911 44.6026)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
                 <circle
                   cx="25.9911"
@@ -72,7 +88,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 25.9911 7.9913)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
                 <circle
                   cx="38.288"
@@ -80,7 +96,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 38.288 44.6026)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
                 <circle
                   cx="38.288"
@@ -88,7 +104,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 38.288 7.9913)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
                 <circle
                   cx="1.39737"
@@ -96,7 +112,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 1.39737 32.3058)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
                 <circle
                   cx="13.6943"
@@ -104,7 +120,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 13.6943 32.3058)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
                 <circle
                   cx="25.9911"
@@ -112,7 +128,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 25.9911 32.3058)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
                 <circle
                   cx="38.288"
@@ -120,7 +136,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 38.288 32.3058)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
                 <circle
                   cx="1.39737"
@@ -128,7 +144,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 1.39737 20.0086)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
                 <circle
                   cx="13.6943"
@@ -136,7 +152,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 13.6943 20.0086)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
                 <circle
                   cx="25.9911"
@@ -144,7 +160,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 25.9911 20.0086)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
                 <circle
                   cx="38.288"
@@ -152,7 +168,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 38.288 20.0086)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
               </svg>
             </span>
@@ -170,7 +186,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 1.39737 44.6026)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
                 <circle
                   cx="1.39737"
@@ -178,7 +194,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 1.39737 7.9913)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
                 <circle
                   cx="13.6943"
@@ -186,7 +202,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 13.6943 44.6026)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
                 <circle
                   cx="13.6943"
@@ -194,7 +210,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 13.6943 7.9913)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
                 <circle
                   cx="25.9911"
@@ -202,7 +218,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 25.9911 44.6026)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
                 <circle
                   cx="25.9911"
@@ -210,7 +226,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 25.9911 7.9913)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
                 <circle
                   cx="38.288"
@@ -218,7 +234,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 38.288 44.6026)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
                 <circle
                   cx="38.288"
@@ -226,7 +242,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 38.288 7.9913)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
                 <circle
                   cx="1.39737"
@@ -234,7 +250,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 1.39737 32.3058)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
                 <circle
                   cx="13.6943"
@@ -242,7 +258,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 13.6943 32.3058)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
                 <circle
                   cx="25.9911"
@@ -250,7 +266,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 25.9911 32.3058)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
                 <circle
                   cx="38.288"
@@ -258,7 +274,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 38.288 32.3058)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
                 <circle
                   cx="1.39737"
@@ -266,7 +282,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 1.39737 20.0086)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
                 <circle
                   cx="13.6943"
@@ -274,7 +290,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 13.6943 20.0086)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
                 <circle
                   cx="25.9911"
@@ -282,7 +298,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 25.9911 20.0086)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
                 <circle
                   cx="38.288"
@@ -290,7 +306,7 @@ export default function BlogSidebar() {
                   r="1.39737"
                   transform="rotate(-90 38.288 20.0086)"
                   fill="white"
-                  fill-opacity="0.44"
+                  fillOpacity="0.44"
                 ></circle>
               </svg>
             </span>
@@ -308,119 +324,36 @@ export default function BlogSidebar() {
             </h2>
             <span className="mb-10 inline-block h-[2px] w-20 bg-primary"></span>
           </div>
-
-          <div className="w-full px-4 md:w-1/2 lg:w-full">
-            <div
-              className="flex items-center w-full pb-5 mb-5 border-b wow fadeInUp border-stroke dark:border-dark-3"
-              data-wow-delay=".1s
+          {popularPost?.map((item, index) => (
+            <div key={index} className="w-full px-4 md:w-1/2 lg:w-full">
+              <div
+                className="flex items-center w-full pb-5 mb-5 border-b wow fadeInUp border-stroke dark:border-dark-3"
+                data-wow-delay=".1s
                         "
-            >
-              <div className="mr-5 h-20 w-full max-w-[80px] overflow-hidden rounded-full">
-                <img
-                  src="https://play-tailwind.tailgrids.com/assets/images/blog/article-author-01.png"
-                  alt="image"
-                  className="w-full"
-                />
-              </div>
-              <div className="w-full">
-                <h4>
-                  <a
-                    href="#"
-                    className="inline-block mb-1 text-lg font-medium leading-snug text-dark hover:text-primary dark:text-dark-6 dark:hover:text-primary lg:text-base xl:text-lg"
-                  >
-                    Create engaging online courses your student…
-                  </a>
-                </h4>
-                <p className="text-sm text-body-color dark:text-dark-6">
-                  Glomiya Lucy
-                </p>
+              >
+                <div className="mr-5 h-20 w-full max-w-[80px] overflow-hidden rounded-full">
+                  <img
+                    src="https://play-tailwind.tailgrids.com/assets/images/blog/article-author-01.png"
+                    alt="image"
+                    className="w-full"
+                  />
+                </div>
+                <div className="w-full">
+                  <h4>
+                    <Link
+                      href={`/blog/${item?.slug}`}
+                      className="inline-block mb-1 text-lg font-medium leading-snug text-dark hover:text-primary dark:text-dark-6 dark:hover:text-primary lg:text-base xl:text-lg"
+                    >
+                      {item?.title}
+                    </Link>
+                  </h4>
+                  <p className="text-sm text-body-color dark:text-dark-6">
+                    {sliceWords(item?.content, 4)}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="w-full px-4 md:w-1/2 lg:w-full">
-            <div
-              className="flex items-center w-full pb-5 mb-5 border-b wow fadeInUp border-stroke dark:border-dark-3"
-              data-wow-delay=".1s
-                        "
-            >
-              <div className="mr-5 h-20 w-full max-w-[80px] overflow-hidden rounded-full">
-                <img
-                  src="https://play-tailwind.tailgrids.com/assets/images/blog/article-author-01.png"
-                  alt="image"
-                  className="w-full"
-                />
-              </div>
-              <div className="w-full">
-                <h4>
-                  <a
-                    href="#"
-                    className="inline-block mb-1 text-lg font-medium leading-snug text-dark hover:text-primary dark:text-dark-6 dark:hover:text-primary lg:text-base xl:text-lg"
-                  >
-                    The ultimate formula for launching online course
-                  </a>
-                </h4>
-                <p className="text-sm text-body-color dark:text-dark-6">
-                  Andrio jeson
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="w-full px-4 md:w-1/2 lg:w-full">
-            <div
-              className="flex items-center w-full pb-5 mb-5 border-b wow fadeInUp border-stroke dark:border-dark-3"
-              data-wow-delay=".1s
-                        "
-            >
-              <div className="mr-5 h-20 w-full max-w-[80px] overflow-hidden rounded-full">
-                <img
-                  src="https://play-tailwind.tailgrids.com/assets/images/blog/article-author-01.png"
-                  alt="image"
-                  className="w-full"
-                />
-              </div>
-              <div className="w-full">
-                <h4>
-                  <a
-                    href="#"
-                    className="inline-block mb-1 text-lg font-medium leading-snug text-dark hover:text-primary dark:text-dark-6 dark:hover:text-primary lg:text-base xl:text-lg"
-                  >
-                    50 Best web design tips &amp; tricks that will help you
-                  </a>
-                </h4>
-                <p className="text-sm text-body-color dark:text-dark-6">
-                  Samoyel Dayno
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="w-full px-4 md:w-1/2 lg:w-full">
-            <div
-              className="flex items-center w-full pb-5 mb-5 border-0 wow fadeInUp border-stroke dark:border-dark-3 md:border-b lg:border-0"
-              data-wow-delay=".1s
-                        "
-            >
-              <div className="mr-5 h-20 w-full max-w-[80px] overflow-hidden rounded-full">
-                <img
-                  src="https://play-tailwind.tailgrids.com/assets/images/blog/article-author-01.png"
-                  alt="image"
-                  className="w-full"
-                />
-              </div>
-              <div className="w-full">
-                <h4>
-                  <a
-                    href="#"
-                    className="inline-block mb-1 text-lg font-medium leading-snug text-dark hover:text-primary dark:text-dark-6 dark:hover:text-primary lg:text-base xl:text-lg"
-                  >
-                    The 8 best landing page builders, reviewed
-                  </a>
-                </h4>
-                <p className="text-sm text-body-color dark:text-dark-6">
-                  Andrio Glori
-                </p>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>

@@ -14,6 +14,7 @@ export const VehicleInfo = ({
 }) => {
   return (
     <div className="bg-white shadow-xl my-4 p-4">
+      <h2 className="my-2 text-xl font-semibold text-dark">Vehicle Info</h2>
       <div className="grid lg:grid-cols-2 sm:grid-cols-1 gap-x-6 space-y-1">
         <p>
           <b>Exterior Colour:</b> {exterior_colour}

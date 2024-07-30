@@ -37,7 +37,7 @@ const Contact = () => {
       <PageTitle
         slogan={"Get In Touch"}
         text={
-          "We’re available 24 hours a day, 7 days a week. Chat with us, call us at 1 (888)606-0614 or ask us a question. We are also available on Facebook Messenger, WhatsApp and Google Messenger."
+          "We’re available 24 hours a day, 7 days a week. Chat with us, call us at +1 306 261 4800 or ask us a question. We are also available on Facebook Messenger, WhatsApp and Google Messenger."
         }
         title={"Contact Us"}
       />

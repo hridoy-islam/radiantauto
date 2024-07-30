@@ -1,9 +1,12 @@
 "use client";
 import axiosInstance from "@/api/axiosInstance";
 import { CarDataDetails } from "@/app/components/CarDataDetails";
+import CarGallery from "@/app/components/CarGallery";
+import { ProductSlider } from "@/app/components/ProductSlider";
 import RelatedCars from "@/app/components/RelatedCars";
 import { VehicleInfo } from "@/app/components/VehicleInfo";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default async function Page({ params }) {
@@ -12,16 +15,22 @@ export default async function Page({ params }) {
   const [relatedCars, setRelatedCars] = useState();
   const fetchData = async () => {
     const res = await axiosInstance.get(`/cars/${slug}`);
-    setCar(res.data.data);
+    const carData = res.data.data; // Extracting meal plan data from response
+    carData.image_gallery = JSON.parse(carData.image_gallery); // Parsing photo field to array
+    setCar(carData);
   };
   const fetchRelatedCars = async () => {
     const res = await axiosInstance.get(`/cars?limit=4`);
-    setRelatedCars(res.data.data.result);
+    const updatedMenu = res.data.data.result.map((item) => ({
+      ...item,
+      image_gallery: JSON.parse(item.image_gallery),
+    }));
+    setRelatedCars(updatedMenu);
   };
   useEffect(() => {
     fetchData();
     fetchRelatedCars();
-  }, []);
+  }, [slug]);
 
   try {
     //const exteriorArray = JSON.parse(car?.exterior);
@@ -32,6 +41,7 @@ export default async function Page({ params }) {
     // arr5 = JSON.parse(car?.safety);
     // arr6 = JSON.parse(car?.techspecs);
     // const featuresData = JSON.parse(car?.features);
+    // console.log(typeof featuresData);
   } catch (error) {
     console.error("Error parsing JSON:", error);
   }
@@ -46,20 +56,15 @@ export default async function Page({ params }) {
       <div className="container">
         <div className="flex lg:flex-row md:flex-col sm:flex-col xs:flex-col gap-8">
           <div className="lg:w-9/12 sm:w-full">
-            <img
-              src={
-                "https://vehicle-images.dealerinspire.com/9f7d-210007713/JN1BJ1CW1LW379204/ae194dcacf85356d5040f695799915ac.jpg"
-              }
-              alt="sas"
-              className="w-full h-auto"
-            />
-            <h2 className="my-2 text-xl font-semibold text-dark">Overview</h2>
+            {/* <CarGallery images={car?.image_gallery} /> */}
 
-            <p dangerouslySetInnerHTML={{ __html: car?.overview }}></p>
+            <ProductSlider gallery={car?.image_gallery} />
+            <div className="bg-white shadow-xl my-4 p-4">
+              <h2 className="my-2 text-xl font-semibold text-dark">Overview</h2>
 
-            <h2 className="my-2 text-xl font-semibold text-dark">
-              Vehicle Info
-            </h2>
+              <p dangerouslySetInnerHTML={{ __html: car?.overview }}></p>
+            </div>
+
             <VehicleInfo
               exterior_colour={car?.exterior_colour}
               body_style={car?.body_style}
@@ -73,95 +78,161 @@ export default async function Page({ params }) {
               vin={car?.vin}
             />
 
-            <h2 className="my-2 text-xl font-semibold text-dark">
-              Key Features
-            </h2>
+            <div className="bg-white shadow-xl my-4 p-4">
+              <h2 className="my-2 text-xl font-semibold text-dark">
+                Key Features
+              </h2>
 
-            <div className="flex flex-wrap gap-4 bg-white shadow-xl my-4 p-4">
-              <Image src={"/images/bt.png"} alt="bt" width={100} height={100} />
-              <Image
-                src={"/images/cruise.png"}
-                alt="bt"
-                width={100}
-                height={100}
-              />
-              <Image
-                src={"/images/smartphone.png"}
-                alt="bt"
-                width={100}
-                height={100}
-              />
-              <Image
-                src={"/images/backup-cam.png"}
-                alt="bt"
-                width={100}
-                height={100}
-              />
-              <Image
-                src={"/images/mz-ac.png"}
-                alt="bt"
-                width={100}
-                height={100}
-              />
-              <Image
-                src={"/images/rear-ac.png"}
-                alt="bt"
-                width={100}
-                height={100}
-              />
-              <Image
-                src={"/images/keyless.png"}
-                alt="bt"
-                width={100}
-                height={100}
-              />
-              <Image
-                src={"/images/abs.png"}
-                alt="bt"
-                width={100}
-                height={100}
-              />
-              <Image
-                src={"/images/power-seats.png"}
-                alt="bt"
-                width={100}
-                height={100}
-              />
-              <Image
-                src={"/images/3rd-row-seat.png"}
-                alt="bt"
-                width={100}
-                height={100}
-              />
-              <Image
-                src={"/images/heated-seats.png"}
-                alt="bt"
-                width={100}
-                height={100}
-              />
-              <Image
-                src={"/images/remote-start.png"}
-                alt="bt"
-                width={100}
-                height={100}
-              />
-              <Image
-                src={"/images/keyless-start.png"}
-                alt="bt"
-                width={100}
-                height={100}
-              />
-              <Image
-                src={"/images/steering-controls.png"}
-                alt="bt"
-                width={100}
-                height={100}
-              />
+              <div className="flex flex-wrap gap-4 ">
+                {car?.bluethooth == "true" && (
+                  <Image
+                    src={"/images/bt.png"}
+                    alt="bt"
+                    width={100}
+                    height={100}
+                  />
+                )}
+                {car?.cruiseControl == "true" && (
+                  <Image
+                    src={"/images/cruise.png"}
+                    alt="bt"
+                    width={100}
+                    height={100}
+                  />
+                )}
+                {car?.smartphoneIntegration == "true" && (
+                  <Image
+                    src={"/images/smartphone.png"}
+                    alt="bt"
+                    width={100}
+                    height={100}
+                  />
+                )}
+                {car?.backupCamera == "true" && (
+                  <Image
+                    src={"/images/backup-cam.png"}
+                    alt="bt"
+                    width={100}
+                    height={100}
+                  />
+                )}
+                {car?.multizoneAC == "true" && (
+                  <Image
+                    src={"/images/mz-ac.png"}
+                    alt="bt"
+                    width={100}
+                    height={100}
+                  />
+                )}
+                {car?.rearAC == "true" && (
+                  <Image
+                    src={"/images/rear-ac.png"}
+                    alt="bt"
+                    width={100}
+                    height={100}
+                  />
+                )}
+                {car?.keylessEntry == "true" && (
+                  <Image
+                    src={"/images/keyless.png"}
+                    alt="bt"
+                    width={100}
+                    height={100}
+                  />
+                )}
+                {car?.antiLockBrakes == "true" && (
+                  <Image
+                    src={"/images/abs.png"}
+                    alt="bt"
+                    width={100}
+                    height={100}
+                  />
+                )}
+                {car?.powerSeats == "true" && (
+                  <Image
+                    src={"/images/power-seats.png"}
+                    alt="bt"
+                    width={100}
+                    height={100}
+                  />
+                )}
+                {car?.thirdRowSeating == "true" && (
+                  <Image
+                    src={"/images/3rd-row-seat.png"}
+                    alt="bt"
+                    width={100}
+                    height={100}
+                  />
+                )}
+                {car?.heatedSeats == "true" && (
+                  <Image
+                    src={"/images/heated-seats.png"}
+                    alt="bt"
+                    width={100}
+                    height={100}
+                  />
+                )}
+                {car?.remoteStart == "true" && (
+                  <Image
+                    src={"/images/remote-start.png"}
+                    alt="bt"
+                    width={100}
+                    height={100}
+                  />
+                )}
+                {car?.keyLessStart == "true" && (
+                  <Image
+                    src={"/images/keyless-start.png"}
+                    alt="bt"
+                    width={100}
+                    height={100}
+                  />
+                )}
+                {car?.streeingwheelcontrol == "true" && (
+                  <Image
+                    src={"/images/steering-controls.png"}
+                    alt="bt"
+                    width={100}
+                    height={100}
+                  />
+                )}
+              </div>
             </div>
 
-            <h2 className="my-2 text-xl font-semibold text-dark">
-              Vehicle Details
-            </h2>
+            <div className="bg-white shadow-xl my-4 p-4">
+              <h2 className="my-2 text-lg font-semibold text-dark">Exterior</h2>
+              <p dangerouslySetInnerHTML={{ __html: car?.exterior }}></p>
+            </div>
+
+            <div className="bg-white shadow-xl my-4 p-4">
+              <h2 className="my-2 text-lg font-semibold text-dark">Interior</h2>
+              <p dangerouslySetInnerHTML={{ __html: car?.interior }}></p>
+            </div>
+            <div className="bg-white shadow-xl my-4 p-4">
+              <h2 className="my-2 text-lg font-semibold text-dark">
+                Entertainment
+              </h2>
+              <p dangerouslySetInnerHTML={{ __html: car?.entertainment }}></p>
+            </div>
+
+            <div className="bg-white shadow-xl my-4 p-4">
+              <h2 className="my-2 text-lg font-semibold text-dark">
+                Mechanical
+              </h2>
+              <p dangerouslySetInnerHTML={{ __html: car?.mechanical }}></p>
+            </div>
+
+            <div className="bg-white shadow-xl my-4 p-4">
+              <h2 className="my-2 text-lg font-semibold text-dark">Safety</h2>
+              <p dangerouslySetInnerHTML={{ __html: car?.safety }}></p>
+            </div>
+            <div className="bg-white shadow-xl my-4 p-4">
+              <h2 className="my-2 text-lg font-semibold text-dark">
+                Tech specs
+              </h2>
+              <p dangerouslySetInnerHTML={{ __html: car?.techspecs }}></p>
+            </div>
+
             {/* <AccordionItem
               header="Exterior"
               text={<CarDataDetails data={arr} />}
@@ -288,21 +359,30 @@ export default async function Page({ params }) {
               Sale Price:
               <br /> <span className="text-5xl font-bold">${car?.price}</span>
             </h2>
-            <button className="w-full mb-4 bg-primary py-3 px-7 text-center text-base font-medium text-white">
-              Trade In
-            </button>
-            <button className="w-full mb-4 bg-primary py-3 px-7 text-center text-base font-medium text-white">
-              Get Financing
-            </button>
-            <button className="w-full mb-4 bg-primary py-3 px-7 text-center text-base font-medium text-white">
-              Calculate Your Payment
-            </button>
-            <button className="w-full mb-4 bg-dark py-3 px-7 text-center text-base font-medium text-white">
+            <Link href={"/trade-in"}>
+              <button className="w-full mb-4 bg-primary py-3 px-7 text-center text-base font-medium text-white">
+                Trade In
+              </button>
+            </Link>
+            <Link href={"/finance"}>
+              <button className="w-full mb-4 bg-primary py-3 px-7 text-center text-base font-medium text-white">
+                Get Financing
+              </button>
+            </Link>
+            <Link href={"/payment-calculator"}>
+              <button className="w-full mb-4 bg-primary py-3 px-7 text-center text-base font-medium text-white">
+                Calculate Your Payment
+              </button>
+            </Link>
+
+            {/* <button className="w-full mb-4 bg-dark py-3 px-7 text-center text-base font-medium text-white">
               Schedule A Test Drive
-            </button>
-            <button className="w-full mb-4 bg-primary py-3 px-7 text-center text-base font-medium text-white">
-              Ask About 2020 Nissan Qashqai SV AWD
-            </button>
+            </button> */}
+            <Link href={"/contact"}>
+              <button className="w-full mb-4 bg-primary py-3 px-7 text-center text-base font-medium text-white">
+                Ask About 2020 Nissan Qashqai SV AWD
+              </button>
+            </Link>
             <div className="mb-8 flex w-full max-w-[370px]">
               <div className="mr-6 flex h-[60px] w-full max-w-[60px] items-center justify-center overflow-hidden rounded bg-primary/5 text-primary sm:h-[70px] sm:max-w-[70px]">
                 <svg

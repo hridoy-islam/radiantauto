@@ -6,7 +6,7 @@ const CarDataDetails = ({ data }) => {
   } catch (error) {
     console.error("Error parsing JSON:", error);
   }
-  console.log(arr);
+
   return (
     <div className="grid lg:grid-cols-2 sm:grid-cols-1 xs:grid-cols-1 gap-x-4">
       {/* {data?.map((item, index) => (
