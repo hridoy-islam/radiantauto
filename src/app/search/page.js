@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import Car from "../components/Car";
 import PageTitle from "../components/PageTitle";
 import Pagination from "../components/Pagination";
-import SearchFilter from "../components/SearchFilter";
 import axiosInstance from "@/api/axiosInstance";
 
 export default function Search() {
@@ -23,15 +22,7 @@ export default function Search() {
     { length: 30 },
     (_, index) => new Date().getFullYear() - index
   );
-  // const fetchData = async (page) => {
-  //   const res = await axiosInstance.get(`/cars?page=${page}&status=available`);
-  //   const updatedMenu = res.data.data.result.map((item) => ({
-  //     ...item,
-  //     image_gallery: JSON.parse(item.image_gallery),
-  //   }));
-  //   setCars(updatedMenu);
-  //   setTotalPages(res.data.data.meta.totalPage);
-  // };
+
   const fetchData = async (page, filters = {}) => {
     try {
       let url = `/cars?status=available`;

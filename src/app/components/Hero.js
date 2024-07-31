@@ -5,7 +5,7 @@ const Hero = () => {
     <>
       <div className="relative bg-white pb-[80px] pt-[80px] dark:bg-dark lg:pt-[80px]">
         <div className="container">
-          <div className="-mx-4 flex flex-wrap">
+          <div className="-mx-4 flex flex-wrap items-center">
             <div className="w-full px-4 lg:w-5/12">
               <div className="hero-content">
                 <h1 className="mb-5 text-4xl font-bold !leading-[1.208] text-dark dark:text-white sm:text-[42px] lg:text-[40px] xl:text-5xl">

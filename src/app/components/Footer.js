@@ -66,15 +66,15 @@ const Footer = () => {
               <NavLink link="/finance" label="Finance Application" />
               <NavLink link="/payment-calculator" label="Payment Calculator" />
             </LinkGroup>
-            <LinkGroup header="Company">
+            {/* <LinkGroup header="Company">
               <NavLink link="/about" label="About" />
               <NavLink link="/guarantee" label="Guarantee" />
               <NavLink link="/protection-plan" label="Protection Plan" />
               <NavLink link="/reviews" label="Customer Reviews" />
-            </LinkGroup>
+            </LinkGroup> */}
             <LinkGroup header="Quick Links">
               <NavLink link="/faq" label="FAQ" />
-              <NavLink link="/blog" label="Blog" />
+              {/* <NavLink link="/blog" label="Blog" /> */}
               <NavLink link="/contact" label="Contact" />
               <NavLink link="/search" label="Search Cars" />
             </LinkGroup>

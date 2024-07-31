@@ -172,7 +172,7 @@ export default function Header() {
                       <div
                         className={`z-50 ${
                           isFinanceOpen ? "block" : "hidden"
-                        } lg:block dropdown-menu left-0 top-full rounded-bl-[10px] rounded-br-[10px] border border-transparent p-3 lg:invisible lg:absolute lg:top-[96%] lg:w-[214px] lg:space-y-1 lg:rounded-[10px] lg:bg-white lg:opacity-0 lg:shadow-3 lg:duration-300 lg:group-hover:visible lg:group-hover:top-full lg:group-hover:opacity-100 dark:lg:bg-dark-2 dark:lg:shadow-[0px_10px_20px_0px_rgba(0,0,0,0.07)]`}
+                        } lg:block dropdown-menu left-0 top-full rounded-bl-[10px] rounded-br-[10px] border border-transparent p-3 lg:invisible lg:absolute lg:top-[96%] lg:w-[240px] lg:space-y-1 lg:rounded-[10px] lg:bg-white lg:opacity-0 lg:shadow-3 lg:duration-300 lg:group-hover:visible lg:group-hover:top-full lg:group-hover:opacity-100 dark:lg:bg-dark-2 dark:lg:shadow-[0px_10px_20px_0px_rgba(0,0,0,0.07)]`}
                       >
                         <Link
                           rel="nofollow"
@@ -229,7 +229,7 @@ export default function Header() {
                         </Link>
                       </div>
                     </li>
-                    <li className="group relative px-4 lg:px-0.5 lg:py-5 xl:px-2 text-[#0F172A] dark:text-dark-text">
+                    {/* <li className="group relative px-4 lg:px-0.5 lg:py-5 xl:px-2 text-[#0F172A] dark:text-dark-text">
                       <button
                         onClick={toggleAboutOpen}
                         className="flex w-full cursor-pointer items-center justify-between rounded-lg px-2.5 py-1.5 text-sm font-medium duration-300 group-hover:bg-primary/5 group-hover:text-primary hover:text-primary lg:px-1.5 xl:px-2.5 dark:group-hover:bg-dark-2 dark:group-hover:text-white dark:hover:text-white"
@@ -387,15 +387,15 @@ export default function Header() {
                           </span>
                         </Link>
                       </div>
-                    </li>
-                    <li className="group relative px-4 lg:px-0.5 lg:py-5 xl:px-2 text-[#0F172A] dark:text-dark-text">
+                    </li> */}
+                    {/* <li className="group relative px-4 lg:px-0.5 lg:py-5 xl:px-2 text-[#0F172A] dark:text-dark-text">
                       <Link
                         className="flex items-center rounded-lg px-2.5 py-1.5 text-sm font-medium duration-300 group-hover:bg-primary/5 group-hover:text-primary lg:px-1.5 xl:px-2.5 dark:group-hover:bg-dark-2 dark:group-hover:text-white"
                         href="/blog"
                       >
                         Blog
                       </Link>
-                    </li>
+                    </li> */}
                     <li className="group relative px-4 lg:px-0.5 lg:py-5 xl:px-2 text-[#0F172A] dark:text-dark-text">
                       <Link
                         className="flex items-center rounded-lg px-2.5 py-1.5 text-sm font-medium duration-300 group-hover:bg-primary/5 group-hover:text-primary lg:px-1.5 xl:px-2.5 dark:group-hover:bg-dark-2 dark:group-hover:text-white"
