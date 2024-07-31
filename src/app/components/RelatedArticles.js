@@ -6,7 +6,7 @@ export default function RelatedArticles() {
   const [relatedArticles, setRelatedArticles] = useState();
   const fetchRelatedArticles = async () => {
     const res = await axiosInstance.get(
-      `/posts?sortDirection=asc&sortBy=id&select=title,slug,created_at,content&limit=3`
+      `/posts?sortDirection=asc&sortBy=id&select=title,slug,created_at,content,thumbnail&limit=3`
     );
     setRelatedArticles(res.data.data.result);
   };
@@ -29,7 +29,7 @@ export default function RelatedArticles() {
             date={item?.created_at}
             CardTitle={item?.title}
             CardDescription={item?.content}
-            image="https://i.ibb.co/Cnwd4q6/image-01.jpg"
+            image={`${process.env.NEXT_PUBLIC_IMG_URL}/${item?.thumbnail}`}
           />
         ))}
       </div>

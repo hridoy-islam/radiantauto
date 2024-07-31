@@ -7,7 +7,7 @@ export default function BlogSidebar() {
   const [popularPost, setPopularPost] = useState();
   const fetchPopularArticles = async () => {
     const res = await axiosInstance.get(
-      `/posts?sortDirection=desc&sortBy=id&select=title,slug,content&limit=4`
+      `/posts?sortDirection=desc&sortBy=id&select=title,slug,content,thumbnail&limit=4`
     );
     setPopularPost(res.data.data.result);
   };
@@ -333,7 +333,7 @@ export default function BlogSidebar() {
               >
                 <div className="mr-5 h-20 w-full max-w-[80px] overflow-hidden rounded-full">
                   <img
-                    src="https://play-tailwind.tailgrids.com/assets/images/blog/article-author-01.png"
+                    src={`${process.env.NEXT_PUBLIC_IMG_URL}/${item?.thumbnail}`}
                     alt="image"
                     className="w-full"
                   />

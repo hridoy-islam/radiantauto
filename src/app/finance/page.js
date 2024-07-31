@@ -3,6 +3,12 @@ import FinanceApplication from "../components/FinanceApplication";
 import FinanceWork from "../components/FinanceWork";
 import PageTitle from "../components/PageTitle";
 
+export const metadata = {
+  title: "Finance your next car Auto Financing",
+  description:
+    "Radiant Auto and Repair has teamed up with multiple lenders to ensure you get the best rates and fast approval.",
+};
+
 export default function Finance() {
   return (
     <>

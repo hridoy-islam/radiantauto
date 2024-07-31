@@ -1,11 +1,11 @@
 import React from "react";
 
-const PageTitle = ({ title, text, slogan }) => {
+const PageTitle = ({ title, text, slogan, image = "" }) => {
   return (
     <div className="relative overflow-hidden bg-white dark:bg-dark">
       <div className="relative z-10 pb-20 pt-[150px] lg:pb-[120px] lg:pt-[210px]">
         <img
-          src="/images/titlebg.jpeg"
+          src={image.length > 0 ? image : "/images/titlebg.jpeg"}
           alt="image"
           className="absolute top-0 left-0 z-[-1] h-full w-full object-cover object-center"
         />

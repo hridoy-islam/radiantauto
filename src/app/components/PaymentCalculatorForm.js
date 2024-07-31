@@ -121,7 +121,7 @@ export const PaymentCalculatorForm = () => {
             Your Monthly Payment: {monthlyPayment !== null && monthlyPayment}
           </p>
 
-          <div className="flex gap-20 my-6 justify-center">
+          <div className="my-6 justify-center">
             {/* <div>
               <p className="text-xl">$300</p>
               <p className="text-xl">60 months</p>

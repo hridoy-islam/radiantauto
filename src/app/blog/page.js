@@ -42,7 +42,7 @@ const Blog = () => {
                 key={post.id} // Assuming each post has a unique 'id'
                 date={post.created_at}
                 CardTitle={post.title}
-                CardDescription={"text"}
+                CardDescription={post?.content}
                 image={`${process.env.NEXT_PUBLIC_IMG_URL}/${post.thumbnail}`}
               />
             ))}

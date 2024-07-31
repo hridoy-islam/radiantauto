@@ -3,6 +3,11 @@ import React, { useState } from "react";
 import Tab from "../components/Tab";
 import PageTitle from "../components/PageTitle";
 
+export const metadata = {
+  title: "FAQ - Radiant Auto",
+  description: "FAQ - Radiant Auto",
+};
+
 const faqData = {
   General: [
     {

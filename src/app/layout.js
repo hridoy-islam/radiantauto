@@ -7,6 +7,9 @@ import { Toaster } from "react-hot-toast";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
+  title: "Radiant Auto",
+  description:
+    "We offer a comprehensive range of services designed to meet all your automotive needs.",
   schemaOrg: {
     "@context": "http://schema.org",
     "@type": "AutoBodyShop",
@@ -15,13 +18,13 @@ export const metadata = {
       "Radiant Auto offers top-notch car care services with a focus on customer experience and professional workmanship.",
     url: "https://www.radiantauto.com/about",
     image: "https://www.radiantauto.com/images/about-hero.jpg",
-    telephone: "+11234567890",
+    telephone: "+1 306 261 4800",
     address: {
       "@type": "PostalAddress",
-      streetAddress: "1234 Radiant St.",
-      addressLocality: "Mississauga",
-      addressRegion: "ON",
-      postalCode: "L5B 3C9",
+      streetAddress: "213 33rd St",
+      addressLocality: "WSaskatoon",
+      addressRegion: "SK",
+      postalCode: "S7L 0V2",
       addressCountry: "CA",
     },
   },

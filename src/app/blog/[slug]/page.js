@@ -1,7 +1,7 @@
 "use client";
 
 import axiosInstance from "@/api/axiosInstance";
-import BlogCard from "@/app/components/BlogCard";
+import { sliceWords } from "@/api/helper";
 import BlogSidebar from "@/app/components/BlogSidebar";
 import PageTitle from "@/app/components/PageTitle";
 import RelatedArticles from "@/app/components/RelatedArticles";
@@ -17,17 +17,17 @@ export default function page({ params }) {
     setPost(res.data.data);
   };
 
+  const slicedContent = sliceWords(post?.content, 15);
+
   useEffect(() => {
     fetchData();
   }, []);
   return (
     <>
       <PageTitle
-        slogan={"Category"}
         title={post?.title}
-        text={
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-        }
+        text={slicedContent}
+        image={`${process.env.NEXT_PUBLIC_IMG_URL}/${post?.thumbnail}`}
       />
       <section className="pb-10 pt-20 dark:bg-dark lg:pb-20 lg:pt-[120px]">
         <div className="container">

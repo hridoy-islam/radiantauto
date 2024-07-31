@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const Cta = () => {
@@ -18,12 +19,12 @@ const Cta = () => {
               </div>
               <div className="w-full px-4 lg:w-1/3">
                 <div className="flex flex-wrap lg:justify-end">
-                  <a
-                    href="#"
+                  <Link
+                    href="/payment-calculator"
                     className="inline-flex py-3 my-1 mr-4 text-base font-medium transition bg-white rounded-md hover:bg-shadow-1 text-primary px-7"
                   >
                     Calculate Payments
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
