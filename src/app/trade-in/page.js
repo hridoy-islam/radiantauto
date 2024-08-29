@@ -162,7 +162,7 @@ export default function TradeIn() {
                 {...register("current_car_transmission_type", {
                   required: true,
                 })}
-                className="w-full my-5 resize-none rounded border border-stroke px-[14px] py-3 text-base text-body-color outline-none focus:border-primary dark:border-dark-3 dark:bg-dark dark:text-dark-6"
+                className="w-full my-5 resize-none rounded border border-stroke px-[14px] py-3 text-base text-body-color outline-none focus:border-primary "
               >
                 <option value="automatic">Automatic</option>
                 <option value="manual">Manual</option>

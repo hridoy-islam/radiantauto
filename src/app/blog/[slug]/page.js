@@ -29,7 +29,7 @@ export default function page({ params }) {
         text={slicedContent}
         image={`${process.env.NEXT_PUBLIC_IMG_URL}/${post?.thumbnail}`}
       />
-      <section className="pb-10 pt-20 dark:bg-dark lg:pb-20 lg:pt-[120px]">
+      <section className="pb-10 pt-20  lg:pb-20 lg:pt-[120px]">
         <div className="container">
           <div className="flex flex-wrap justify-center -mx-4">
             <div className="w-full px-4">
@@ -52,14 +52,14 @@ export default function page({ params }) {
                       {moment(post?.created_at).format("DD MMM YYYY")}
                     </p>
                     <h2
-                      className="wow fadeInUp mb-8 text-2xl font-bold text-dark dark:text-white sm:text-3xl md:text-[35px] md:leading-[1.28]"
+                      className="wow fadeInUp mb-8 text-2xl font-bold text-dark  sm:text-3xl md:text-[35px] md:leading-[1.28]"
                       data-wow-delay=".1s
                     "
                     >
                       {post?.title}
                     </h2>
                     <div
-                      className="mb-6 text-base wow fadeInUp text-body-color dark:text-dark-6"
+                      className="mb-6 text-base wow fadeInUp text-body-color "
                       data-wow-delay=".1s"
                       dangerouslySetInnerHTML={{ __html: post?.content }}
                     />

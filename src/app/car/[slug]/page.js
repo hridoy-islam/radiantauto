@@ -33,15 +33,6 @@ export default async function Page({ params }) {
   }, [slug]);
 
   try {
-    //const exteriorArray = JSON.parse(car?.exterior);
-    //arr = JSON.parse(car?.exterior);
-    // arr2 = JSON.parse(car?.interior);
-    // arr3 = JSON.parse(car?.entertainment);
-    // arr4 = JSON.parse(car?.mechanical);
-    // arr5 = JSON.parse(car?.safety);
-    // arr6 = JSON.parse(car?.techspecs);
-    // const featuresData = JSON.parse(car?.features);
-    // console.log(typeof featuresData);
   } catch (error) {
     console.error("Error parsing JSON:", error);
   }
@@ -55,7 +46,7 @@ export default async function Page({ params }) {
       </div>
       <div className="container">
         <div className="flex lg:flex-row md:flex-col sm:flex-col xs:flex-col gap-8">
-          <div className="lg:w-9/12 sm:w-full">
+          <div className="lg:w-9/12 sm:w-full xs:w-full">
             {/* <CarGallery images={car?.image_gallery} /> */}
 
             <ProductSlider gallery={car?.image_gallery} />
@@ -199,162 +190,57 @@ export default async function Page({ params }) {
               </div>
             </div>
 
-            <div className="bg-white shadow-xl my-4 p-4">
-              <h2 className="my-2 text-lg font-semibold text-dark">Exterior</h2>
-              <p dangerouslySetInnerHTML={{ __html: car?.exterior }}></p>
-            </div>
-
-            <div className="bg-white shadow-xl my-4 p-4">
-              <h2 className="my-2 text-lg font-semibold text-dark">Interior</h2>
-              <p dangerouslySetInnerHTML={{ __html: car?.interior }}></p>
-            </div>
-            <div className="bg-white shadow-xl my-4 p-4">
-              <h2 className="my-2 text-lg font-semibold text-dark">
-                Entertainment
-              </h2>
-              <p dangerouslySetInnerHTML={{ __html: car?.entertainment }}></p>
-            </div>
-
-            <div className="bg-white shadow-xl my-4 p-4">
-              <h2 className="my-2 text-lg font-semibold text-dark">
-                Mechanical
-              </h2>
-              <p dangerouslySetInnerHTML={{ __html: car?.mechanical }}></p>
-            </div>
-
-            <div className="bg-white shadow-xl my-4 p-4">
-              <h2 className="my-2 text-lg font-semibold text-dark">Safety</h2>
-              <p dangerouslySetInnerHTML={{ __html: car?.safety }}></p>
-            </div>
-            <div className="bg-white shadow-xl my-4 p-4">
-              <h2 className="my-2 text-lg font-semibold text-dark">
-                Tech specs
-              </h2>
-              <p dangerouslySetInnerHTML={{ __html: car?.techspecs }}></p>
-            </div>
-
-            {/* <AccordionItem
-              header="Exterior"
-              text={<CarDataDetails data={arr} />}
-            /> */}
-            {/* <AccordionItem
-              header="Interior"
-              text={<CarDataDetails data={car?.interior} />}
-            />
-            <AccordionItem
-              header="Entertainment"
-              text={<CarDataDetails data={car?.entertainment} />}
-            />
-
-            <AccordionItem
-              header="Mechanical"
-              text={<CarDataDetails data={car?.mechanical} />}
-            />
-
-            <AccordionItem
-              header={"Safety"}
-              text={<CarDataDetails data={car?.safety} />}
-            />
-
-            <AccordionItem
-              header="Tech Specs"
-              text={<CarDataDetails data={car?.techspecs} />}
-            /> */}
-
-            {/* <h3>Exterior</h3>
-             */}
-            {/* <div className="bg-white shadow-xl my-4 p-4">
-              <h4 className="my-1 text-lg font-semibold text-dark dark:text-white">
-                Exterior
-              </h4>
-              <div className="grid lg:grid-cols-2 sm:grid-cols-1 xs:grid-cols-1 gap-x-4">
-                {arr?.map((item, index) => (
-                  <p
-                    key={index}
-                    className="p-3 bg-white shadow-sm border border-gray-300"
-                  >
-                    {item}
-                  </p>
-                ))}
+            {car?.exterior !== "undefined" && (
+              <div className="bg-white shadow-xl my-4 p-4">
+                <h2 className="my-2 text-lg font-semibold text-dark">
+                  Exterior
+                </h2>
+                <p dangerouslySetInnerHTML={{ __html: car?.exterior }}></p>
               </div>
-            </div>
-            <div className="bg-white shadow-xl my-4 p-4">
-              <h4 className="my-1 text-lg font-semibold text-dark dark:text-white">
-                Interior
-              </h4>
-              <div className="grid lg:grid-cols-2 sm:grid-cols-1 xs:grid-cols-1 gap-x-4">
-                {arr2?.map((item, index) => (
-                  <p
-                    key={index}
-                    className="p-3 bg-white shadow-sm border border-gray-300"
-                  >
-                    {item}
-                  </p>
-                ))}
+            )}
+
+            {car?.interior !== "undefined" && (
+              <div className="bg-white shadow-xl my-4 p-4">
+                <h2 className="my-2 text-lg font-semibold text-dark">
+                  Interior
+                </h2>
+                <p dangerouslySetInnerHTML={{ __html: car?.interior }}></p>
               </div>
-            </div>
-            <div className="bg-white shadow-xl my-4 p-4">
-              <h4 className="my-1 text-lg font-semibold text-dark dark:text-white">
-                Entertainment
-              </h4>
-              <div className="grid lg:grid-cols-2 sm:grid-cols-1 xs:grid-cols-1 gap-x-4">
-                {arr3?.map((item, index) => (
-                  <p
-                    key={index}
-                    className="p-3 bg-white shadow-sm border border-gray-300"
-                  >
-                    {item}
-                  </p>
-                ))}
+            )}
+
+            {car?.entertainment !== "undefined" && (
+              <div className="bg-white shadow-xl my-4 p-4">
+                <h2 className="my-2 text-lg font-semibold text-dark">
+                  Entertainment
+                </h2>
+                <p dangerouslySetInnerHTML={{ __html: car?.entertainment }}></p>
               </div>
-            </div>
-            <div className="bg-white shadow-xl my-4 p-4">
-              <h4 className="my-1 text-lg font-semibold text-dark dark:text-white">
-                Mechanical
-              </h4>
-              <div className="grid lg:grid-cols-2 sm:grid-cols-1 xs:grid-cols-1 gap-x-4">
-                {arr4?.map((item, index) => (
-                  <p
-                    key={index}
-                    className="p-3 bg-white shadow-sm border border-gray-300"
-                  >
-                    {item}
-                  </p>
-                ))}
+            )}
+
+            {car?.mechanical !== "undefined" && (
+              <div className="bg-white shadow-xl my-4 p-4">
+                <h2 className="my-2 text-lg font-semibold text-dark">
+                  Mechanical
+                </h2>
+                <p dangerouslySetInnerHTML={{ __html: car?.mechanical }}></p>
               </div>
-            </div>
-            <div className="bg-white shadow-xl my-4 p-4">
-              <h4 className="my-1 text-lg font-semibold text-dark dark:text-white">
-                Safety
-              </h4>
-              <div className="grid lg:grid-cols-2 sm:grid-cols-1 xs:grid-cols-1 gap-x-4">
-                {arr5?.map((item, index) => (
-                  <p
-                    key={index}
-                    className="p-3 bg-white shadow-sm border border-gray-300"
-                  >
-                    {item}
-                  </p>
-                ))}
+            )}
+            {car?.safety !== "undefined" && (
+              <div className="bg-white shadow-xl my-4 p-4">
+                <h2 className="my-2 text-lg font-semibold text-dark">Safety</h2>
+                <p dangerouslySetInnerHTML={{ __html: car?.safety }}></p>
               </div>
-            </div>
-            <div className="bg-white shadow-xl my-4 p-4">
-              <h4 className="my-1 text-lg font-semibold text-dark dark:text-white">
-                Tech Specs
-              </h4>
-              <div className="grid lg:grid-cols-2 sm:grid-cols-1 xs:grid-cols-1 gap-x-4">
-                {arr6?.map((item, index) => (
-                  <p
-                    key={index}
-                    className="p-3 bg-white shadow-sm border border-gray-300"
-                  >
-                    {item}
-                  </p>
-                ))}
+            )}
+            {car?.techspecs !== "undefined" && (
+              <div className="bg-white shadow-xl my-4 p-4">
+                <h2 className="my-2 text-lg font-semibold text-dark">
+                  Tech specs
+                </h2>
+                <p dangerouslySetInnerHTML={{ __html: car?.techspecs }}></p>
               </div>
-            </div> */}
+            )}
           </div>
-          <div className="lg:w-3/12 sm:w-full">
+          <div className="lg:w-3/12 sm:w-full xs:w-full">
             <h2 className="mb-4 text-xl">
               Sale Price:
               <br /> <span className="text-5xl font-bold">${car?.price}</span>
@@ -399,10 +285,10 @@ export default async function Page({ params }) {
                 </svg>
               </div>
               <div className="w-full">
-                <h4 className="mb-1 text-xl font-bold text-dark dark:text-white">
+                <h4 className="mb-1 text-xl font-bold text-dark ">
                   Our Location
                 </h4>
-                <p className="text-base text-body-color dark:text-dark-6">
+                <p className="text-base text-body-color ">
                   99 S.t Jomblo Park Pekanbaru 28292. Indonesia
                 </p>
               </div>
@@ -438,10 +324,10 @@ export default async function Page({ params }) {
                 </svg>
               </div>
               <div className="w-full">
-                <h4 className="mb-1 text-xl font-bold text-dark dark:text-white">
+                <h4 className="mb-1 text-xl font-bold text-dark">
                   Phone Number
                 </h4>
-                <p className="text-base text-body-color dark:text-dark-6">
+                <p className="text-base text-body-color ">
                   (+62)81 414 257 9980
                 </p>
               </div>
@@ -454,51 +340,3 @@ export default async function Page({ params }) {
     </>
   );
 }
-
-// const AccordionItem = ({ header, text }) => {
-//   const [active, setActive] = useState(false);
-
-//   const handleToggle = () => {
-//     event.preventDefault();
-//     setActive(!active);
-//   };
-//   return (
-//     <div className="mb-4 w-full rounded-lg bg-white p-4 shadow-[0px_20px_95px_0px_rgba(201,203,204,0.30)]">
-//       <button
-//         className={`faq-btn flex w-full text-left`}
-//         onClick={() => handleToggle()}
-//       >
-//         <div className="w-full">
-//           <h4 className="mt-1 text-lg font-semibold text-dark dark:text-white">
-//             {header}
-//           </h4>
-//         </div>
-//         <div className="mr-5 flex h-10 w-full max-w-[40px] items-center justify-center rounded-lg bg-primary/5 text-primary dark:bg-white/5">
-//           <svg
-//             className={`fill-primary stroke-primary duration-200 ease-in-out ${
-//               active ? "rotate-180" : ""
-//             }`}
-//             width="17"
-//             height="10"
-//             viewBox="0 0 17 10"
-//             xmlns="http://www.w3.org/2000/svg"
-//           >
-//             <path
-//               d="M7.28687 8.43257L7.28679 8.43265L7.29496 8.43985C7.62576 8.73124 8.02464 8.86001 8.41472 8.86001C8.83092 8.86001 9.22376 8.69083 9.53447 8.41713L9.53454 8.41721L9.54184 8.41052L15.7631 2.70784L15.7691 2.70231L15.7749 2.69659C16.0981 2.38028 16.1985 1.80579 15.7981 1.41393C15.4803 1.1028 14.9167 1.00854 14.5249 1.38489L8.41472 7.00806L2.29995 1.38063L2.29151 1.37286L2.28271 1.36548C1.93092 1.07036 1.38469 1.06804 1.03129 1.41393L1.01755 1.42738L1.00488 1.44184C0.69687 1.79355 0.695778 2.34549 1.0545 2.69659L1.05999 2.70196L1.06565 2.70717L7.28687 8.43257Z"
-//               fill=""
-//               stroke=""
-//             />
-//           </svg>
-//         </div>
-//       </button>
-
-//       <div
-//         className={`duration-200 ease-in-out ${active ? "block" : "hidden"}`}
-//       >
-//         <p className="py-3 text-base text-body-color dark:text-dark-6">
-//           {text}
-//         </p>
-//       </div>
-//     </div>
-//   );
-// };

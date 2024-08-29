@@ -2,7 +2,7 @@ import React from "react";
 
 const PageTitle = ({ title, text, slogan, image = "" }) => {
   return (
-    <div className="relative overflow-hidden bg-white dark:bg-dark">
+    <div className="relative overflow-hidden bg-white ">
       <div className="relative z-10 pb-20 pt-[150px] lg:pb-[120px] lg:pt-[210px]">
         <img
           src={image.length > 0 ? image : "/images/titlebg.jpeg"}
@@ -12,14 +12,14 @@ const PageTitle = ({ title, text, slogan, image = "" }) => {
         <div className="container mx-auto">
           <div className="flex flex-wrap -mx-4">
             <div className="w-full px-4">
-              <div className="max-w-[570px] bg-white dark:bg-dark-2 py-10 px-8 sm:p-12 md:p-[60px]">
+              <div className="max-w-[570px] bg-white  py-10 px-8 sm:p-12 md:p-[60px]">
                 <span className="block mb-3 text-base font-medium text-primary">
                   {slogan}
                 </span>
-                <h1 className="mb-3 text-3xl font-bold leading-[1.208] text-dark dark:text-white md:text-4xl">
+                <h1 className="mb-3 text-3xl font-bold leading-[1.208] text-dark  md:text-4xl">
                   {title}
                 </h1>
-                <p className="mb-8 text-base font-medium text-body-color dark:text-dark-6 lg:mb-10">
+                <p className="mb-8 text-base font-medium text-body-color  lg:mb-10">
                   {text}
                 </p>
                 <div className="flex flex-wrap gap-3">
@@ -31,7 +31,7 @@ const PageTitle = ({ title, text, slogan, image = "" }) => {
                   </a>
                   <a
                     href="#"
-                    className="inline-flex items-center px-6 py-3 text-base font-medium bg-white dark:bg-dark-2 shadow-1 dark:shadow-none text-dark dark:text-white hover:text-primary dark:hover:text-primary"
+                    className="inline-flex items-center px-6 py-3 text-base font-medium bg-white  text-dark  hover:text-primary "
                   >
                     Explore Services
                     <span className="ml-2">

@@ -4,7 +4,7 @@ import React from "react";
 const Footer = () => {
   return (
     <>
-      <footer className="relative z-10 bg-white pb-10 pt-20 dark:bg-dark lg:pb-20 lg:pt-[120px]">
+      <footer className="relative z-10 bg-white pb-10 pt-20 lg:pb-20 lg:pt-[120px]">
         <div className="container">
           <div className="-mx-4 flex flex-wrap">
             <div className="w-full px-4 sm:w-2/3 lg:w-3/12">
@@ -13,19 +13,19 @@ const Footer = () => {
                   <img
                     src="/images/logo.png"
                     alt="logo"
-                    className="max-w-full dark:hidden"
+                    className="max-w-full"
                   />
                   <img
                     src="/images/logo.png"
                     alt="logo"
-                    className="max-w-full hidden dark:block"
+                    className="max-w-full hidden"
                   />
                 </a>
-                <p className="mb-7 text-base text-body-color dark:text-dark-6">
+                <p className="mb-7 text-base text-body-color ">
                   We offer a comprehensive range of services designed to meet
                   all your automotive needs.
                 </p>
-                <p className="flex items-center text-sm font-medium text-dark dark:text-white">
+                <p className="flex items-center text-sm font-medium text-dark">
                   <span className="mr-3 text-primary">
                     <svg
                       width="20"
@@ -81,13 +81,13 @@ const Footer = () => {
 
             <div className="w-full px-4 sm:w-1/2 lg:w-3/12">
               <div className="mb-10 w-full">
-                <h4 className="mb-9 text-lg font-semibold text-dark dark:text-white">
+                <h4 className="mb-9 text-lg font-semibold text-dark">
                   Follow Us On
                 </h4>
                 <div className="mb-6 flex items-center">
                   <Link
                     href="#"
-                    className="mr-3 flex h-8 w-8 items-center justify-center rounded-full border border-stroke text-dark hover:border-primary hover:bg-primary hover:text-white dark:border-dark-3 dark:text-white dark:hover:border-primary sm:mr-4 lg:mr-3 xl:mr-4"
+                    className="mr-3 flex h-8 w-8 items-center justify-center rounded-full border border-stroke text-dark hover:border-primary hover:bg-primary hover:text-white sm:mr-4 lg:mr-3 xl:mr-4"
                   >
                     <svg
                       width="8"
@@ -100,7 +100,7 @@ const Footer = () => {
                   </Link>
                   <Link
                     href="#"
-                    className="mr-3 flex h-8 w-8 items-center justify-center rounded-full border border-stroke text-dark hover:border-primary hover:bg-primary hover:text-white dark:border-dark-3 dark:text-white dark:hover:border-primary sm:mr-4 lg:mr-3 xl:mr-4"
+                    className="mr-3 flex h-8 w-8 items-center justify-center rounded-full border border-stroke text-dark hover:border-primary hover:bg-primary hover:text-white sm:mr-4 lg:mr-3 xl:mr-4"
                   >
                     <svg
                       width="16"
@@ -113,7 +113,7 @@ const Footer = () => {
                   </Link>
                   <Link
                     href="#"
-                    className="mr-3 flex h-8 w-8 items-center justify-center rounded-full border border-stroke text-dark hover:border-primary hover:bg-primary hover:text-white dark:border-dark-3 dark:text-white dark:hover:border-primary sm:mr-4 lg:mr-3 xl:mr-4"
+                    className="mr-3 flex h-8 w-8 items-center justify-center rounded-full border border-stroke text-dark hover:border-primary hover:bg-primary hover:text-white  sm:mr-4 lg:mr-3 xl:mr-4"
                   >
                     <svg
                       width="16"
@@ -126,7 +126,7 @@ const Footer = () => {
                   </Link>
                   <Link
                     href="#"
-                    className="mr-3 flex h-8 w-8 items-center justify-center rounded-full border border-stroke text-dark hover:border-primary hover:bg-primary hover:text-white dark:border-dark-3 dark:text-white dark:hover:border-primary sm:mr-4 lg:mr-3 xl:mr-4"
+                    className="mr-3 flex h-8 w-8 items-center justify-center rounded-full border border-stroke text-dark hover:border-primary hover:bg-primary hover:text-white sm:mr-4 lg:mr-3 xl:mr-4"
                   >
                     <svg
                       width="14"
@@ -138,7 +138,7 @@ const Footer = () => {
                     </svg>
                   </Link>
                 </div>
-                <p className="text-base text-body-color dark:text-dark-6">
+                <p className="text-base text-body-color ">
                   &copy; 2024 Radiant Auto
                 </p>
               </div>
@@ -213,9 +213,7 @@ const LinkGroup = ({ children, header }) => {
     <>
       <div className="w-full px-4 sm:w-1/2 lg:w-2/12">
         <div className="mb-10 w-full">
-          <h4 className="mb-9 text-lg font-semibold text-dark dark:text-white">
-            {header}
-          </h4>
+          <h4 className="mb-9 text-lg font-semibold text-dark">{header}</h4>
           <ul className="space-y-3">{children}</ul>
         </div>
       </div>
@@ -228,7 +226,7 @@ const NavLink = ({ link, label }) => {
     <li>
       <Link
         href={link}
-        className="inline-block text-base leading-loose text-body-color hover:text-primary dark:text-dark-6"
+        className="inline-block text-base leading-loose text-body-color hover:text-primary "
       >
         {label}
       </Link>

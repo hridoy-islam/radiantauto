@@ -18,7 +18,7 @@ const Tab = ({ tabs }) => {
                       className={`cursor-pointer rounded-md px-4 py-3 text-sm font-medium md:text-base lg:px-6 ${
                         openTab === tab.tabCategory
                           ? "bg-primary text-white border border-primary"
-                          : "text-body-color border-gray-100 border hover:bg-primary hover:text-white dark:text-dark-6 dark:hover:text-white"
+                          : "text-body-color border-gray-100 border hover:bg-primary hover:text-white "
                       }`}
                     >
                       {tab.name}
@@ -47,7 +47,7 @@ export default Tab;
 const TabContent = ({ open, tabCategory, details }) => {
   return (
     <div
-      className={`p-6 text-base leading-relaxed text-body-color dark:text-dark-6 ${
+      className={`p-6 text-base leading-relaxed text-body-color  ${
         open === tabCategory ? "block" : "hidden"
       } `}
     >

@@ -33,7 +33,7 @@ const Blog = () => {
         }
         title={"Our Recent News"}
       />
-      <section className="bg-white pb-10 pt-20 dark:bg-dark lg:pb-20 lg:pt-[120px]">
+      <section className="bg-white pb-10 pt-20 lg:pb-20 lg:pt-[120px]">
         <div className="container">
           <div className="-mx-4 flex flex-wrap">
             {posts?.map((post) => (

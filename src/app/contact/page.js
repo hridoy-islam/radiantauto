@@ -41,7 +41,7 @@ const Contact = () => {
         }
         title={"Contact Us"}
       />
-      <section className="relative z-10 overflow-hidden bg-white py-20 dark:bg-dark lg:py-[120px]">
+      <section className="relative z-10 overflow-hidden bg-white py-20  lg:py-[120px]">
         <div className="container">
           <div className="-mx-4 flex flex-wrap lg:justify-between">
             <div className="w-full px-4 lg:w-1/2 xl:w-6/12">
@@ -49,10 +49,10 @@ const Contact = () => {
                 <span className="mb-4 block text-base font-semibold text-primary">
                   Contact Us
                 </span>
-                <h2 className="mb-6 text-[32px] font-bold uppercase text-dark dark:text-white sm:text-[40px] lg:text-[36px] xl:text-[40px]">
+                <h2 className="mb-6 text-[32px] font-bold uppercase text-dark  sm:text-[40px] lg:text-[36px] xl:text-[40px]">
                   GET IN TOUCH WITH US
                 </h2>
-                {/* <p className="mb-9 text-base leading-relaxed text-body-color dark:text-dark-6">
+                {/* <p className="mb-9 text-base leading-relaxed text-body-color">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                   do eius tempor incididunt ut labore e dolore magna aliqua. Ut
                   enim adiqua minim veniam quis nostrud exercitation ullamco
@@ -73,10 +73,10 @@ const Contact = () => {
                     </svg>
                   </div>
                   <div className="w-full">
-                    <h4 className="mb-1 text-xl font-bold text-dark dark:text-white">
+                    <h4 className="mb-1 text-xl font-bold text-dark ">
                       Our Location
                     </h4>
-                    <p className="text-base text-body-color dark:text-dark-6">
+                    <p className="text-base text-body-color">
                       213 33rd St WSaskatoon, SK S7L 0V2, Canada
                     </p>
                   </div>
@@ -113,12 +113,10 @@ const Contact = () => {
                     </svg>
                   </div>
                   <div className="w-full">
-                    <h4 className="mb-1 text-xl font-bold text-dark dark:text-white">
+                    <h4 className="mb-1 text-xl font-bold text-dark ">
                       Phone Number
                     </h4>
-                    <p className="text-base text-body-color dark:text-dark-6">
-                      +1 306 261 4800
-                    </p>
+                    <p className="text-base text-body-color">+1 306 261 4800</p>
                   </div>
                 </div>
 
@@ -138,10 +136,10 @@ const Contact = () => {
                     </svg>
                   </div>
                   <div className="w-full">
-                    <h4 className="mb-1 text-xl font-bold text-dark dark:text-white">
+                    <h4 className="mb-1 text-xl font-bold text-dark ">
                       Email Address
                     </h4>
-                    <p className="text-base text-body-color dark:text-dark-6">
+                    <p className="text-base text-body-color">
                       sales@radiant-auto.com
                     </p>
                   </div>
@@ -149,7 +147,7 @@ const Contact = () => {
               </div>
             </div>
             <div className="w-full px-4 lg:w-1/2 xl:w-5/12">
-              <div className="relative rounded-lg bg-white p-8 shadow-lg dark:bg-dark-2 sm:p-12">
+              <div className="relative rounded-lg bg-white p-8 shadow-lg sm:p-12">
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <input
                     type="text"

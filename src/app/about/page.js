@@ -40,7 +40,7 @@ export default function About() {
         title={`Life is stressful.Car shopping shouldn't be.`}
         text={`That’s why we created Radiant Auto. A completely digital car buying experience that puts you in the driver’s seat.`}
       />
-      <section className="pb-12 pt-20 dark:bg-dark lg:pb-[90px] lg:pt-[120px]">
+      <section className="pb-12 pt-20 lg:pb-[90px] lg:pt-[120px]">
         <div className="container mx-auto">
           <div className="mb-24">
             <div className="-mx-4 flex flex-wrap items-center justify-center">
@@ -49,10 +49,10 @@ export default function About() {
                   <span className="mb-4 block text-lg font-semibold text-primary md:text-2xl">
                     Best Website
                   </span>
-                  <h2 className="mb-5 text-2xl font-semibold !leading-tight text-dark dark:text-white xl:text-4xl">
+                  <h2 className="mb-5 text-2xl font-semibold !leading-tight text-dark  xl:text-4xl">
                     Why Radiant Auto
                   </h2>
-                  <p className="mb-9 text-base text-body-color dark:text-dark-6">
+                  <p className="mb-9 text-base text-body-color ">
                     We believe that car shopping should fit around your life,
                     and not the other way around. That means, unlike traditional
                     car buying experiences, you won’t have to deal with
@@ -100,10 +100,10 @@ export default function About() {
                   <span className="mb-4 block text-lg font-semibold text-primary md:text-2xl">
                     Best Website
                   </span>
-                  <h2 className="mb-5 text-2xl font-semibold !leading-tight text-dark dark:text-white xl:text-4xl">
+                  <h2 className="mb-5 text-2xl font-semibold !leading-tight text-dark ">
                     Our technology, working for you.
                   </h2>
-                  <p className="mb-9 text-base text-body-color dark:text-dark-6">
+                  <p className="mb-9 text-base text-body-color ">
                     With our plaform, you can value a trade-in, browse a wide
                     variety of vehicles, get financing, and have your car
                     delivered, all from home and at the touch of your

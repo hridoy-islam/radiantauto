@@ -3,7 +3,7 @@ import React from "react";
 const About = () => {
   return (
     <>
-      <section className="overflow-hidden pt-20 pb-12 lg:pt-[120px] lg:pb-[90px] bg-white dark:bg-dark">
+      <section className="overflow-hidden pt-20 pb-12 lg:pt-[120px] lg:pb-[90px] bg-white ">
         <div className="container mx-auto">
           <div className="flex flex-wrap items-center justify-between -mx-4">
             <div className="w-full px-4 lg:w-6/12">
@@ -612,10 +612,10 @@ const About = () => {
                 <span className="block mb-4 text-lg font-semibold text-primary">
                   Why Choose Us
                 </span>
-                <h2 className="mb-5 text-3xl font-bold text-dark dark:text-white sm:text-[40px]/[48px]">
+                <h2 className="mb-5 text-3xl font-bold text-dark sm:text-[40px]/[48px]">
                   Make your customers happy by giving services.
                 </h2>
-                <p className="mb-5 text-base text-body-color dark:text-dark-6 text-justify">
+                <p className="mb-5 text-base text-body-color text-justify">
                   We offer a comprehensive range of services including certified
                   maintenance, advanced diagnostics, and financing options. Our
                   extensive inventory features new, pre-owned, certified

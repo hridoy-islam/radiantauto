@@ -46,7 +46,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
 
     return range(1, totalPages);
   };
- 
+
   return (
     <div className="p-4 sm:p-6 xl:p-7.5 container mx-auto">
       <nav>
@@ -59,7 +59,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
                 currentPage === 1
                   ? "disabled bg-primary text-white"
                   : "bg-[#EDEFF1]"
-              }  cursor-pointer flex items-center justify-center rounded px-3 py-1.5 text-xs font-medium text-black hover:bg-primary hover:text-white dark:bg-graydark dark:text-white dark:hover:bg-primary dark:hover:text-white`}
+              }  cursor-pointer flex items-center justify-center rounded px-3 py-1.5 text-xs font-medium text-black hover:bg-primary hover:text-white`}
             >
               Previous
             </a>
@@ -108,7 +108,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
                 currentPage === totalPages
                   ? "disabled bg-primary text-white"
                   : "bg-[#EDEFF1]"
-              }  cursor-pointer  flex items-center justify-center rounded  px-3 py-1.5 text-xs font-medium text-black hover:bg-primary hover:text-white dark:bg-graydark dark:text-white dark:hover:bg-primary dark:hover:text-white`}
+              }  cursor-pointer  flex items-center justify-center rounded  px-3 py-1.5 text-xs font-medium text-black hover:bg-primary hover:text-white`}
             >
               Next
             </a>

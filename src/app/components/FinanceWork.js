@@ -2,7 +2,7 @@ import List from "./List";
 
 export default function FinanceWork() {
   return (
-    <section className="overflow-hidden bg-white dark:bg-dark pt-20 pb-12 lg:pt-[120px] lg:pb-[90px]">
+    <section className="overflow-hidden bg-white  pt-20 pb-12 lg:pt-[120px] lg:pb-[90px]">
       <div className="container mx-auto">
         <div className="flex flex-wrap items-center justify-between -mx-4">
           <div className="w-full px-4 lg:w-6/12">
@@ -195,11 +195,11 @@ export default function FinanceWork() {
               <span className="block mb-2 text-lg font-semibold uppercase text-primary">
                 Buy With Confidance
               </span>
-              <h2 className="mb-11 text-3xl font-bold leading-tight text-dark dark:text-white sm:text-4xl sm:leading-tight md:text-[40px]/[48px]">
+              <h2 className="mb-11 text-3xl font-bold leading-tight text-dark  sm:text-4xl sm:leading-tight md:text-[40px]/[48px]">
                 How does financing work?
               </h2>
 
-              <p className="text-base text-body-color dark:text-dark-6 mb-9">
+              <p className="text-base text-body-color mb-9">
                 Financing your vehicle with Radiant Auto is straightforward,
                 secure, and pressure-free. Our online application and approval
                 process ensures transparency, and our dedicated Concierge team

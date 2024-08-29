@@ -27,7 +27,7 @@ body {
 }
 
 .input {
-  @apply w-full mb-6 resize-none rounded border border-stroke px-[14px] py-3 text-base text-body-color outline-none focus:border-primary dark:border-dark-3 dark:bg-dark dark:text-dark-6;
+  @apply w-full mb-6 resize-none rounded border border-stroke px-[14px] py-3 text-base text-body-color outline-none focus:border-primary;
 }
 .button {
   @apply bg-primary border-primary border rounded-md inline-flex items-center justify-center py-3 px-7 text-center text-base font-medium text-white;

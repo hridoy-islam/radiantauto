@@ -3,15 +3,15 @@
 const Hero = () => {
   return (
     <>
-      <div className="relative bg-white pb-[80px] pt-[80px] dark:bg-dark lg:pt-[80px]">
+      <div className="relative bg-white pb-[80px] pt-[80px] lg:pt-[80px]">
         <div className="container">
           <div className="-mx-4 flex flex-wrap items-center">
             <div className="w-full px-4 lg:w-5/12">
               <div className="hero-content">
-                <h1 className="mb-5 text-4xl font-bold !leading-[1.208] text-dark dark:text-white sm:text-[42px] lg:text-[40px] xl:text-5xl">
+                <h1 className="mb-5 text-4xl font-bold !leading-[1.208] text-dark sm:text-[42px] lg:text-[40px] xl:text-5xl">
                   Drive Happiness Home. Buy, Trade, or Sell you car
                 </h1>
-                {/* <p className="mb-8 max-w-[480px] text-base text-body-color dark:text-dark-6">
+                {/* <p className="mb-8 max-w-[480px] text-base text-body-color">
                   With TailGrids, business and students thrive together.
                   Business can perfectly match their staffing to changing demand
                   throughout the dayed.
@@ -24,7 +24,7 @@ const Hero = () => {
                   </li>
                 </ul>
                 {/* <div className="clients pt-16">
-                  <h6 className="mb-6 flex items-center text-xs font-normal text-body-color dark:text-dark-6">
+                  <h6 className="mb-6 flex items-center text-xs font-normal text-body-color">
                     Some Of Our Clients
                     <span className="ml-3 inline-block h-px w-8 bg-body-color"></span>
                   </h6>
@@ -126,12 +126,12 @@ const Navbar = () => {
               <img
                 src="https://cdn.tailgrids.com/2.0/image/assets/images/logo/logo.svg"
                 alt="logo"
-                className="w-full dark:hidden"
+                className="w-full"
               />
               <img
                 src="https://cdn.tailgrids.com/2.0/image/assets/images/logo/logo-white.svg"
                 alt="logo"
-                className="w-full hidden dark:block"
+                className="w-full hidden"
               />
             </a>
           </div>
@@ -144,13 +144,13 @@ const Navbar = () => {
                   open && "navbarTogglerActive"
                 } absolute right-4 top-1/2 block -translate-y-1/2 rounded-lg px-3 py-[6px] ring-primary focus:ring-2 lg:hidden`}
               >
-                <span className="relative my-[6px] block h-[2px] w-[30px] bg-body-color dark:bg-white"></span>
-                <span className="relative my-[6px] block h-[2px] w-[30px] bg-body-color dark:bg-white"></span>
-                <span className="relative my-[6px] block h-[2px] w-[30px] bg-body-color dark:bg-white"></span>
+                <span className="relative my-[6px] block h-[2px] w-[30px] bg-body-color"></span>
+                <span className="relative my-[6px] block h-[2px] w-[30px] bg-body-color"></span>
+                <span className="relative my-[6px] block h-[2px] w-[30px] bg-body-color"></span>
               </button>
               <nav
                 id="navbarCollapse"
-                className={`absolute right-4 top-full w-full max-w-[250px] rounded-lg bg-white px-6 py-5 shadow dark:bg-dark-2 lg:static lg:block lg:w-full lg:max-w-full lg:bg-transparent lg:shadow-none lg:dark:bg-transparent ${
+                className={`absolute right-4 top-full w-full max-w-[250px] rounded-lg bg-white px-6 py-5 shadow  lg:static lg:block lg:w-full lg:max-w-full lg:bg-transparent lg:shadow-none ${
                   !open && "hidden"
                 } `}
               >
@@ -165,7 +165,7 @@ const Navbar = () => {
             <div className="hidden justify-end pr-16 sm:flex lg:pr-0">
               <a
                 href="/#"
-                className="px-7 py-3 text-base font-medium text-dark hover:text-primary dark:text-white"
+                className="px-7 py-3 text-base font-medium text-dark hover:text-primary "
               >
                 Sign in
               </a>
@@ -190,7 +190,7 @@ const ListItem = ({ children, NavLink }) => {
       <li>
         <a
           href={NavLink}
-          className="flex py-2 text-base font-medium text-dark hover:text-primary dark:text-white lg:ml-10 lg:inline-flex"
+          className="flex py-2 text-base font-medium text-dark hover:text-primary  lg:ml-10 lg:inline-flex"
         >
           {children}
         </a>

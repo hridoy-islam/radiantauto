@@ -24,14 +24,12 @@ const BlogCard = ({ image, date, CardTitle, CardDescription, slug }) => {
             <h3>
               <Link
                 href={`/blog/${slug}`}
-                className="mb-4 inline-block text-xl font-semibold text-dark hover:text-primary dark:text-white sm:text-2xl lg:text-xl xl:text-2xl"
+                className="mb-4 inline-block text-xl font-semibold text-dark hover:text-primary  sm:text-2xl lg:text-xl xl:text-2xl"
               >
                 {CardTitle}
               </Link>
             </h3>
-            <p className="text-base text-body-color dark:text-dark-6">
-              {slicedContent}
-            </p>
+            <p className="text-base text-body-color ">{slicedContent}</p>
           </div>
         </div>
       </div>

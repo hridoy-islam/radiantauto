@@ -19,16 +19,12 @@ export default function Header() {
 
   return (
     <header>
-      <div className="bg-white dark:bg-dark z-50">
+      <div className="bg-white z-50">
         <div className="container mx-auto">
           <div className="relative -mx-4 flex items-center justify-between">
             <div className="w-60 max-w-full px-4">
               <Link href="/" className="block w-full py-5">
-                <img
-                  src="/images/logo.png"
-                  alt="logo"
-                  className="dark:hidden"
-                />
+                <img src="/images/logo.png" alt="logo" />
               </Link>
             </div>
             <div className="flex items-end justify-between px-4">
@@ -40,37 +36,37 @@ export default function Header() {
                     open && "navbarTogglerActive"
                   } absolute right-4 top-1/2 block -translate-y-1/2 rounded-lg px-3 py-[6px] ring-primary focus:ring-2 lg:hidden`}
                 >
-                  <span className="relative my-[6px] block h-[2px] w-[30px] bg-body-color dark:bg-white"></span>
-                  <span className="relative my-[6px] block h-[2px] w-[30px] bg-body-color dark:bg-white"></span>
-                  <span className="relative my-[6px] block h-[2px] w-[30px] bg-body-color dark:bg-white"></span>
+                  <span className="relative my-[6px] block h-[2px] w-[30px] bg-body-color"></span>
+                  <span className="relative my-[6px] block h-[2px] w-[30px] bg-body-color"></span>
+                  <span className="relative my-[6px] block h-[2px] w-[30px] bg-body-color"></span>
                 </button>
                 <nav
                   id="navbarCollapse"
-                  className={`absolute z-50 right-4 top-full w-full max-w-[300px] rounded-lg bg-white px-6 py-5 shadow lg:static lg:block lg:w-full lg:max-w-full lg:shadow-none dark:bg-dark-2 lg:dark:bg-transparent ${
+                  className={`absolute z-50 right-4 top-full w-full max-w-[300px] rounded-lg bg-white px-6 py-5 shadow lg:static lg:block lg:w-full lg:max-w-full lg:shadow-none ${
                     !open && "hidden"
                   }`}
                 >
                   <ul className="block lg:flex">
-                    <li className="group relative px-4 lg:px-0.5 lg:py-5 xl:px-2 text-[#0F172A] dark:text-dark-text">
+                    <li className="group relative px-4 lg:px-0.5 lg:py-5 xl:px-2 text-[#0F172A]">
                       <Link
-                        className="flex items-center rounded-lg px-2.5 py-1.5 text-sm font-medium duration-300 group-hover:bg-primary/5 group-hover:text-primary lg:px-1.5 xl:px-2.5 dark:group-hover:bg-dark-2 dark:group-hover:text-white"
+                        className="flex items-center rounded-lg px-2.5 py-1.5 text-sm font-medium duration-300 group-hover:bg-primary/5 group-hover:text-primary lg:px-1.5 xl:px-2.5"
                         href="/"
                       >
                         Home
                       </Link>
                     </li>
-                    <li className="group relative px-4 lg:px-0.5 lg:py-5 xl:px-2 text-[#0F172A] dark:text-dark-text">
+                    <li className="group relative px-4 lg:px-0.5 lg:py-5 xl:px-2 text-[#0F172A]">
                       <Link
-                        className="flex items-center rounded-lg px-2.5 py-1.5 text-sm font-medium duration-300 group-hover:bg-primary/5 group-hover:text-primary lg:px-1.5 xl:px-2.5 dark:group-hover:bg-dark-2 dark:group-hover:text-white"
+                        className="flex items-center rounded-lg px-2.5 py-1.5 text-sm font-medium duration-300 group-hover:bg-primary/5 group-hover:text-primary lg:px-1.5 xl:px-2.5"
                         href="/search"
                       >
                         Search Cars
                       </Link>
                     </li>
-                    <li className="group relative px-4 lg:px-0.5 lg:py-5 xl:px-2 text-[#0F172A] dark:text-dark-text">
+                    <li className="group relative px-4 lg:px-0.5 lg:py-5 xl:px-2 text-[#0F172A]">
                       <button
                         onClick={toggleSubmenu}
-                        className="flex w-full cursor-pointer items-center justify-between rounded-lg px-2.5 py-1.5 text-sm font-medium duration-300 group-hover:bg-primary/5 group-hover:text-primary hover:text-primary lg:px-1.5 xl:px-2.5 dark:group-hover:bg-dark-2 dark:group-hover:text-white dark:hover:text-white"
+                        className="flex w-full cursor-pointer items-center justify-between rounded-lg px-2.5 py-1.5 text-sm font-medium duration-300 group-hover:bg-primary/5 group-hover:text-primary hover:text-primary lg:px-1.5 xl:px-2.5 "
                       >
                         Sell or Trade
                         <span
@@ -91,11 +87,11 @@ export default function Header() {
                       <div
                         className={`z-50 ${
                           isSubmenuOpen ? "block" : "hidden"
-                        } lg:block dropdown-menu left-0 top-full rounded-bl-[10px] rounded-br-[10px] border border-transparent p-3 lg:invisible lg:absolute lg:top-[96%] lg:w-[214px] lg:space-y-1 lg:rounded-[10px] lg:bg-white lg:opacity-0 lg:shadow-3 lg:duration-300 lg:group-hover:visible lg:group-hover:top-full lg:group-hover:opacity-100 dark:lg:bg-dark-2 dark:lg:shadow-[0px_10px_20px_0px_rgba(0,0,0,0.07)]`}
+                        } lg:block dropdown-menu left-0 top-full rounded-bl-[10px] rounded-br-[10px] border border-transparent p-3 lg:invisible lg:absolute lg:top-[96%] lg:w-[214px] lg:space-y-1 lg:rounded-[10px] lg:bg-white lg:opacity-0 lg:shadow-3 lg:duration-300 lg:group-hover:visible lg:group-hover:top-full lg:group-hover:opacity-100`}
                       >
                         <Link
                           rel="nofollow"
-                          className="group flex items-center justify-between rounded-lg px-3 py-2.5 text-dark-2 duration-300 hover:bg-primary/5 hover:text-primary dark:text-body-color-2 dark:hover:bg-white/5 dark:hover:text-white"
+                          className="group flex items-center justify-between rounded-lg px-3 py-2.5 text-dark-2 duration-300 hover:bg-primary/5 hover:text-primary"
                           href="/trade-in"
                         >
                           <span className="flex">
@@ -121,7 +117,7 @@ export default function Header() {
                           </span>
                         </Link>
                         <Link
-                          className="group flex items-center justify-between rounded-lg px-3 py-2.5 text-dark-2 duration-300 hover:bg-primary/5 hover:text-primary dark:text-body-color-2 dark:hover:bg-white/5 dark:hover:text-white"
+                          className="group flex items-center justify-between rounded-lg px-3 py-2.5 text-dark-2 duration-300 hover:bg-primary/5 hover:text-primary"
                           href="/sell-your-car"
                         >
                           <span className="flex">
@@ -148,10 +144,10 @@ export default function Header() {
                         </Link>
                       </div>
                     </li>
-                    <li className="group relative px-4 lg:px-0.5 lg:py-5 xl:px-2 text-[#0F172A] dark:text-dark-text">
+                    <li className="group relative px-4 lg:px-0.5 lg:py-5 xl:px-2 text-[#0F172A]">
                       <button
                         onClick={toggleFinanceMenu}
-                        className="flex w-full cursor-pointer items-center justify-between rounded-lg px-2.5 py-1.5 text-sm font-medium duration-300 group-hover:bg-primary/5 group-hover:text-primary hover:text-primary lg:px-1.5 xl:px-2.5 dark:group-hover:bg-dark-2 dark:group-hover:text-white dark:hover:text-white"
+                        className="flex w-full cursor-pointer items-center justify-between rounded-lg px-2.5 py-1.5 text-sm font-medium duration-300 group-hover:bg-primary/5 group-hover:text-primary hover:text-primary lg:px-1.5 xl:px-2.5"
                       >
                         Finance
                         <span
@@ -172,11 +168,11 @@ export default function Header() {
                       <div
                         className={`z-50 ${
                           isFinanceOpen ? "block" : "hidden"
-                        } lg:block dropdown-menu left-0 top-full rounded-bl-[10px] rounded-br-[10px] border border-transparent p-3 lg:invisible lg:absolute lg:top-[96%] lg:w-[240px] lg:space-y-1 lg:rounded-[10px] lg:bg-white lg:opacity-0 lg:shadow-3 lg:duration-300 lg:group-hover:visible lg:group-hover:top-full lg:group-hover:opacity-100 dark:lg:bg-dark-2 dark:lg:shadow-[0px_10px_20px_0px_rgba(0,0,0,0.07)]`}
+                        } lg:block dropdown-menu left-0 top-full rounded-bl-[10px] rounded-br-[10px] border border-transparent p-3 lg:invisible lg:absolute lg:top-[96%] lg:w-[240px] lg:space-y-1 lg:rounded-[10px] lg:bg-white lg:opacity-0 lg:shadow-3 lg:duration-300 lg:group-hover:visible lg:group-hover:top-full lg:group-hover:opacity-100 `}
                       >
                         <Link
                           rel="nofollow"
-                          className="group flex items-center justify-between rounded-lg px-3 py-2.5 text-dark-2 duration-300 hover:bg-primary/5 hover:text-primary dark:text-body-color-2 dark:hover:bg-white/5 dark:hover:text-white"
+                          className="group flex items-center justify-between rounded-lg px-3 py-2.5 text-dark-2 duration-300 hover:bg-primary/5 hover:text-primary "
                           href="/finance"
                         >
                           <span className="flex">
@@ -202,7 +198,7 @@ export default function Header() {
                           </span>
                         </Link>
                         <Link
-                          className="group flex items-center justify-between rounded-lg px-3 py-2.5 text-dark-2 duration-300 hover:bg-primary/5 hover:text-primary dark:text-body-color-2 dark:hover:bg-white/5 dark:hover:text-white"
+                          className="group flex items-center justify-between rounded-lg px-3 py-2.5 text-dark-2 duration-300 hover:bg-primary/5 hover:text-primary"
                           href="/payment-calculator"
                         >
                           <span className="flex">
@@ -229,10 +225,10 @@ export default function Header() {
                         </Link>
                       </div>
                     </li>
-                    {/* <li className="group relative px-4 lg:px-0.5 lg:py-5 xl:px-2 text-[#0F172A] dark:text-dark-text">
+                    {/* <li className="group relative px-4 lg:px-0.5 lg:py-5 xl:px-2 text-[#0F172A]">
                       <button
                         onClick={toggleAboutOpen}
-                        className="flex w-full cursor-pointer items-center justify-between rounded-lg px-2.5 py-1.5 text-sm font-medium duration-300 group-hover:bg-primary/5 group-hover:text-primary hover:text-primary lg:px-1.5 xl:px-2.5 dark:group-hover:bg-dark-2 dark:group-hover:text-white dark:hover:text-white"
+                        className="flex w-full cursor-pointer items-center justify-between rounded-lg px-2.5 py-1.5 text-sm font-medium duration-300 group-hover:bg-primary/5 group-hover:text-primary hover:text-primary lg:px-1.5 xl:px-2.5 "
                       >
                         About Radiant Auto
                         <span
@@ -253,11 +249,11 @@ export default function Header() {
                       <div
                         className={`z-50 ${
                           isAboutOpen ? "block" : "hidden"
-                        } lg:block dropdown-menu left-0 top-full rounded-bl-[10px] rounded-br-[10px] border border-transparent p-3 lg:invisible lg:absolute lg:top-[96%] lg:w-[214px] lg:space-y-1 lg:rounded-[10px] lg:bg-white lg:opacity-0 lg:shadow-3 lg:duration-300 lg:group-hover:visible lg:group-hover:top-full lg:group-hover:opacity-100 dark:lg:bg-dark-2 dark:lg:shadow-[0px_10px_20px_0px_rgba(0,0,0,0.07)]`}
+                        } lg:block dropdown-menu left-0 top-full rounded-bl-[10px] rounded-br-[10px] border border-transparent p-3 lg:invisible lg:absolute lg:top-[96%] lg:w-[214px] lg:space-y-1 lg:rounded-[10px] lg:bg-white lg:opacity-0 lg:shadow-3 lg:duration-300 lg:group-hover:visible lg:group-hover:top-full lg:group-hover:opacity-100`}
                       >
                         <Link
                           rel="nofollow"
-                          className="group flex items-center justify-between rounded-lg px-3 py-2.5 text-dark-2 duration-300 hover:bg-primary/5 hover:text-primary dark:text-body-color-2 dark:hover:bg-white/5 dark:hover:text-white"
+                          className="group flex items-center justify-between rounded-lg px-3 py-2.5 text-dark-2 duration-300 hover:bg-primary/5 hover:text-primary"
                           href="/about"
                         >
                           <span className="flex">
@@ -283,7 +279,7 @@ export default function Header() {
                           </span>
                         </Link>
                         <Link
-                          className="group flex items-center justify-between rounded-lg px-3 py-2.5 text-dark-2 duration-300 hover:bg-primary/5 hover:text-primary dark:text-body-color-2 dark:hover:bg-white/5 dark:hover:text-white"
+                          className="group flex items-center justify-between rounded-lg px-3 py-2.5 text-dark-2 duration-300 hover:bg-primary/5 hover:text-primary"
                           href="/guarantee"
                         >
                           <span className="flex">
@@ -309,7 +305,7 @@ export default function Header() {
                           </span>
                         </Link>
                         <Link
-                          className="group flex items-center justify-between rounded-lg px-3 py-2.5 text-dark-2 duration-300 hover:bg-primary/5 hover:text-primary dark:text-body-color-2 dark:hover:bg-white/5 dark:hover:text-white"
+                          className="group flex items-center justify-between rounded-lg px-3 py-2.5 text-dark-2 duration-300 hover:bg-primary/5 hover:text-primar"
                           href="/protection-plan"
                         >
                           <span className="flex">
@@ -335,7 +331,7 @@ export default function Header() {
                           </span>
                         </Link>
                         <Link
-                          className="group flex items-center justify-between rounded-lg px-3 py-2.5 text-dark-2 duration-300 hover:bg-primary/5 hover:text-primary dark:text-body-color-2 dark:hover:bg-white/5 dark:hover:text-white"
+                          className="group flex items-center justify-between rounded-lg px-3 py-2.5 text-dark-2 duration-300 hover:bg-primary/5 hover:text-primar"
                           href="/reviews"
                         >
                           <span className="flex">
@@ -361,7 +357,7 @@ export default function Header() {
                           </span>
                         </Link>
                         <Link
-                          className="group flex items-center justify-between rounded-lg px-3 py-2.5 text-dark-2 duration-300 hover:bg-primary/5 hover:text-primary dark:text-body-color-2 dark:hover:bg-white/5 dark:hover:text-white"
+                          className="group flex items-center justify-between rounded-lg px-3 py-2.5 text-dark-2 duration-300 hover:bg-primary/5 hover:text-primar"
                           href="/faq"
                         >
                           <span className="flex">
@@ -388,17 +384,17 @@ export default function Header() {
                         </Link>
                       </div>
                     </li> */}
-                    {/* <li className="group relative px-4 lg:px-0.5 lg:py-5 xl:px-2 text-[#0F172A] dark:text-dark-text">
+                    {/* <li className="group relative px-4 lg:px-0.5 lg:py-5 xl:px-2 text-[#0F172A]">
                       <Link
-                        className="flex items-center rounded-lg px-2.5 py-1.5 text-sm font-medium duration-300 group-hover:bg-primary/5 group-hover:text-primary lg:px-1.5 xl:px-2.5 dark:group-hover:bg-dark-2 dark:group-hover:text-white"
+                        className="flex items-center rounded-lg px-2.5 py-1.5 text-sm font-medium duration-300 group-hover:bg-primary/5 group-hover:text-primary lg:px-1.5 xl:px-2.5"
                         href="/blog"
                       >
                         Blog
                       </Link>
                     </li> */}
-                    <li className="group relative px-4 lg:px-0.5 lg:py-5 xl:px-2 text-[#0F172A] dark:text-dark-text">
+                    <li className="group relative px-4 lg:px-0.5 lg:py-5 xl:px-2 text-[#0F172A]">
                       <Link
-                        className="flex items-center rounded-lg px-2.5 py-1.5 text-sm font-medium duration-300 group-hover:bg-primary/5 group-hover:text-primary lg:px-1.5 xl:px-2.5 dark:group-hover:bg-dark-2 dark:group-hover:text-white"
+                        className="flex items-center rounded-lg px-2.5 py-1.5 text-sm font-medium duration-300 group-hover:bg-primary/5 group-hover:text-primary lg:px-1.5 xl:px-2.5"
                         href="/contact"
                       >
                         Contact

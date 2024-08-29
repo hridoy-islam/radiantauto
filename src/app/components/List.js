@@ -1,6 +1,6 @@
 const List = ({ children }) => {
   return (
-    <p className="flex text-base text-body-color dark:text-dark-6">
+    <p className="flex text-base text-body-color">
       <span className="mr-2.5 mt-0.5 text-primary">
         <svg
           width={20}
