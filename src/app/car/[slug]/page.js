@@ -45,10 +45,8 @@ export default async function Page({ params }) {
         </h1>
       </div>
       <div className="container">
-        <div className="flex lg:flex-row md:flex-col sm:flex-col xs:flex-col gap-8">
+        <div className="flex flex-col lg:flex-row md:flex-col sm:flex-col xs:flex-col gap-8">
           <div className="lg:w-9/12 sm:w-full xs:w-full">
-            {/* <CarGallery images={car?.image_gallery} /> */}
-
             <ProductSlider gallery={car?.image_gallery} />
             <div className="bg-white shadow-xl my-4 p-4">
               <h2 className="my-2 text-xl font-semibold text-dark">Overview</h2>
