@@ -1,5 +1,5 @@
-import axiosInstance from "@/api/axiosInstance";
-import { sliceWords } from "@/api/helper";
+import axiosInstance from "../../api/axiosInstance";
+import { sliceWords } from "../../api/helper";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 

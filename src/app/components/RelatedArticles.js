@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import BlogCard from "./BlogCard";
-import axiosInstance from "@/api/axiosInstance";
+import axiosInstance from "../../api/axiosInstance";
 
 export default function RelatedArticles() {
   const [relatedArticles, setRelatedArticles] = useState();

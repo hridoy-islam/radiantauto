@@ -12,8 +12,8 @@ export default function Team() {
                 Our Awesome Team
               </h2>
               <p className="text-base text-body-color dark:text-dark-6">
-                There are many variations of passages of Lorem Ipsum available
-                but the majority have suffered alteration in some form.
+                Meet the dedicated professionals behind Radiant Auto, committed
+                to helping you find the perfect vehicle with expert guidance.
               </p>
             </div>
           </div>
@@ -24,8 +24,8 @@ export default function Team() {
             <div className="mx-auto mb-10 w-full max-w-[370px]">
               <div className="relative overflow-hidden rounded-lg">
                 <img
-                  src="https://demo.tailgrids.com/templates/business/build/src/assets/images/team/team-01/image-01.jpg"
-                  alt="image"
+                  src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
+                  alt="Coriss Ambady"
                   className="w-full"
                 />
                 <div className="absolute left-0 w-full text-center bottom-5">
@@ -34,7 +34,7 @@ export default function Team() {
                       Coriss Ambady
                     </h3>
                     <p className="text-xs text-body-color dark:text-dark-6">
-                      Web Developer
+                      Sales Consultant
                     </p>
                     <div>
                       <span className="absolute bottom-0 left-0">
@@ -214,8 +214,8 @@ export default function Team() {
             <div className="mx-auto mb-10 w-full max-w-[370px]">
               <div className="relative overflow-hidden rounded-lg">
                 <img
-                  src="https://demo.tailgrids.com/templates/business/build/src/assets/images/team/team-01/image-02.jpg"
-                  alt="image"
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80"
+                  alt="Glorius Cristian"
                   className="w-full"
                 />
                 <div className="absolute left-0 w-full text-center bottom-5">
@@ -224,7 +224,7 @@ export default function Team() {
                       Glorius Cristian
                     </h3>
                     <p className="text-xs text-body-color dark:text-dark-6">
-                      App Developer
+                      Finance Manager
                     </p>
                     <div>
                       <span className="absolute bottom-0 left-0">
@@ -404,8 +404,8 @@ export default function Team() {
             <div className="mx-auto mb-10 w-full max-w-[370px]">
               <div className="relative overflow-hidden rounded-lg">
                 <img
-                  src="https://demo.tailgrids.com/templates/business/build/src/assets/images/team/team-01/image-03.jpg"
-                  alt="image"
+                  src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&q=80"
+                  alt="Jackie Sanders"
                   className="w-full"
                 />
                 <div className="absolute left-0 w-full text-center bottom-5">
@@ -414,7 +414,7 @@ export default function Team() {
                       Jackie Sanders
                     </h3>
                     <p className="text-xs text-body-color dark:text-dark-6">
-                      UI/UX Designer
+                      Customer Care
                     </p>
                     <div>
                       <span className="absolute bottom-0 left-0">
@@ -590,12 +590,12 @@ export default function Team() {
               </div>
             </div>
           </div>
-          <div className="w-full px-4 md:w-1/2 xl:w-1/4">
+          {/* <div className="w-full px-4 md:w-1/2 xl:w-1/4">
             <div className="mx-auto mb-10 w-full max-w-[370px]">
               <div className="relative overflow-hidden rounded-lg">
                 <img
-                  src="https://demo.tailgrids.com/templates/business/build/src/assets/images/team/team-01/image-04.jpg"
-                  alt="image"
+                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
+                  alt="Nikolas Brooten"
                   className="w-full"
                 />
                 <div className="absolute left-0 w-full text-center bottom-5">
@@ -779,7 +779,7 @@ export default function Team() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </section>

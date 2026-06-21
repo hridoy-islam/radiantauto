@@ -1,4 +1,4 @@
-import { sliceWords } from "@/api/helper";
+import { sliceWords } from "../../api/helper";
 import moment from "moment";
 import Link from "next/link";
 

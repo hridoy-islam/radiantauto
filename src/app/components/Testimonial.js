@@ -10,7 +10,7 @@ export default function Testimonial() {
                   Testimonials
                 </span>
                 <h2 className="text-dark dark:text-white mb-3 text-3xl leading-[1.2] font-bold sm:text-4xl md:text-[40px]">
-                  What our Clients Says
+                  What Our Clients Say
                 </h2>
                 <p className="text-base text-body-color dark:text-dark-6">
                   There are many variations of passages of Lorem Ipsum available
@@ -26,7 +26,7 @@ export default function Testimonial() {
                 <div className="flex items-center mb-10">
                   <div className="mr-5 h-20 w-full max-w-[80px] overflow-hidden rounded md:h-[60px] md:max-w-[60px] lg:h-20 lg:max-w-[80px]">
                     <img
-                      src="https://demo.tailgrids.com/templates/startup/build/src/assets/images/testimonials/testimonial-05/image-01.jpg"
+                      src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&q=80"
                       alt="image"
                       className="w-full"
                     />
@@ -44,7 +44,7 @@ export default function Testimonial() {
                 <p className="text-base text-body-color dark:text-dark-6">
                   “I believe in lifelong learning and Learn. is a great place to
                   learn from experts. I've learned a lot and recommend it to all
-                  my friends and familys.”
+                  my friends and family.”
                 </p>
 
                 <div>
@@ -81,7 +81,7 @@ export default function Testimonial() {
                 <div className="flex items-center mb-10">
                   <div className="mr-5 h-20 w-full max-w-[80px] overflow-hidden rounded md:h-[60px] md:max-w-[60px] lg:h-20 lg:max-w-[80px]">
                     <img
-                      src="src/assets/images/testimonials/testimonial-05/image-02.jpg"
+                      src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&q=80"
                       alt="image"
                       className="w-full"
                     />
@@ -99,7 +99,7 @@ export default function Testimonial() {
                 <p className="text-base text-body-color dark:text-dark-6">
                   “I believe in lifelong learning and Learn. is a great place to
                   learn from experts. I've learned a lot and recommend it to all
-                  my friends and familys.”
+                  my friends and family.”
                 </p>
 
                 <div>
@@ -136,7 +136,7 @@ export default function Testimonial() {
                 <div className="flex items-center mb-10">
                   <div className="mr-5 h-20 w-full max-w-[80px] overflow-hidden rounded md:h-[60px] md:max-w-[60px] lg:h-20 lg:max-w-[80px]">
                     <img
-                      src="src/assets/images/testimonials/testimonial-05/image-03.jpg"
+                      src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&q=80"
                       alt="image"
                       className="w-full"
                     />
@@ -154,7 +154,7 @@ export default function Testimonial() {
                 <p className="text-base text-body-color dark:text-dark-6">
                   “I believe in lifelong learning and Learn. is a great place to
                   learn from experts. I've learned a lot and recommend it to all
-                  my friends and familys.”
+                  my friends and family.”
                 </p>
 
                 <div>
@@ -191,7 +191,7 @@ export default function Testimonial() {
                 <div className="flex items-center mb-10">
                   <div className="mr-5 h-20 w-full max-w-[80px] overflow-hidden rounded md:h-[60px] md:max-w-[60px] lg:h-20 lg:max-w-[80px]">
                     <img
-                      src="src/assets/images/testimonials/testimonial-05/image-04.jpg"
+                      src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&q=80"
                       alt="image"
                       className="w-full"
                     />
@@ -209,7 +209,7 @@ export default function Testimonial() {
                 <p className="text-base text-body-color dark:text-dark-6">
                   “I believe in lifelong learning and Learn. is a great place to
                   learn from experts. I've learned a lot and recommend it to all
-                  my friends and familys.”
+                  my friends and family.”
                 </p>
 
                 <div>

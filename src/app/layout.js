@@ -1,8 +1,8 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import { Toaster } from "react-hot-toast";
+import { Providers } from "./providers"; 
+import { Toaster } from "../components/ui/toaster";
+import AdminRedirectGuard from "../components/shared/AdminRedirectGuard";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,10 +34,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Header />
-        {children}
-        <Footer />
-        <Toaster />
+       <Providers>
+         <AdminRedirectGuard>
+            <main className="flex-1">{children}</main>
+          </AdminRedirectGuard>
+          <Toaster />
+        </Providers>
       </body>
     </html>
   );
