@@ -25,6 +25,7 @@ import {
   Loader2,
   Star,
   Pencil,
+  Crown,
 } from "lucide-react";
 import { Button } from "../../../../../../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../../../../components/ui/card";
@@ -69,6 +70,7 @@ interface CarData {
   og_description?: string;
   og_image?: string;
   status?: string;
+  featureCar?: boolean;
 }
 
 export default function EditCarPage() {
@@ -132,6 +134,7 @@ export default function EditCarPage() {
     og_title: "",
     og_description: "",
     og_image: "",
+    featureCar: false,
   },
 });
   const watchName = watch("name");
@@ -181,6 +184,7 @@ export default function EditCarPage() {
             og_title: carData.og_title || "",
             og_description: carData.og_description || "",
             og_image: carData.og_image || "",
+            featureCar: carData.featureCar || false,
           });
 
           // Set array fields
@@ -694,6 +698,23 @@ export default function EditCarPage() {
                     {errors.overview.message}
                   </p>
                 )}
+              </div>
+
+              <div className="flex md:w-1/3 items-center gap-3 p-4 bg-amber-50/50 border border-amber-200 rounded-lg">
+                <Crown className="w-5 h-5 text-amber-600" />
+                <div className="flex-1">
+                  <label className="text-sm font-medium text-gray-700">
+                    Feature This Car
+                  </label>
+                  <p className="text-xs text-gray-500">
+                    Featured cars appear prominently on the homepage
+                  </p>
+                </div>
+                <input
+                  type="checkbox"
+                  className="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary"
+                  {...register("featureCar")}
+                />
               </div>
             </CardContent>
           </Card>

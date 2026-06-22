@@ -1,7 +1,7 @@
 export default function Testimonial() {
   return (
     <>
-      <section className="pt-20 pb-7 dark:bg-dark lg:pt-[120px] lg:pb-14">
+      <section className="pb-7 dark:bg-dark lg:pt-[120px] lg:pb-14">
         <div className="container mx-auto">
           <div className="flex flex-wrap justify-center -mx-4">
             <div className="w-full px-4">

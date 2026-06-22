@@ -73,7 +73,12 @@ export default function Search() {
       const result = res.data.data.result || res.data.data || [];
       const meta = res.data.data.meta || {};
 
-      setCars(result);
+      const sorted = [...result].sort((a, b) => {
+        if (a.featureCar && !b.featureCar) return -1;
+        if (!a.featureCar && b.featureCar) return 1;
+        return 0;
+      });
+      setCars(sorted);
       setTotalPages(meta.totalPage || 1);
       setTotalCars(meta.total || 0);
       setCurrentPage(page);
@@ -144,7 +149,7 @@ export default function Search() {
       <PageTitle
         slogan={"Find Your Dream Car"}
         title={"All Latest Cars Are For Sale"}
-        text={"Ready to hit the road? Call Now"}
+        text={"Ready to hit the road? Call us Now at +1 306 261 4800"}
       />
 
  

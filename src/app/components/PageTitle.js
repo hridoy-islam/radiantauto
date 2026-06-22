@@ -54,9 +54,9 @@ const PageTitle = ({ title, text, slogan, image = "" }) => {
   const words = title.split(" ");
 
   return (
-    <div ref={sectionRef} className="relative overflow-hidden bg-gray-900 min-h-[38vh] lg:min-h-[42vh] flex items-center">
+    <div ref={sectionRef} className="relative overflow-hidden bg-gray-900 min-h-[38vh] lg:min-h-[42vh]  mt-8 flex items-center">
       <img
-        src={image || "/images/titlebg.jpeg"}
+        src={image || "/images/h2.jpg"}
         alt=""
         className="gsap-title-bg absolute inset-0 h-full w-full object-cover"
       />
@@ -106,26 +106,7 @@ const PageTitle = ({ title, text, slogan, image = "" }) => {
                 {text}
               </p>
             )}
-            <div className="gsap-title-item mt-8 flex flex-wrap gap-3">
-              <Link
-                href="/search"
-                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-primary px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-primary/30 transition-all hover:shadow-xl hover:shadow-primary/40"
-              >
-                <span className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                <span className="relative flex items-center gap-2">
-                  Browse Inventory
-                  <svg className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                  </svg>
-                </span>
-              </Link>
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/5 backdrop-blur-sm px-7 py-3.5 text-sm font-semibold text-white transition-all hover:bg-white/10 hover:border-primary/50"
-              >
-                Contact Us
-              </Link>
-            </div>
+           
           </div>
 
           

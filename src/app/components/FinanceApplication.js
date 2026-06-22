@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect,useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   useForm,
   FormProvider,
@@ -8,8 +8,31 @@ import {
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Check,
+  Loader2,
+  User,
+  MapPin,
+  Briefcase,
+  History,
+  DollarSign,
+  PlusCircle,
+  CheckCircle2,
+} from "lucide-react";
 import axiosInstance from '../../lib/axios';
 import { useToast } from "../../components/ui/use-toast";
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
+import { Label } from "../../components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../components/ui/select";
 
 // Zod validation schemas for each step
 const stepOneSchema = z.object({
@@ -102,7 +125,7 @@ export default function FinanceApplication() {
   const [currentStep, setCurrentStep] = useState(1);
   const [showThankYou, setShowThankYou] = useState(false);
   const { toast } = useToast();
-const formTopRef = useRef(null);
+  const formTopRef = useRef(null);
   const methods = useForm({
     resolver: zodResolver(completeFormSchema),
     mode: "onChange",
@@ -121,11 +144,11 @@ const formTopRef = useRef(null);
     handleSubmit,
     reset,
     trigger,
-    formState: { errors, isSubmitting }, // Extracted isSubmitting here
+    formState: { errors, isSubmitting },
   } = methods;
 
   // Smooth scroll to top whenever the step changes
-useEffect(() => {
+  useEffect(() => {
     if (formTopRef.current) {
       formTopRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
@@ -166,23 +189,16 @@ useEffect(() => {
     try {
       const res = await axiosInstance.post("/finance-applicants", data);
       if (res.data.success) {
-        // toast({
-        //   title: "Success!",
-        //   description: "Your finance application has been submitted successfully!",
-        //   variant: "success",
-        // });
         if (formTopRef.current) {
-      formTopRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-        // Trigger 10 second countdown screen/disabled layout
+          formTopRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
         setShowThankYou(true);
         
         setTimeout(() => {
           setShowThankYou(false);
           reset();
           setCurrentStep(1);
-        }, 10000); // 10000ms = 10 seconds
-
+        }, 10000);
       } else {
         toast({
           title: "Error",
@@ -211,760 +227,580 @@ useEffect(() => {
     setCurrentStep((prev) => prev - 1);
   };
 
-return (
-    <div ref={formTopRef} className="container my-10 py-6 scroll-mt-24">
+  return (
+    <div ref={formTopRef} className="container mx-auto my-12 px-4 scroll-mt-24">
       <FormProvider {...methods}>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="lg:w-1/2 mx-auto rounded-lg bg-white shadow-lg p-10 min-h-[400px] flex flex-col justify-center"
+          className="max-w-2xl mx-auto"
         >
-          {showThankYou ? (
-            /* Thank You screen that entirely hides the form structure */
-            <div className="text-center py-10 space-y-4 animate-fadeIn">
-              <div className="text-6xl animate-bounce">🎉</div>
-              <h2 className="text-3xl font-bold text-gray-900">Thank You!</h2>
-              <p className="text-lg text-green-700 font-medium">
-                Your application has been submitted successfully.
-              </p>
-              <p className="text-sm text-gray-500 max-w-sm mx-auto">
-                A Finance Manager will contact you shortly. This window will automatically reset in a few seconds.
-              </p>
-              <div className="w-12 h-1 bg-green-500 mx-auto rounded mt-4 animate-pulse" />
+          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+            {/* Header */}
+            <div className="bg-gradient-to-r from-primary to-primary/80 px-8 py-6">
+              <div className="flex items-center gap-3">
+                <DollarSign className="w-6 h-6 text-white" />
+                <h2 className="text-xl font-bold text-white">Finance Application</h2>
+              </div>
+              <p className="text-blue-100 text-sm mt-1">Complete all steps to apply for financing</p>
             </div>
-          ) : (
-            /* Normal Multistep Form Layout */
-            <>
-              <ProgressSteps currentStep={currentStep} />
-              
-              <fieldset disabled={isSubmitting} className="space-y-6 disabled:opacity-75">
-                <div key={currentStep}>
-                  {currentStep === 1 && <StepOne />}
-                  {currentStep === 2 && <StepTwo />}
-                  {currentStep === 3 && <StepThree />}
-                  {currentStep === 4 && <StepFour />}
-                  {currentStep === 5 && <StepFive />}
-                  {currentStep === 6 && <StepSix />}
-                </div>
 
-                <div className="flex justify-between mt-6">
-                  {currentStep > 1 && (
-                    <button
-                      type="button"
-                      onClick={previousStep}
-                      className="bg-gray-500 text-white p-3 rounded-lg hover:bg-gray-600 transition-colors"
-                    >
-                      Previous
-                    </button>
-                  )}
-                  {currentStep < 6 ? (
-                    <button
-                      type="button"
-                      onClick={nextStep}
-                      className="bg-primary text-white p-3 rounded-lg hover:bg-primary/90 transition-colors ml-auto"
-                    >
-                      Next
-                    </button>
-                  ) : (
-                    <button
-                      type="submit"
-                      className="bg-primary text-white p-3 rounded-lg hover:bg-primary/90 transition-colors ml-auto flex items-center justify-center min-w-[180px]"
-                    >
-                      {isSubmitting ? (
-                        <div className="flex items-center gap-2">
-                          <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
-                          Submitting...
-                        </div>
-                      ) : (
-                        "Complete Application"
-                      )}
-                    </button>
-                  )}
+            {showThankYou ? (
+              <div className="p-12 text-center flex flex-col items-center justify-center space-y-4">
+                <div className="bg-green-50 p-4 rounded-full text-green-500">
+                  <CheckCircle2 className="w-16 h-16" />
                 </div>
-              </fieldset>
-            </>
-          )}
+                <h2 className="text-3xl font-bold text-gray-900">Thank You!</h2>
+                <p className="text-green-700 font-medium">
+                  Your application has been submitted successfully.
+                </p>
+                <p className="text-sm text-gray-500 max-w-sm mx-auto">
+                  A Finance Manager will contact you shortly. This window will automatically reset in a few seconds.
+                </p>
+                <div className="w-12 h-1 bg-green-500 mx-auto rounded mt-4 animate-pulse" />
+              </div>
+            ) : (
+              <div className="p-8">
+                <ProgressSteps currentStep={currentStep} />
+                
+                <fieldset disabled={isSubmitting} className="space-y-6 disabled:opacity-75">
+                  <div key={currentStep} className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+                    {currentStep === 1 && <StepOne />}
+                    {currentStep === 2 && <StepTwo />}
+                    {currentStep === 3 && <StepThree />}
+                    {currentStep === 4 && <StepFour />}
+                    {currentStep === 5 && <StepFive />}
+                    {currentStep === 6 && <StepSix />}
+                  </div>
+
+                  <div className="flex justify-between pt-4 border-t border-gray-100">
+                    {currentStep > 1 ? (
+                      <Button
+                        type="button"
+                        onClick={previousStep}
+                        variant="outline"
+                        className="rounded-xl"
+                      >
+                        <ChevronLeft className="w-4 h-4 mr-1" />
+                        Previous
+                      </Button>
+                    ) : (
+                      <div />
+                    )}
+                    {currentStep < 6 ? (
+                      <Button
+                        type="button"
+                        onClick={nextStep}
+                        className="rounded-xl"
+                      >
+                        Next
+                        <ChevronRight className="w-4 h-4 ml-1" />
+                      </Button>
+                    ) : (
+                      <Button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="rounded-xl min-w-[180px]"
+                      >
+                        {isSubmitting ? (
+                          <span className="flex items-center gap-2">
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                            Submitting...
+                          </span>
+                        ) : (
+                          <span className="flex items-center gap-2">
+                            <Check className="w-4 h-4" />
+                            Complete Application
+                          </span>
+                        )}
+                      </Button>
+                    )}
+                  </div>
+                </fieldset>
+              </div>
+            )}
+          </div>
         </form>
       </FormProvider>
     </div>
   );
 }
 
-// [Step components and ProgressSteps remain identical to your original code below...]
+// Step Components
+
+function FormField({ label, required, children, error }) {
+  return (
+    <div className="space-y-1.5">
+      <Label className="text-sm font-medium text-gray-700">
+        {label} {required && <span className="text-red-500">*</span>}
+      </Label>
+      {children}
+      {error && <p className="text-xs text-red-500">{error}</p>}
+    </div>
+  );
+}
+
 function StepOne() {
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext();
+  const { register, control, formState: { errors } } = useFormContext();
   return (
     <div className="space-y-4">
-      <h3 className="text-xl font-bold my-2">Personal Details</h3>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">First Name *</label>
-        <input
-          {...register("first_name")}
-          type="text"
-          placeholder="First Name"
-          className="input"
+      <div className="flex items-center gap-2 mb-4">
+        <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+          <User className="w-4 h-4 text-primary" />
+        </div>
+        <h3 className="text-lg font-bold text-gray-900">Personal Details</h3>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <FormField label="First Name" required error={errors.first_name?.message}>
+          <Input placeholder="First Name" {...register("first_name")} />
+        </FormField>
+        <FormField label="Middle Name" error={errors.middle_name?.message}>
+          <Input placeholder="Middle Name" {...register("middle_name")} />
+        </FormField>
+        <FormField label="Last Name" required error={errors.last_name?.message}>
+          <Input placeholder="Last Name" {...register("last_name")} />
+        </FormField>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <FormField label="Birth Date" required error={errors.birthdate?.message}>
+          <Input type="date" {...register("birthdate")} />
+        </FormField>
+        <FormField label="Phone" required error={errors.phone?.message}>
+          <Input placeholder="Phone" {...register("phone")} />
+        </FormField>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <FormField label="Email" required error={errors.email?.message}>
+          <Input type="email" placeholder="Email" {...register("email")} />
+        </FormField>
+        <FormField label="SIN" required error={errors.sin?.message}>
+          <Input placeholder="SIN" {...register("sin")} />
+        </FormField>
+      </div>
+      <FormField label="Marital Status" required error={errors.marital_status?.message}>
+        <Controller
+          control={control}
+          name="marital_status"
+          render={({ field }) => (
+            <Select onValueChange={field.onChange} value={field.value}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="single">Single</SelectItem>
+                <SelectItem value="married">Married</SelectItem>
+                <SelectItem value="divorced">Divorced</SelectItem>
+              </SelectContent>
+            </Select>
+          )}
         />
-        {errors.first_name && (
-          <span className="text-red-500 text-sm">{errors.first_name.message}</span>
-        )}
-      </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Middle Name</label>
-        <input
-          {...register("middle_name")}
-          type="text"
-          placeholder="Middle Name"
-          className="input"
-        />
-      </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Last Name *</label>
-        <input
-          {...register("last_name")}
-          type="text"
-          placeholder="Last Name"
-          className="input"
-        />
-        {errors.last_name && (
-          <span className="text-red-500 text-sm">{errors.last_name.message}</span>
-        )}
-      </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Birth Date *</label>
-        <input
-          {...register("birthdate")}
-          type="date"
-          placeholder="Birthdate"
-          className="input"
-        />
-        {errors.birthdate && (
-          <span className="text-red-500 text-sm">{errors.birthdate.message}</span>
-        )}
-      </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Phone *</label>
-        <input
-          {...register("phone")}
-          type="text"
-          placeholder="Phone"
-          className="input"
-        />
-        {errors.phone && <span className="text-red-500 text-sm">{errors.phone.message}</span>}
-      </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Email *</label>
-        <input
-          {...register("email")}
-          type="email"
-          placeholder="Email"
-          className="input"
-        />
-        {errors.email && <span className="text-red-500 text-sm">{errors.email.message}</span>}
-      </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">SIN *</label>
-        <input
-          {...register("sin")}
-          type="text"
-          placeholder="SIN"
-          className="input"
-        />
-        {errors.sin && <span className="text-red-500 text-sm">{errors.sin.message}</span>}
-      </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Marital Status *</label>
-        <select
-          {...register("marital_status")}
-          className="input"
-        >
-          <option value="">Select Status</option>
-          <option value="single">Single</option>
-          <option value="married">Married</option>
-          <option value="divorced">Divorced</option>
-        </select>
-        {errors.marital_status && (
-          <span className="text-red-500 text-sm">{errors.marital_status.message}</span>
-        )}
-      </div>
+      </FormField>
     </div>
   );
 }
 
 function StepTwo() {
-  const {
-    register,
-    control,
-    watch,
-    formState: { errors },
-  } = useFormContext();
+  const { register, control, watch, formState: { errors } } = useFormContext();
   const residence_type = watch("residence_type");
   return (
     <div className="space-y-4">
-      <h3 className="text-xl font-bold my-2">Address</h3>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Civic Address *</label>
-        <input
-          {...register("civic_address")}
-          type="text"
-          placeholder="Civic Address"
-          className="input"
-        />
-        {errors.civic_address && (
-          <span className="text-red-500 text-sm">{errors.civic_address.message}</span>
-        )}
+      <div className="flex items-center gap-2 mb-4">
+        <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+          <MapPin className="w-4 h-4 text-primary" />
+        </div>
+        <h3 className="text-lg font-bold text-gray-900">Address</h3>
       </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Postal Code *</label>
-        <input
-          {...register("postal_code")}
-          type="text"
-          placeholder="Postal Code"
-          className="input"
-        />
-        {errors.postal_code && (
-          <span className="text-red-500 text-sm">{errors.postal_code.message}</span>
-        )}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <FormField label="Civic Address" required error={errors.civic_address?.message}>
+          <Input placeholder="Civic Address" {...register("civic_address")} />
+        </FormField>
+        <FormField label="Postal Code" required error={errors.postal_code?.message}>
+          <Input placeholder="Postal Code" {...register("postal_code")} />
+        </FormField>
       </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Box Number *</label>
-        <input
-          {...register("box_number")}
-          type="text"
-          placeholder="Box Number"
-          className="input"
-        />
-        {errors.box_number && (
-          <span className="text-red-500 text-sm">{errors.box_number.message}</span>
-        )}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <FormField label="Box Number" required error={errors.box_number?.message}>
+          <Input placeholder="Box Number" {...register("box_number")} />
+        </FormField>
+        <FormField label="How Long?" required error={errors.residence_duration?.message}>
+          <Input placeholder="How Long?" {...register("residence_duration")} />
+        </FormField>
       </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">How Long? *</label>
-        <input
-          {...register("residence_duration")}
-          type="text"
-          placeholder="How Long?"
-          className="input"
-        />
-        {errors.residence_duration && (
-          <span className="text-red-500 text-sm">{errors.residence_duration.message}</span>
-        )}
-      </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Residence Type *</label>
+      <FormField label="Residence Type" required error={errors.residence_type?.message}>
         <Controller
           control={control}
           name="residence_type"
           render={({ field }) => (
-            <select
-              {...field}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-primary"
-            >
-              <option value="">Select Type</option>
-              <option value="owned">Owned</option>
-              <option value="rented">Rented</option>
-            </select>
+            <Select onValueChange={field.onChange} value={field.value}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select Type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="owned">Owned</SelectItem>
+                <SelectItem value="rented">Rented</SelectItem>
+              </SelectContent>
+            </Select>
           )}
         />
-        {errors.residence_type && (
-          <span className="text-red-500 text-sm">{errors.residence_type.message}</span>
-        )}
-      </div>
+      </FormField>
       {residence_type === "owned" && (
-        <div className="space-y-4">
-          <div>
-            <label className="block mb-2 font-medium text-gray-700">
-              Mortgage Lender
-            </label>
-            <Controller
-              control={control}
-              name="mortgage_lender"
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type="text"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-primary"
-                />
-              )}
-            />
+        <div className="p-4 bg-gray-50 rounded-xl border border-gray-200 space-y-4">
+          <p className="text-sm font-semibold text-gray-700">Mortgage Details</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FormField label="Mortgage Lender" error={errors.mortgage_lender?.message}>
+              <Controller
+                control={control}
+                name="mortgage_lender"
+                render={({ field }) => (
+                  <Input {...field} placeholder="Mortgage Lender" />
+                )}
+              />
+            </FormField>
+            <FormField label="Amount Left Owing" error={errors.amount_owing_on_mortgage?.message}>
+              <Controller
+                control={control}
+                name="amount_owing_on_mortgage"
+                render={({ field }) => (
+                  <Input {...field} type="number" placeholder="Amount Owing" />
+                )}
+              />
+            </FormField>
           </div>
-
-          <div>
-            <label className="block mb-2 font-medium text-gray-700">
-              Amount Left Owing on Mortgage
-            </label>
-            <Controller
-              control={control}
-              name="amount_owing_on_mortgage"
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type="number"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-primary"
-                />
-              )}
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FormField label="Current Value of Property" error={errors.current_value_of_property?.message}>
+              <Controller
+                control={control}
+                name="current_value_of_property"
+                render={({ field }) => (
+                  <Input {...field} type="number" placeholder="Property Value" />
+                )}
+              />
+            </FormField>
+            <FormField label="Payment Per Month/Bi-weekly" error={errors.payment_per_month_or_biweekly?.message}>
+              <Controller
+                control={control}
+                name="payment_per_month_or_biweekly"
+                render={({ field }) => (
+                  <Input {...field} type="number" placeholder="Payment Amount" />
+                )}
+              />
+            </FormField>
           </div>
-
-          <div>
-            <label className="block mb-2 font-medium text-gray-700">
-              Current Value of Property
-            </label>
-            <Controller
-              control={control}
-              name="current_value_of_property"
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type="number"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-primary"
-                />
-              )}
-            />
-          </div>
-
-          <div>
-            <label className="block mb-2 font-medium text-gray-700">
-              Payment Per month or Bi-weekly
-            </label>
-            <Controller
-              control={control}
-              name="payment_per_month_or_biweekly"
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type="number"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-primary"
-                />
-              )}
-            />
-          </div>
-
-          <div>
-            <label className="block mb-2 font-medium text-gray-700">
-              Payment Frequency
-            </label>
+          <FormField label="Payment Frequency" error={errors.payment_frequency?.message}>
             <Controller
               control={control}
               name="payment_frequency"
               render={({ field }) => (
-                <select
-                  {...field}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-primary"
-                >
-                  <option value="">Select Frequency</option>
-                  <option value="monthly">Monthly</option>
-                  <option value="biweekly">Bi-weekly</option>
-                </select>
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Frequency" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="monthly">Monthly</SelectItem>
+                    <SelectItem value="biweekly">Bi-weekly</SelectItem>
+                  </SelectContent>
+                </Select>
               )}
             />
-          </div>
+          </FormField>
         </div>
       )}
-
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">
-          Previous Address (if less than two years)
-        </label>
-        <Controller
-          control={control}
-          name="previous_address"
-          render={({ field }) => (
-            <input
-              {...field}
-              type="text"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-primary"
+      <div className="pt-2">
+        <p className="text-sm font-semibold text-gray-700 mb-3">Previous Address (if less than two years)</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <FormField label="Previous Address" error={errors.previous_address?.message}>
+            <Controller
+              control={control}
+              name="previous_address"
+              render={({ field }) => (
+                <Input {...field} placeholder="Previous Address" />
+              )}
             />
-          )}
-        />
-      </div>
-
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">
-          Postal Code
-        </label>
-        <Controller
-          control={control}
-          name="previous_postal_code"
-          render={({ field }) => (
-            <input
-              {...field}
-              type="text"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-primary"
+          </FormField>
+          <FormField label="Postal Code" error={errors.previous_postal_code?.message}>
+            <Controller
+              control={control}
+              name="previous_postal_code"
+              render={({ field }) => (
+                <Input {...field} placeholder="Postal Code" />
+              )}
             />
-          )}
-        />
-      </div>
-
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">
-          How Long
-        </label>
-        <Controller
-          control={control}
-          name="previous_residence_duration"
-          render={({ field }) => (
-            <input
-              {...field}
-              type="text"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-primary"
-            />
-          )}
-        />
+          </FormField>
+        </div>
+        <FormField label="How Long" error={errors.previous_residence_duration?.message}>
+          <Controller
+            control={control}
+            name="previous_residence_duration"
+            render={({ field }) => (
+              <Input {...field} placeholder="How Long" />
+            )}
+          />
+        </FormField>
       </div>
     </div>
   );
 }
 
 function StepThree() {
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext();
+  const { register, control, formState: { errors } } = useFormContext();
   return (
     <div className="space-y-4">
-      <h3 className="text-xl font-bold my-2">Employer Details</h3>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Company *</label>
-        <input
-          {...register("employer_company")}
-          type="text"
-          placeholder="Company"
-          className="input"
-        />
-        {errors.employer_company && (
-          <span className="text-red-500 text-sm">{errors.employer_company.message}</span>
-        )}
+      <div className="flex items-center gap-2 mb-4">
+        <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+          <Briefcase className="w-4 h-4 text-primary" />
+        </div>
+        <h3 className="text-lg font-bold text-gray-900">Employer Details</h3>
       </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Address *</label>
-        <input
-          {...register("employer_address")}
-          type="text"
-          placeholder="Address"
-          className="input"
-        />
-        {errors.employer_address && (
-          <span className="text-red-500 text-sm">{errors.employer_address.message}</span>
-        )}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <FormField label="Company" required error={errors.employer_company?.message}>
+          <Input placeholder="Company" {...register("employer_company")} />
+        </FormField>
+        <FormField label="Address" required error={errors.employer_address?.message}>
+          <Input placeholder="Address" {...register("employer_address")} />
+        </FormField>
       </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Phone *</label>
-        <input
-          {...register("employer_phone")}
-          type="text"
-          placeholder="Phone"
-          className="input"
-        />
-        {errors.employer_phone && (
-          <span className="text-red-500 text-sm">{errors.employer_phone.message}</span>
-        )}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <FormField label="Phone" required error={errors.employer_phone?.message}>
+          <Input placeholder="Phone" {...register("employer_phone")} />
+        </FormField>
+        <FormField label="Supervisor" required error={errors.employer_supervisor?.message}>
+          <Input placeholder="Supervisor" {...register("employer_supervisor")} />
+        </FormField>
       </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Supervisor *</label>
-        <input
-          {...register("employer_supervisor")}
-          type="text"
-          placeholder="Supervisor"
-          className="input"
-        />
-        {errors.employer_supervisor && (
-          <span className="text-red-500 text-sm">{errors.employer_supervisor.message}</span>
-        )}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <FormField label="Employment Type" required error={errors.employment_type?.message}>
+          <Controller
+            control={control}
+            name="employment_type"
+            render={({ field }) => (
+              <Select onValueChange={field.onChange} value={field.value}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="full-time">Full Time</SelectItem>
+                  <SelectItem value="part-time">Part Time</SelectItem>
+                  <SelectItem value="contract">Contract</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
+          />
+        </FormField>
+        <FormField label="Collects EI During Off Season?" required error={errors.ei_off_season?.message}>
+          <Controller
+            control={control}
+            name="ei_off_season"
+            render={({ field }) => (
+              <Select
+                onValueChange={(value) => field.onChange(value === "true")}
+                value={field.value === true ? "true" : field.value === false ? "false" : ""}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Option" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="true">Yes</SelectItem>
+                  <SelectItem value="false">No</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
+          />
+        </FormField>
       </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Employment Type *</label>
-        <select
-          {...register("employment_type")}
-          className="input"
-        >
-          <option value="">Select Type</option>
-          <option value="full-time">Full Time</option>
-          <option value="part-time">Part Time</option>
-          <option value="contract">Contract</option>
-        </select>
-        {errors.employment_type && (
-          <span className="text-red-500 text-sm">{errors.employment_type.message}</span>
-        )}
-      </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Collects EI During Off Season? *</label>
-        <select
-          {...register("ei_off_season", { 
-            setValueAs: (value) => value === "true" || value === true
-          })}
-          className="input"
-        >
-          <option value="">Select Option</option>
-          <option value={true}>Yes</option>
-          <option value={false}>No</option>
-        </select>
-        {errors.ei_off_season && (
-          <span className="text-red-500 text-sm">{errors.ei_off_season.message}</span>
-        )}
-      </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Position *</label>
-        <input
-          {...register("position")}
-          type="text"
-          placeholder="Position"
-          className="input"
-        />
-        {errors.position && (
-          <span className="text-red-500 text-sm">{errors.position.message}</span>
-        )}
-      </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">How Long? *</label>
-        <input
-          {...register("employment_duration")}
-          type="text"
-          placeholder="How long"
-          className="input"
-        />
-        {errors.employment_duration && (
-          <span className="text-red-500 text-sm">{errors.employment_duration.message}</span>
-        )}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <FormField label="Position" required error={errors.position?.message}>
+          <Input placeholder="Position" {...register("position")} />
+        </FormField>
+        <FormField label="How Long?" required error={errors.employment_duration?.message}>
+          <Input placeholder="How long" {...register("employment_duration")} />
+        </FormField>
       </div>
     </div>
   );
 }
 
 function StepFour() {
-  const { register } = useFormContext();
+  const { register, control, formState: { errors } } = useFormContext();
   return (
     <div className="space-y-4">
-      <h3 className="text-xl font-bold my-2">Previous Employer Details</h3>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Company</label>
-        <input
-          {...register("previous_employer_company")}
-          type="text"
-          placeholder="Company"
-          className="input"
-        />
+      <div className="flex items-center gap-2 mb-4">
+        <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+          <History className="w-4 h-4 text-primary" />
+        </div>
+        <h3 className="text-lg font-bold text-gray-900">Previous Employer Details</h3>
       </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Address</label>
-        <input
-          {...register("previous_employer_address")}
-          type="text"
-          placeholder="Address"
-          className="input"
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <FormField label="Company" error={errors.previous_employer_company?.message}>
+          <Controller
+            control={control}
+            name="previous_employer_company"
+            render={({ field }) => (
+              <Input {...field} placeholder="Company" />
+            )}
+          />
+        </FormField>
+        <FormField label="Address" error={errors.previous_employer_address?.message}>
+          <Controller
+            control={control}
+            name="previous_employer_address"
+            render={({ field }) => (
+              <Input {...field} placeholder="Address" />
+            )}
+          />
+        </FormField>
       </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Phone</label>
-        <input
-          {...register("previous_employer_phone")}
-          type="text"
-          placeholder="Phone"
-          className="input"
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <FormField label="Phone" error={errors.previous_employer_phone?.message}>
+          <Controller
+            control={control}
+            name="previous_employer_phone"
+            render={({ field }) => (
+              <Input {...field} placeholder="Phone" />
+            )}
+          />
+        </FormField>
+        <FormField label="Supervisor" error={errors.previous_employer_supervisor?.message}>
+          <Controller
+            control={control}
+            name="previous_employer_supervisor"
+            render={({ field }) => (
+              <Input {...field} placeholder="Supervisor" />
+            )}
+          />
+        </FormField>
       </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Supervisor</label>
-        <input
-          {...register("previous_employer_supervisor")}
-          type="text"
-          placeholder="Supervisor"
-          className="input"
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <FormField label="Previous Employment Type" error={errors.previous_employment_type?.message}>
+          <Controller
+            control={control}
+            name="previous_employment_type"
+            render={({ field }) => (
+              <Select onValueChange={field.onChange} value={field.value}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="full-time">Full Time</SelectItem>
+                  <SelectItem value="part-time">Part Time</SelectItem>
+                  <SelectItem value="contract">Contract</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
+          />
+        </FormField>
+        <FormField label="Collects EI During Off Season?" error={errors.previous_ei_off_season?.message}>
+          <Controller
+            control={control}
+            name="previous_ei_off_season"
+            render={({ field }) => (
+              <Select
+                onValueChange={(value) => field.onChange(value === "true")}
+                value={field.value === true ? "true" : field.value === false ? "false" : ""}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Option" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="true">Yes</SelectItem>
+                  <SelectItem value="false">No</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
+          />
+        </FormField>
       </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Previous Employment Type</label>
-        <select {...register("previous_employment_type")} className="input">
-          <option value="">Select Type</option>
-          <option value="full-time">Full Time</option>
-          <option value="part-time">Part Time</option>
-          <option value="contract">Contract</option>
-        </select>
-      </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Collects EI During Off Season?</label>
-        <select
-          {...register("previous_ei_off_season", {
-            setValueAs: (value) => value === "true" || value === true
-          })}
-          className="input"
-        >
-          <option value="">Select Option</option>
-          <option value={true}>Yes</option>
-          <option value={false}>No</option>
-        </select>
-      </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Position</label>
-        <input
-          {...register("previous_position")}
-          type="text"
-          placeholder="Position"
-          className="input"
-        />
-      </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">How Long</label>
-        <input
-          {...register("previous_employment_duration")}
-          type="text"
-          placeholder="How long"
-          className="input"
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <FormField label="Position" error={errors.previous_position?.message}>
+          <Controller
+            control={control}
+            name="previous_position"
+            render={({ field }) => (
+              <Input {...field} placeholder="Position" />
+            )}
+          />
+        </FormField>
+        <FormField label="How Long" error={errors.previous_employment_duration?.message}>
+          <Controller
+            control={control}
+            name="previous_employment_duration"
+            render={({ field }) => (
+              <Input {...field} placeholder="How long" />
+            )}
+          />
+        </FormField>
       </div>
     </div>
   );
 }
 
 function StepFive() {
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext();
+  const { register, formState: { errors } } = useFormContext();
   return (
     <div className="space-y-4">
-      <h3 className="text-xl font-bold my-2">Gross Pay</h3>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Annual *</label>
-        <input
-          {...register("gross_annual_income")}
-          type="number"
-          placeholder="Annual"
-          className="input"
-        />
-        {errors.gross_annual_income && (
-          <span className="text-red-500 text-sm">{errors.gross_annual_income.message}</span>
-        )}
+      <div className="flex items-center gap-2 mb-4">
+        <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+          <DollarSign className="w-4 h-4 text-primary" />
+        </div>
+        <h3 className="text-lg font-bold text-gray-900">Gross Pay</h3>
       </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Monthly</label>
-        <input
-          {...register("gross_monthly_income")}
-          type="number"
-          placeholder="Monthly"
-          className="input"
-        />
-        {errors.gross_monthly_income && (
-          <span className="text-red-500 text-sm">{errors.gross_monthly_income.message}</span>
-        )}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <FormField label="Annual" required error={errors.gross_annual_income?.message}>
+          <Input type="number" placeholder="Annual" {...register("gross_annual_income")} />
+        </FormField>
+        <FormField label="Monthly" error={errors.gross_monthly_income?.message}>
+          <Input type="number" placeholder="Monthly" {...register("gross_monthly_income")} />
+        </FormField>
       </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Bi-Weekly *</label>
-        <input
-          {...register("gross_biweekly_income")}
-          type="number"
-          placeholder="Bi-Weekly"
-          className="input"
-        />
-        {errors.gross_biweekly_income && (
-          <span className="text-red-500 text-sm">{errors.gross_biweekly_income.message}</span>
-        )}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <FormField label="Bi-Weekly" required error={errors.gross_biweekly_income?.message}>
+          <Input type="number" placeholder="Bi-Weekly" {...register("gross_biweekly_income")} />
+        </FormField>
+        <FormField label="Hourly Wage" required error={errors.hourly_wage?.message}>
+          <Input type="number" placeholder="Hourly Wage" {...register("hourly_wage")} />
+        </FormField>
       </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Hourly Wage *</label>
-        <input
-          {...register("hourly_wage")}
-          type="number"
-          placeholder="Hourly Wage"
-          className="input"
-        />
-        {errors.hourly_wage && (
-          <span className="text-red-500 text-sm">{errors.hourly_wage.message}</span>
-        )}
-      </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Hours Per Week *</label>
-        <input
-          {...register("hours_per_week")}
-          type="number"
-          placeholder="Hours Per Week"
-          className="input"
-        />
-        {errors.hours_per_week && (
-          <span className="text-red-500 text-sm">{errors.hours_per_week.message}</span>
-        )}
-      </div>
+      <FormField label="Hours Per Week" required error={errors.hours_per_week?.message}>
+        <Input type="number" placeholder="Hours Per Week" {...register("hours_per_week")} />
+      </FormField>
     </div>
   );
 }
 
 function StepSix() {
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext();
+  const { register, formState: { errors } } = useFormContext();
   return (
     <div className="space-y-4">
-      <h3 className="text-xl font-bold my-2">Other Monthly Income</h3>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Rental Property *</label>
-        <input
-          {...register("other_monthly_income_rental")}
-          type="number"
-          placeholder="Rental Property"
-          className="input"
-        />
-        {errors.other_monthly_income_rental && (
-          <span className="text-red-500 text-sm">{errors.other_monthly_income_rental.message}</span>
-        )}
+      <div className="flex items-center gap-2 mb-4">
+        <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+          <PlusCircle className="w-4 h-4 text-primary" />
+        </div>
+        <h3 className="text-lg font-bold text-gray-900">Other Monthly Income</h3>
       </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">CCB</label>
-        <input
-          {...register("other_monthly_income_ccb")}
-          type="number"
-          placeholder="CCB"
-          className="input"
-        />
+      <FormField label="Rental Property" required error={errors.other_monthly_income_rental?.message}>
+        <Input type="number" placeholder="Rental Property" {...register("other_monthly_income_rental")} />
+      </FormField>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <FormField label="CCB" error={errors.other_monthly_income_ccb?.message}>
+          <Input type="number" placeholder="CCB" {...register("other_monthly_income_ccb")} />
+        </FormField>
+        <FormField label="Spousal Support" error={errors.other_monthly_income_spousal_support?.message}>
+          <Input type="number" placeholder="Spousal Support" {...register("other_monthly_income_spousal_support")} />
+        </FormField>
       </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Spousal Support</label>
-        <input
-          {...register("other_monthly_income_spousal_support")}
-          type="number"
-          placeholder="Spousal Support"
-          className="input"
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <FormField label="Pensions" error={errors.other_monthly_income_pensions?.message}>
+          <Input type="number" placeholder="Pensions" {...register("other_monthly_income_pensions")} />
+        </FormField>
+        <FormField label="Side Business" error={errors.other_monthly_income_side_business?.message}>
+          <Input type="number" placeholder="Side Business" {...register("other_monthly_income_side_business")} />
+        </FormField>
       </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Pensions</label>
-        <input
-          {...register("other_monthly_income_pensions")}
-          type="number"
-          placeholder="Pensions"
-          className="input"
-        />
-      </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Side Business</label>
-        <input
-          {...register("other_monthly_income_side_business")}
-          type="number"
-          placeholder="Side Business"
-          className="input"
-        />
-      </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Side Job</label>
-        <input
-          {...register("other_monthly_income_side_job")}
-          type="number"
-          placeholder="Side Job"
-          className="input"
-        />
-      </div>
-      <div>
-        <label className="block mb-2 font-medium text-gray-700">Others Income</label>
-        <input
-          {...register("other_monthly_income_other")}
-          type="number"
-          placeholder="Others"
-          className="input"
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <FormField label="Side Job" error={errors.other_monthly_income_side_job?.message}>
+          <Input type="number" placeholder="Side Job" {...register("other_monthly_income_side_job")} />
+        </FormField>
+        <FormField label="Others Income" error={errors.other_monthly_income_other?.message}>
+          <Input type="number" placeholder="Others" {...register("other_monthly_income_other")} />
+        </FormField>
       </div>
     </div>
   );
@@ -986,17 +822,21 @@ const ProgressSteps = ({ currentStep }) => {
         <div key={index} className="flex items-center flex-1">
           <div className="relative flex flex-col items-center">
             <div
-              className={`h-10 w-10 flex items-center justify-center rounded-full border-2 text-sm font-bold transition-colors ${
+              className={`h-10 w-10 flex items-center justify-center rounded-full border-2 text-sm font-bold transition-all ${
                 index + 1 <= currentStep
-                  ? "border-primary bg-primary text-white"
-                  : "border-gray-300 bg-white text-gray-500"
+                  ? "border-primary bg-primary text-white shadow-md shadow-primary/20"
+                  : "border-gray-200 bg-white text-gray-400"
               }`}
             >
-              {index + 1 < currentStep ? "✓" : index + 1}
+              {index + 1 < currentStep ? (
+                <Check className="w-4 h-4" />
+              ) : (
+                index + 1
+              )}
             </div>
             <div
-              className={`mt-2 text-xs text-center hidden sm:block ${
-                index + 1 <= currentStep ? "text-primary font-semibold" : "text-gray-500"
+              className={`mt-2 text-xs text-center hidden sm:block font-medium ${
+                index + 1 <= currentStep ? "text-primary" : "text-gray-400"
               }`}
             >
               {step}
@@ -1005,8 +845,8 @@ const ProgressSteps = ({ currentStep }) => {
           {index !== stepNames.length - 1 && (
             <div className="flex-1 mx-2">
               <div
-                className={`h-1 rounded ${
-                  index + 1 < currentStep ? "bg-primary" : "bg-gray-300"
+                className={`h-1 rounded-full transition-colors ${
+                  index + 1 < currentStep ? "bg-primary" : "bg-gray-100"
                 }`}
               />
             </div>

@@ -34,12 +34,15 @@ const Footer = () => {
           start: "top 90%",
           toggleActions: "play none none none",
         },
-      }
+      },
     );
   }, []);
 
   return (
-    <footer ref={footerRef} className="relative bg-white border-t border-gray-100 pt-16 pb-8 overflow-hidden">
+    <footer
+      ref={footerRef}
+      className="relative bg-white border-t border-gray-100 pt-16 pb-8 overflow-hidden"
+    >
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-primary/5 blur-3xl" />
         <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-primary/5 blur-3xl" />
@@ -52,7 +55,9 @@ const Footer = () => {
               <img src="/images/logo.png" alt="logo" className="h-10 w-auto" />
             </Link>
             <p className="mb-6 text-sm leading-relaxed text-gray-800 max-w-xs">
-              We offer a comprehensive range of services designed to meet all your automotive needs — from buying to selling and everything in between.
+              We offer a comprehensive range of services designed to meet all
+              your automotive needs — from buying to selling and everything in
+              between.
             </p>
             <div className="flex items-center gap-3">
               {[
@@ -74,31 +79,44 @@ const Footer = () => {
           </div>
 
           <div className="lg:col-span-2 lg:col-start-6 gsap-footer">
-            <h4 className="mb-5 text-sm font-semibold uppercase tracking-wider text-gray-900">Resources</h4>
+            <h4 className="mb-5 text-sm font-semibold uppercase tracking-wider text-gray-900">
+              Resources
+            </h4>
             <ul className="space-y-3">
               <FooterLink href="/trade-in" label="Trade In Your Car" />
               <FooterLink href="/sell-your-car" label="Sell Your Car" />
               <FooterLink href="/finance" label="Finance Application" />
-              <FooterLink href="/payment-calculator" label="Payment Calculator" />
+              <FooterLink
+                href="/payment-calculator"
+                label="Payment Calculator"
+              />
             </ul>
           </div>
 
           <div className="lg:col-span-2 gsap-footer">
-            <h4 className="mb-5 text-sm font-semibold uppercase tracking-wider text-gray-900">Quick Links</h4>
+            <h4 className="mb-5 text-sm font-semibold uppercase tracking-wider text-gray-900">
+              Quick Links
+            </h4>
             <ul className="space-y-3">
               <FooterLink href="/faq" label="FAQ" />
               <FooterLink href="/contact" label="Contact" />
               <FooterLink href="/search" label="Search Cars" />
+              <FooterLink href="/compare" label="Compare Cars" />
               <FooterLink href="/about" label="About Us" />
             </ul>
           </div>
 
-          <div className="lg:col-span-2 gsap-footer">
-            <h4 className="mb-5 text-sm font-semibold uppercase tracking-wider text-gray-900">Contact</h4>
+          <div className="lg:col-span-3 gsap-footer">
+            <h4 className="mb-5 text-sm font-semibold uppercase tracking-wider text-gray-900">
+              Contact
+            </h4>
             <ul className="space-y-3 text-sm text-gray-800">
               <li className="flex items-start gap-3">
                 <FaMapMarkerAlt className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-primary" />
-                <span>77 Highfield Road<br />London N36 7SB</span>
+                <span>
+                  213 33rd St WSaskatoon <br />
+                  SK S7L 0V2, Canada
+                </span>
               </li>
               <li className="flex items-center gap-3">
                 <FaPhoneAlt className="h-3.5 w-3.5 flex-shrink-0 text-primary" />
@@ -106,7 +124,7 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-3">
                 <FaEnvelope className="h-3.5 w-3.5 flex-shrink-0 text-primary" />
-                <span>info@radiantauto.com</span>
+                <span>sales@radiant-auto.com</span>
               </li>
             </ul>
           </div>
@@ -115,10 +133,14 @@ const Footer = () => {
         <div className="mt-12 pt-8 border-t border-gray-200 gsap-footer">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <p className="text-sm text-gray-700">
-              &copy; {new Date().getFullYear()} Radiant Auto. All rights reserved.
+              &copy; {new Date().getFullYear()} Radiant Auto. All rights
+              reserved.
             </p>
             <div className="flex gap-6">
-              <Link href="/privacy-policy" className="text-sm text-gray-700 transition-colors hover:text-primary">
+              <Link
+                href="/privacy-policy"
+                className="text-sm text-gray-700 transition-colors hover:text-primary"
+              >
                 Privacy Policy
               </Link>
               {/* <Link href="/faq" className="text-sm text-gray-700 transition-colors hover:text-primary">

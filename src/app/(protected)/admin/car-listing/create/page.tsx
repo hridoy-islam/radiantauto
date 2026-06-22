@@ -24,6 +24,7 @@ import {
   RefreshCw,
   Loader2,
   Star,
+  Crown,
 } from "lucide-react";
 import { Button } from "../../../../../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../../../components/ui/card";
@@ -90,6 +91,7 @@ export default function CreateCarPage() {
     og_title: "",
     og_description: "",
     og_image: "",
+    featureCar: false,
   },
 });
 
@@ -557,6 +559,23 @@ export default function CreateCarPage() {
                     {errors.overview.message}
                   </p>
                 )}
+              </div>
+
+              <div className="flex items-center gap-3 p-4 bg-amber-50/50 border border-amber-200 rounded-lg">
+                <Crown className="w-5 h-5 text-amber-600" />
+                <div className="flex-1">
+                  <label className="text-sm font-medium text-gray-700">
+                    Feature This Car
+                  </label>
+                  <p className="text-xs text-gray-500">
+                    Featured cars appear prominently on the homepage
+                  </p>
+                </div>
+                <input
+                  type="checkbox"
+                  className="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary"
+                  {...register("featureCar")}
+                />
               </div>
             </CardContent>
           </Card>

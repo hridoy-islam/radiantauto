@@ -1,6 +1,6 @@
 export default function Team() {
   return (
-    <section className="bg-tg-bg dark:bg-dark-2 pt-20 pb-10 lg:pt-[120px] lg:pb-20">
+    <section className=" pb-10 ">
       <div className="container mx-auto">
         <div className="flex flex-wrap -mx-4">
           <div className="w-full px-4">

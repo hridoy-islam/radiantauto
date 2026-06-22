@@ -6,7 +6,7 @@ import RelatedCars from "../../../components/RelatedCars";
 import { VehicleInfo } from "../../../components/VehicleInfo";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { 
   Calendar, 
   Gauge, 
@@ -29,12 +29,15 @@ import {
   Loader2,
   X,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  BarChart3,
+  Plus
 } from "lucide-react";
 import { Button } from "../../../../components/ui/button";
 import { Badge } from "../../../../components/ui/badge";
 import { Separator } from "../../../../components/ui/separator";
 import { BlinkingDots } from "../../../../components/ui/blinking-dots";
+import { addToCompare, removeFromCompare, isInCompare } from "../../../../lib/compare";
 
 export default function CarDetailsPage({ params }) {
   const { slug } = params;
@@ -46,6 +49,7 @@ export default function CarDetailsPage({ params }) {
   // Media states
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [inCompare, setInCompare] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -86,12 +90,53 @@ export default function CarDetailsPage({ params }) {
     }
   };
 
+  // Generate standardized images list with thumbnail first
+  const carImages = useMemo(() => {
+    const images = [];
+    
+    // Add thumbnail first if it exists
+    if (car?.thumbnailImage) {
+      images.push(car.thumbnailImage);
+    }
+    
+    // Add gallery images, filtering out any duplicates with thumbnail
+    if (car?.image_gallery && Array.isArray(car.image_gallery)) {
+      const galleryImages = car.image_gallery.filter(
+        img => img !== car.thumbnailImage // Avoid duplicates
+      );
+      images.push(...galleryImages);
+    }
+    
+    // Fallback to placeholder if no images
+    if (images.length === 0) {
+      images.push("/images/placeholder.png");
+    }
+    
+    return images;
+  }, [car?.thumbnailImage, car?.image_gallery]);
+
   useEffect(() => {
     if (slug) {
       fetchData();
       fetchRelatedCars();
     }
   }, [slug]);
+
+  useEffect(() => {
+    if (car?._id) {
+      setInCompare(isInCompare(car._id));
+    }
+  }, [car?._id]);
+
+  const handleCompare = () => {
+    if (inCompare) {
+      removeFromCompare(car._id);
+      setInCompare(false);
+    } else {
+      addToCompare(car);
+      setInCompare(true);
+    }
+  };
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat("en-US", {
@@ -104,6 +149,16 @@ export default function CarDetailsPage({ params }) {
 
   const formatMileage = (km) => {
     return new Intl.NumberFormat("en-US").format(km || 0);
+  };
+
+  const handleNextImage = (e) => {
+    e?.stopPropagation();
+    setActiveImageIndex((prev) => (prev + 1) % carImages.length);
+  };
+
+  const handlePrevImage = (e) => {
+    e?.stopPropagation();
+    setActiveImageIndex((prev) => (prev - 1 + carImages.length) % carImages.length);
   };
 
   if (loading) {
@@ -127,21 +182,6 @@ export default function CarDetailsPage({ params }) {
       </div>
     );
   }
-
-  // Generate standardized images list for slider functionality
-  const carImages = car.image_gallery && car.image_gallery.length > 0 
-    ? car.image_gallery 
-    : [car.thumbnailImage || "/images/placeholder.png"];
-
-  const handleNextImage = (e) => {
-    e?.stopPropagation();
-    setActiveImageIndex((prev) => (prev + 1) % carImages.length);
-  };
-
-  const handlePrevImage = (e) => {
-    e?.stopPropagation();
-    setActiveImageIndex((prev) => (prev - 1 + carImages.length) % carImages.length);
-  };
 
   const tabs = [
     { id: "overview", label: "Overview", icon: CarIcon },
@@ -201,7 +241,7 @@ export default function CarDetailsPage({ params }) {
         </div>
       </div>
 
-      <div className="container mx-auto py-12 px-4 md:px-0">
+      <div className="container mx-auto py-12">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Main Content */}
           <div className="lg:w-8/12 space-y-8">
@@ -222,13 +262,19 @@ export default function CarDetailsPage({ params }) {
                 {carImages.length > 1 && (
                   <>
                     <button 
-                      onClick={handlePrevImage}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handlePrevImage();
+                      }}
                       className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-zinc-900 p-2.5 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-200 border border-zinc-200"
                     >
                       <ChevronLeft className="w-5 h-5" />
                     </button>
                     <button 
-                      onClick={handleNextImage}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleNextImage();
+                      }}
                       className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-zinc-900 p-2.5 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-200 border border-zinc-200"
                     >
                       <ChevronRight className="w-5 h-5" />
@@ -255,7 +301,13 @@ export default function CarDetailsPage({ params }) {
                           : "border-transparent opacity-60 hover:opacity-90"
                       }`}
                     >
-                      <img src={img} alt="Thumbnail view" className="w-full h-full object-cover" />
+                      <img src={img} alt={`Thumbnail ${index + 1}`} className="w-full h-full object-cover" />
+                      {/* Optional: Add a small indicator for the first image if it's the thumbnail */}
+                      {index === 0 && car?.thumbnailImage && (
+                        <div className="absolute top-1 left-1 bg-zinc-900 text-white text-[10px] px-1 py-0.5 rounded">
+                          Main
+                        </div>
+                      )}
                     </button>
                   ))}
                 </div>
@@ -275,7 +327,7 @@ export default function CarDetailsPage({ params }) {
                         : "text-zinc-500 border-transparent hover:text-zinc-900"
                     }`}
                   >
-                    <tab.icon className={`w-4 h-4 ${activeTab === tab.id ? "text-zinc-950" : "text-zinc-400"}`} />
+                    <tab.icon className={`w-4 h-4 ${activeTab === tab.id ? "text-zinc-950" : "text-zinc-500"}`} />
                     {tab.label}
                   </button>
                 ))}
@@ -292,7 +344,7 @@ export default function CarDetailsPage({ params }) {
                         dangerouslySetInnerHTML={{ __html: car.overview }}
                       />
                     ) : (
-                      <p className="text-zinc-400 text-sm">No conceptual overview provided for this spec entry.</p>
+                      <p className="text-zinc-500 text-sm">No conceptual overview provided for this spec entry.</p>
                     )}
                   </div>
                 )}
@@ -309,7 +361,7 @@ export default function CarDetailsPage({ params }) {
                         </div>
                       ))}
                       {(!car?.features || car.features.length === 0) && (
-                        <p className="text-zinc-400 text-sm col-span-2">No custom features indexed.</p>
+                        <p className="text-zinc-500 text-sm col-span-2">No custom features indexed.</p>
                       )}
                     </div>
                   </div>
@@ -367,7 +419,7 @@ export default function CarDetailsPage({ params }) {
                         ))}
                       </div>
                     ) : (
-                      <p className="text-zinc-400 text-sm">No custom safety systems cataloged.</p>
+                      <p className="text-zinc-500 text-sm">No custom safety systems cataloged.</p>
                     )}
                   </div>
                 )}
@@ -403,7 +455,7 @@ export default function CarDetailsPage({ params }) {
                     <section.icon className="w-4 h-4 text-zinc-500" />
                     {section.label}
                   </h2>
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-zinc-600 text-sm">
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-zinc-800 text-sm">
                     {section.data.map((item, index) => (
                       <li key={index} className="flex items-start gap-2 font-medium">
                         <span className="inline-block w-1.5 h-1.5 bg-zinc-300 rounded-full mt-2 flex-shrink-0" />
@@ -445,6 +497,25 @@ export default function CarDetailsPage({ params }) {
                       Calculate Monthly Installment
                     </Button>
                   </Link>
+                  <Link href="/contact">
+                    <Button className="w-full py-6 text-sm font-medium rounded-lg bg-blue-500 hover:bg-blue-500/80 tracking-tight">
+                      Schedule Test Drive
+                    </Button>
+                  </Link>
+                  <button
+                    onClick={handleCompare}
+                    className={`w-full py-3 px-4 text-sm font-semibold rounded-lg tracking-tight transition-all flex items-center justify-center gap-2 border-2 ${
+                      inCompare
+                        ? "bg-primary/5 text-primary border-primary"
+                        : "bg-white text-gray-800 border-gray-300 hover:border-primary hover:text-primary"
+                    }`}
+                  >
+                    {inCompare ? (
+                      <><Check className="w-4 h-4" /> In Compare List</>
+                    ) : (
+                      <><BarChart3 className="w-4 h-4" /> Add to Compare</>
+                    )}
+                  </button>
                 </div>
               </div>
 
@@ -462,7 +533,7 @@ export default function CarDetailsPage({ params }) {
                     { label: "Stock ID", value: car?.stock }
                   ].map((spec, i) => spec.value && (
                     <div key={i} className="flex justify-between items-center py-1.5 border-b border-zinc-100 last:border-0 last:pb-0">
-                      <span className="text-zinc-400 font-normal">{spec.label}</span>
+                      <span className="text-zinc-600 font-semibold">{spec.label}</span>
                       <span className={`text-zinc-800 tracking-tight ${spec.capitalize ? 'capitalize' : ''}`}>{spec.value}</span>
                     </div>
                   ))}
@@ -475,7 +546,6 @@ export default function CarDetailsPage({ params }) {
         {/* Related Inventory */}
         {relatedCars.length > 0 && (
           <div className="mt-16 pt-12 border-t border-zinc-200/60">
-            <h2 className="text-2xl font-bold text-zinc-900 tracking-tight mb-6">Similar Match Vehicles</h2>
             <RelatedCars data={relatedCars} />
           </div>
         )}

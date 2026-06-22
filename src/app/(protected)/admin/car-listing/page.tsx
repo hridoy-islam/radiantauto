@@ -10,6 +10,7 @@ import {
   Trash2,
   Plus,
   BadgeCheck,
+  Star,
 } from "lucide-react";
 import axiosInstance from "../../../../lib/axios";
 
@@ -45,6 +46,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../../components/ui/select";
+import { Switch } from "../../../../components/ui/switch";
 
 export default function CarListManagementPage() {
   const router = useRouter();
@@ -62,6 +64,9 @@ export default function CarListManagementPage() {
   const [statusUpdateLoading, setStatusUpdateLoading] = useState(false);
   const [showStatusDialog, setShowStatusDialog] = useState(false);
   const [statusTarget, setStatusTarget] = useState(null);
+
+  // Feature Car Toggle
+  const [featureToggling, setFeatureToggling] = useState<string | null>(null);
 
   // Filter States
   const [searchQuery, setSearchQuery] = useState("");
@@ -220,6 +225,28 @@ export default function CarListManagementPage() {
     }
   };
 
+  const handleFeatureToggle = async (id: string, currentValue: boolean) => {
+    try {
+      setFeatureToggling(id);
+      await axiosInstance.patch(`/cars/${id}`, {
+        featureCar: !currentValue,
+      });
+      setCars((prev) =>
+        prev.map((car) =>
+          car._id === id ? { ...car, featureCar: !currentValue } : car
+        )
+      );
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update featured status.",
+        variant: "destructive",
+      });
+    } finally {
+      setFeatureToggling(null);
+    }
+  };
+
   const formatPrice = (price) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -365,6 +392,7 @@ export default function CarListManagementPage() {
                   <TableHead className="text-black font-semibold h-12">Specs</TableHead>
                   <TableHead className="text-black font-semibold h-12">Price</TableHead>
                   <TableHead className="text-black font-semibold h-12">Status</TableHead>
+                  <TableHead className="text-black font-semibold h-12 text-center">Featured</TableHead>
                   <TableHead className="text-black font-semibold h-12">Listed</TableHead>
                   <TableHead className="text-black font-semibold h-12 text-right pr-4">Actions</TableHead>
                 </TableRow>
@@ -413,6 +441,22 @@ export default function CarListManagementPage() {
                         >
                           {car.status === "available" ? "Mark Sold" : "Mark Available"}
                         </button>
+                      </div>
+                    </TableCell>
+                    <TableCell className="py-4 text-center">
+                      <div className="flex items-center justify-center">
+                        <Switch
+                          checked={car.featureCar === true}
+                          onCheckedChange={(e) => {
+                            handleFeatureToggle(car._id, car.featureCar);
+                          }}
+                          disabled={featureToggling === car._id}
+                          onClick={(e) => e.stopPropagation()}
+                        /> {car.featureCar && (
+    <span className="inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800">
+      Featured
+    </span>
+  )}
                       </div>
                     </TableCell>
                     <TableCell className="py-4">

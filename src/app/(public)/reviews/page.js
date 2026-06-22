@@ -2,12 +2,6 @@ import React from "react";
 import Button from "../../components/Button";
 import PageTitle from "../../components/PageTitle";
 
-export const metadata = {
-  title: "Customer Reviews - What People Says About Us",
-  description:
-    "There are many variations of passages of Lorem Ipsum available but the majority have suffered alteration in some form.",
-};
-
 const Reviews = () => {
   const reviewsData = [
     {
