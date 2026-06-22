@@ -6,11 +6,11 @@ export const metadata = {
     title: "Finance - Radiant Auto",
     description:
       "Explore flexible financing options at Radiant Auto. Get pre-approved in minutes with competitive rates and tailored payment plans.",
-    url: "https://www.radiant-auto.com/finance",
+    url: "https://radiant-auto.com/finance",
     siteName: "Radiant Auto",
     images: [
       {
-        url: "https://www.radiant-auto.com/images/titlebg.jpeg",
+        url: "https://radiant-auto.com/images/titlebg.jpeg",
         width: 1200,
         height: 630,
         alt: "Finance - Radiant Auto",
@@ -24,7 +24,7 @@ export const metadata = {
     title: "Finance - Radiant Auto",
     description:
       "Explore flexible financing options at Radiant Auto. Get pre-approved in minutes with competitive rates and tailored payment plans.",
-    images: ["https://www.radiant-auto.com/images/titlebg.jpeg"],
+    images: ["https://radiant-auto.com/images/titlebg.jpeg"],
   },
 };
 

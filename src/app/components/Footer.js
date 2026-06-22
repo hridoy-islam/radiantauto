@@ -11,6 +11,7 @@ import {
   FaMapMarkerAlt,
   FaPhoneAlt,
   FaEnvelope,
+  FaInstagram,
 } from "react-icons/fa";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -61,10 +62,8 @@ const Footer = () => {
             </p>
             <div className="flex items-center gap-3">
               {[
-                { href: "#", icon: FaFacebookF, label: "Facebook" },
-                { href: "#", icon: FaTwitter, label: "Twitter" },
-                { href: "#", icon: FaYoutube, label: "YouTube" },
-                { href: "#", icon: FaLinkedinIn, label: "LinkedIn" },
+                { href: "https://www.facebook.com/share/1FeaE3rXsY/?mibextid=wwXIfr", icon: FaFacebookF, label: "Facebook" },
+                { href: "https://www.instagram.com/radiant.aar?igsh=NjZoYXcwcXhkZ2gz", icon: FaInstagram, label: "YouTube" },
               ].map((social, i) => (
                 <Link
                   key={i}

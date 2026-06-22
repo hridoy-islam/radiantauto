@@ -6,11 +6,11 @@ export const metadata = {
     title: "Trade In Your Car - Radiant Auto",
     description:
       "Get the best value for your current vehicle with Radiant Auto's hassle-free trade-in process. Free appraisal, instant offer, and same-day processing.",
-    url: "https://www.radiant-auto.com/trade-in",
+    url: "https://radiant-auto.com/trade-in",
     siteName: "Radiant Auto",
     images: [
       {
-        url: "https://www.radiant-auto.com/images/titlebg.jpeg",
+        url: "https://radiant-auto.com/images/titlebg.jpeg",
         width: 1200,
         height: 630,
         alt: "Trade In Your Car - Radiant Auto",
@@ -24,7 +24,7 @@ export const metadata = {
     title: "Trade In Your Car - Radiant Auto",
     description:
       "Get the best value for your current vehicle with Radiant Auto's hassle-free trade-in process.",
-    images: ["https://www.radiant-auto.com/images/titlebg.jpeg"],
+    images: ["https://radiant-auto.com/images/titlebg.jpeg"],
   },
 };
 

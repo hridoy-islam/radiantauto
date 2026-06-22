@@ -6,11 +6,11 @@ export const metadata = {
     title: "Payment Calculator - Radiant Auto",
     description:
       "Payment Calculator at Radiant Auto is powered by partnerships with multiple lenders, ensuring you receive the best rates and quick approvals.",
-    url: "https://www.radiant-auto.com/payment-calculator",
+    url: "https://radiant-auto.com/payment-calculator",
     siteName: "Radiant Auto",
     images: [
       {
-        url: "https://www.radiant-auto.com/images/titlebg.jpeg",
+        url: "https://radiant-auto.com/images/titlebg.jpeg",
         width: 1200,
         height: 630,
         alt: "Payment Calculator - Radiant Auto",
@@ -24,7 +24,7 @@ export const metadata = {
     title: "Payment Calculator - Radiant Auto",
     description:
       "Calculate your monthly car payments with Radiant Auto's easy-to-use payment calculator.",
-    images: ["https://www.radiant-auto.com/images/titlebg.jpeg"],
+    images: ["https://radiant-auto.com/images/titlebg.jpeg"],
   },
 };
 

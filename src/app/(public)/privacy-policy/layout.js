@@ -6,11 +6,11 @@ export const metadata = {
     title: "Privacy Policy - Radiant Auto",
     description:
       "Read Radiant Auto's privacy policy to understand how we collect, use, and protect your personal information.",
-    url: "https://www.radiant-auto.com/privacy-policy",
+    url: "https://radiant-auto.com/privacy-policy",
     siteName: "Radiant Auto",
     images: [
       {
-        url: "https://www.radiant-auto.com/images/titlebg.jpeg",
+        url: "https://radiant-auto.com/images/titlebg.jpeg",
         width: 1200,
         height: 630,
         alt: "Privacy Policy - Radiant Auto",
@@ -24,7 +24,7 @@ export const metadata = {
     title: "Privacy Policy - Radiant Auto",
     description:
       "Read Radiant Auto's privacy policy to understand how we collect, use, and protect your personal information.",
-    images: ["https://www.radiant-auto.com/images/titlebg.jpeg"],
+    images: ["https://radiant-auto.com/images/titlebg.jpeg"],
   },
 };
 

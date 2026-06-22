@@ -6,11 +6,11 @@ export const metadata = {
     title: "Sell Your Car - Radiant Auto",
     description:
       "Sell your car quickly and at the best possible price with Radiant Auto. Free market evaluation, no hidden fees, fast payment, and free pickup.",
-    url: "https://www.radiant-auto.com/sell-your-car",
+    url: "https://radiant-auto.com/sell-your-car",
     siteName: "Radiant Auto",
     images: [
       {
-        url: "https://www.radiant-auto.com/images/titlebg.jpeg",
+        url: "https://radiant-auto.com/images/titlebg.jpeg",
         width: 1200,
         height: 630,
         alt: "Sell Your Car - Radiant Auto",
@@ -24,7 +24,7 @@ export const metadata = {
     title: "Sell Your Car - Radiant Auto",
     description:
       "Sell your car quickly and at the best possible price with Radiant Auto.",
-    images: ["https://www.radiant-auto.com/images/titlebg.jpeg"],
+    images: ["https://radiant-auto.com/images/titlebg.jpeg"],
   },
 };
 

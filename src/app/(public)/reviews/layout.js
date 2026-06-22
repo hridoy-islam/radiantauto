@@ -6,11 +6,11 @@ export const metadata = {
     title: "Customer Reviews - Radiant Auto",
     description:
       "Read what our customers say about their experience at Radiant Auto. See why thousands trust us for their automotive needs.",
-    url: "https://www.radiant-auto.com/reviews",
+    url: "https://radiant-auto.com/reviews",
     siteName: "Radiant Auto",
     images: [
       {
-        url: "https://www.radiant-auto.com/images/titlebg.jpeg",
+        url: "https://radiant-auto.com/images/titlebg.jpeg",
         width: 1200,
         height: 630,
         alt: "Customer Reviews - Radiant Auto",
@@ -24,7 +24,7 @@ export const metadata = {
     title: "Customer Reviews - Radiant Auto",
     description:
       "Read what our customers say about their experience at Radiant Auto.",
-    images: ["https://www.radiant-auto.com/images/titlebg.jpeg"],
+    images: ["https://radiant-auto.com/images/titlebg.jpeg"],
   },
 };
 

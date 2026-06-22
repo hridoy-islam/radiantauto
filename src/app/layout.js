@@ -16,8 +16,8 @@ export const metadata = {
     name: "Radiant Auto",
     description:
       "Radiant Auto offers top-notch car care services with a focus on customer experience and professional workmanship.",
-    url: "https://www.radiant-auto.com/",
-    image: "https:/https://www.radiant-auto.com/images/titlebg.jpeg",
+    url: "https://radiant-auto.com/",
+    image: "https://radiant-auto.com/images/titlebg.jpeg",
     telephone: "+1 306 261 4800",
     address: {
       "@type": "PostalAddress",

@@ -9,11 +9,11 @@ export const metadata = {
     title: "Vehicle Details - Radiant Auto",
     description:
       "Browse detailed information, specs, and pricing on this vehicle at Radiant Auto.",
-    url: "https://www.radiant-auto.com/car",
+    url: "https://radiant-auto.com/car",
     siteName: "Radiant Auto",
     images: [
       {
-        url: "https://www.radiant-auto.com/images/og-image.jpg",
+        url: "https://radiant-auto.com/images/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Vehicle Details - Radiant Auto",
@@ -27,7 +27,7 @@ export const metadata = {
     title: "Vehicle Details - Radiant Auto",
     description:
       "Browse detailed information, specs, and pricing on this vehicle at Radiant Auto.",
-    images: ["https://www.radiant-auto.com/images/og-image.jpg"],
+    images: ["https://radiant-auto.com/images/og-image.jpg"],
   },
 };
 
