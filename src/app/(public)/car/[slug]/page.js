@@ -6,7 +6,7 @@ import RelatedCars from "../../../components/RelatedCars";
 import { VehicleInfo } from "../../../components/VehicleInfo";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { 
   Calendar, 
   Gauge, 
@@ -31,13 +31,20 @@ import {
   ChevronLeft,
   ChevronRight,
   BarChart3,
-  Plus
+  Plus,
+  Play,
+  Pause,
+  Volume2,
+  VolumeX,
+  Maximize,
+  Minimize
 } from "lucide-react";
 import { Button } from "../../../../components/ui/button";
 import { Badge } from "../../../../components/ui/badge";
 import { Separator } from "../../../../components/ui/separator";
 import { BlinkingDots } from "../../../../components/ui/blinking-dots";
 import { addToCompare, removeFromCompare, isInCompare } from "../../../../lib/compare";
+import { toast } from "../../../../components/ui/use-toast"; // Assuming you have a toast component
 
 export default function CarDetailsPage({ params }) {
   const { slug } = params;
@@ -50,6 +57,11 @@ export default function CarDetailsPage({ params }) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [inCompare, setInCompare] = useState(false);
+  
+  // Video states
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [isVideoMuted, setIsVideoMuted] = useState(true);
+  const [showVideo, setShowVideo] = useState(true); // Show video first if available
 
   const fetchData = async () => {
     try {
@@ -58,17 +70,37 @@ export default function CarDetailsPage({ params }) {
       const carData = res.data.data.result?.[0] || res.data.data;
       
       if (carData) {
-        if (typeof carData.image_gallery === 'string') {
-          try {
-            carData.image_gallery = JSON.parse(carData.image_gallery);
-          } catch {
-            carData.image_gallery = [carData.image_gallery];
+        // Parse JSON fields if they're strings
+        const jsonFields = [
+          'image_gallery', 'features', 'exterior', 'interior', 
+          'entertainment', 'mechanical', 'safety', 'techspecs', 
+          'highlights', 'awards', 'packages', 'meta_keywords'
+        ];
+        
+        jsonFields.forEach(field => {
+          if (typeof carData[field] === 'string') {
+            try {
+              carData[field] = JSON.parse(carData[field]);
+            } catch {
+              carData[field] = [];
+            }
           }
-        }
+        });
+        
         setCar(carData);
+        
+        // If video exists, show it first
+        if (carData.videoUrl) {
+          setShowVideo(true);
+        }
       }
     } catch (error) {
       console.error("Error fetching car data:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load vehicle details",
+        variant: "destructive",
+      });
     }
   };
 
@@ -76,12 +108,15 @@ export default function CarDetailsPage({ params }) {
     try {
       const res = await axiosInstance.get(`/cars?limit=4&status=available`);
       const cars = res.data.data.result || res.data.data || [];
-      const updatedCars = cars.map((item) => ({
-        ...item,
-        image_gallery: typeof item.image_gallery === 'string' 
-          ? JSON.parse(item.image_gallery) 
-          : item.image_gallery,
-      }));
+      const updatedCars = cars
+        .filter(item => item.url !== slug) // Exclude current car
+        .slice(0, 4)
+        .map((item) => ({
+          ...item,
+          image_gallery: typeof item.image_gallery === 'string' 
+            ? JSON.parse(item.image_gallery) 
+            : item.image_gallery,
+        }));
       setRelatedCars(updatedCars);
     } catch (error) {
       console.error("Error fetching related cars:", error);
@@ -102,7 +137,7 @@ export default function CarDetailsPage({ params }) {
     // Add gallery images, filtering out any duplicates with thumbnail
     if (car?.image_gallery && Array.isArray(car.image_gallery)) {
       const galleryImages = car.image_gallery.filter(
-        img => img !== car.thumbnailImage // Avoid duplicates
+        img => img !== car.thumbnailImage
       );
       images.push(...galleryImages);
     }
@@ -123,6 +158,26 @@ export default function CarDetailsPage({ params }) {
   }, [slug]);
 
   useEffect(() => {
+    if (car) {
+      const title = `${car.modelYear || ''} ${car.carBrand?.brandName || ''} ${car.model || ''} ${car.trim || ''} | Radiant Auto`;
+      document.title = title;
+
+      const ogTitle = document.querySelector('meta[property="og:title"]');
+      if (ogTitle) ogTitle.setAttribute("content", title);
+      const ogDesc = document.querySelector('meta[property="og:description"]');
+      if (ogDesc && car.overview) {
+        const plainText = car.overview.replace(/<[^>]+>/g, "").slice(0, 160);
+        ogDesc.setAttribute("content", plainText);
+      }
+      const ogUrl = document.querySelector('meta[property="og:url"]');
+      if (ogUrl) ogUrl.setAttribute("content", `https://radiant-auto.com/car/${slug}`);
+
+      const canonical = document.querySelector('link[rel="canonical"]');
+      if (canonical) canonical.setAttribute("href", `https://radiant-auto.com/car/${slug}`);
+    }
+  }, [car, slug]);
+
+  useEffect(() => {
     if (car?._id) {
       setInCompare(isInCompare(car._id));
     }
@@ -132,9 +187,15 @@ export default function CarDetailsPage({ params }) {
     if (inCompare) {
       removeFromCompare(car._id);
       setInCompare(false);
+      toast({
+        description: "Removed from compare list",
+      });
     } else {
       addToCompare(car);
       setInCompare(true);
+      toast({
+        description: "Added to compare list",
+      });
     }
   };
 
@@ -147,8 +208,8 @@ export default function CarDetailsPage({ params }) {
     }).format(price || 0);
   };
 
-  const formatMileage = (km) => {
-    return new Intl.NumberFormat("en-US").format(km || 0);
+  const formatMileage = (mileage) => {
+    return new Intl.NumberFormat("en-US").format(mileage || 0);
   };
 
   const handleNextImage = (e) => {
@@ -159,6 +220,37 @@ export default function CarDetailsPage({ params }) {
   const handlePrevImage = (e) => {
     e?.stopPropagation();
     setActiveImageIndex((prev) => (prev - 1 + carImages.length) % carImages.length);
+  };
+
+  // Get car heading
+  const getCarHeading = () => {
+    const year = car?.modelYear;
+    const make = car?.carBrand?.brandName || '';
+    const model = car?.model || '';
+    const trim = car?.trim || '';
+    
+    const parts = [year, make, model, trim].filter(Boolean);
+    return parts.join(' ') || car?.name || 'Untitled Vehicle';
+  };
+
+  // Get video embed URL
+  const getVideoEmbedUrl = (url) => {
+    if (!url) return null;
+    
+    // YouTube
+    const youtubeMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]+)/);
+    if (youtubeMatch) {
+      return `https://www.youtube.com/embed/${youtubeMatch[1]}?autoplay=1&mute=${isVideoMuted ? 1 : 0}&controls=1`;
+    }
+    
+    // Vimeo
+    const vimeoMatch = url.match(/(?:vimeo\.com\/)(\d+)/);
+    if (vimeoMatch) {
+      return `https://player.vimeo.com/video/${vimeoMatch[1]}?autoplay=1&muted=${isVideoMuted ? 1 : 0}`;
+    }
+    
+    // Direct video URL
+    return url;
   };
 
   if (loading) {
@@ -201,29 +293,23 @@ export default function CarDetailsPage({ params }) {
           </Link>
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
             <div>
-              <div className="flex items-center gap-2 mb-2">
-                {car?.year && (
-                  <span className="text-emerald-400 text-sm font-bold tracking-wider bg-emerald-500/10 px-2.5 py-0.5 rounded-md border border-emerald-500/20">
-                    {car.year}
-                  </span>
-                )}
-                {car?.model && (
-                  <span className="text-zinc-400 text-sm font-medium uppercase tracking-wider">
-                    {car.model} Series
-                  </span>
-                )}
-              </div>
+             
               <h1 className="text-3xl md:text-5xl font-bold text-white tracking-tight font-sans">
-                {car?.name || car?.title}
+                {getCarHeading()}
               </h1>
               <div className="flex flex-wrap items-center gap-4 mt-4 text-zinc-400 text-sm font-medium">
                 <span className="flex items-center gap-1.5 bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded-md text-zinc-300">
                   <Gauge className="w-4 h-4 text-zinc-500" />
-                  {formatMileage(car?.km)} km
+                  {formatMileage(car?.mileage)} {car?.mileageUnit || 'km'}
                 </span>
                 {car?.body_style && (
                   <Badge variant="secondary" className="capitalize bg-zinc-800 text-zinc-200 border-zinc-700 font-semibold px-2.5 py-1.5 rounded-md">
                     {car.body_style}
+                  </Badge>
+                )}
+                {car?.transmission && (
+                  <Badge variant="secondary" className="capitalize bg-zinc-800 text-zinc-200 border-zinc-700 font-semibold px-2.5 py-1.5 rounded-md">
+                    {car.transmission}
                   </Badge>
                 )}
                 {car?.status && (
@@ -246,71 +332,137 @@ export default function CarDetailsPage({ params }) {
           {/* Main Content */}
           <div className="lg:w-8/12 space-y-8">
             
-            {/* Premium Interactive Image Gallery Showcase */}
+            {/* Premium Interactive Media Gallery */}
             <div className="bg-white rounded-xl shadow-sm border border-zinc-200/60 overflow-hidden p-3 space-y-3">
-              <div 
-                onClick={() => setIsLightboxOpen(true)}
-                className="relative h-[300px] sm:h-[450px] w-full bg-zinc-900 rounded-lg overflow-hidden group cursor-zoom-in"
-              >
-                <img
-                  src={carImages[activeImageIndex]}
-                  alt={`${car?.name || 'Vehicle'} - Image ${activeImageIndex + 1}`}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-102"
-                />
-                
-                {/* Image Navigation Arrows */}
-                {carImages.length > 1 && (
-                  <>
-                    <button 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handlePrevImage();
-                      }}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-zinc-900 p-2.5 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-200 border border-zinc-200"
-                    >
-                      <ChevronLeft className="w-5 h-5" />
-                    </button>
-                    <button 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleNextImage();
-                      }}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-zinc-900 p-2.5 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-200 border border-zinc-200"
-                    >
-                      <ChevronRight className="w-5 h-5" />
-                    </button>
-                  </>
-                )}
-                
-                {/* Counter Tag */}
-                <div className="absolute bottom-4 right-4 bg-zinc-900/80 backdrop-blur-md text-white text-xs font-semibold px-3 py-1.5 rounded-full border border-zinc-700/50">
-                  {activeImageIndex + 1} / {carImages.length}
-                </div>
-              </div>
-
-              {/* Thumbnails List */}
-              {carImages.length > 1 && (
-                <div className="flex gap-2.5 overflow-x-auto pb-1 pt-1 scrollbar-thin scrollbar-thumb-zinc-300">
-                  {carImages.map((img, index) => (
+              {/* Video Player - Show first if video URL exists */}
+              {car?.videoUrl && showVideo && (
+                <div className="relative w-full rounded-lg overflow-hidden bg-zinc-900">
+                  <div className="relative aspect-video">
+                    {car.videoUrl.includes('youtube.com') || car.videoUrl.includes('vimeo.com') || car.videoUrl.includes('youtu.be') ? (
+                      <iframe
+                        src={getVideoEmbedUrl(car.videoUrl)}
+                        className="w-full h-full"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        title="Vehicle Video"
+                      />
+                    ) : (
+                      <video
+                        src={car.videoUrl}
+                        className="w-full h-full object-cover"
+                        controls
+                        autoPlay={isVideoPlaying}
+                        muted={isVideoMuted}
+                        loop
+                        poster={carImages[0]}
+                      >
+                        Your browser does not support the video tag.
+                      </video>
+                    )}
+                    
+                    {/* Video Controls Overlay */}
+                    <div className="absolute top-3 right-3 flex gap-2">
+                      <button
+                        onClick={() => setShowVideo(false)}
+                        className="bg-white/90 hover:bg-white text-zinc-900 p-2 rounded-full shadow-lg transition-all"
+                        title="Switch to images"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                    
+                    {/* Switch to Images Button */}
                     <button
-                      key={index}
-                      onClick={() => setActiveImageIndex(index)}
-                      className={`relative w-20 h-14 sm:w-24 sm:h-16 rounded-md overflow-hidden flex-shrink-0 transition-all border-2 ${
-                        index === activeImageIndex 
-                          ? "border-zinc-900 opacity-100 shadow-md scale-98" 
-                          : "border-transparent opacity-60 hover:opacity-90"
-                      }`}
+                      onClick={() => setShowVideo(false)}
+                      className="absolute bottom-4 left-4 bg-white/90 hover:bg-white text-zinc-900 px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg transition-all"
                     >
-                      <img src={img} alt={`Thumbnail ${index + 1}`} className="w-full h-full object-cover" />
-                      {/* Optional: Add a small indicator for the first image if it's the thumbnail */}
-                      {index === 0 && car?.thumbnailImage && (
-                        <div className="absolute top-1 left-1 bg-zinc-900 text-white text-[10px] px-1 py-0.5 rounded">
-                          Main
-                        </div>
-                      )}
+                      View Images Instead
                     </button>
-                  ))}
+                  </div>
                 </div>
+              )}
+
+              {/* Image Gallery - Show if no video or video hidden */}
+              {(!car?.videoUrl || !showVideo) && (
+                <>
+                  <div 
+                    onClick={() => setIsLightboxOpen(true)}
+                    className="relative h-[300px] sm:h-[450px] w-full bg-zinc-900 rounded-lg overflow-hidden group cursor-zoom-in"
+                  >
+                    <img
+                      src={carImages[activeImageIndex]}
+                      alt={`${getCarHeading()} - Image ${activeImageIndex + 1}`}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-102"
+                    />
+                    
+                    {/* Image Navigation Arrows */}
+                    {carImages.length > 1 && (
+                      <>
+                        <button 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handlePrevImage();
+                          }}
+                          className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-zinc-900 p-2.5 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-200 border border-zinc-200"
+                        >
+                          <ChevronLeft className="w-5 h-5" />
+                        </button>
+                        <button 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleNextImage();
+                          }}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-zinc-900 p-2.5 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-200 border border-zinc-200"
+                        >
+                          <ChevronRight className="w-5 h-5" />
+                        </button>
+                      </>
+                    )}
+                    
+                    {/* Show Video Button */}
+                    {car?.videoUrl && !showVideo && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setShowVideo(true);
+                        }}
+                        className="absolute bottom-4 left-4 bg-white/90 hover:bg-white text-zinc-900 px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg transition-all flex items-center gap-1.5"
+                      >
+                        <Play className="w-3.5 h-3.5" />
+                        Watch Video
+                      </button>
+                    )}
+                    
+                    {/* Counter Tag */}
+                    <div className="absolute bottom-4 right-4 bg-zinc-900/80 backdrop-blur-md text-white text-xs font-semibold px-3 py-1.5 rounded-full border border-zinc-700/50">
+                      {activeImageIndex + 1} / {carImages.length}
+                    </div>
+                  </div>
+
+                  {/* Thumbnails List */}
+                  {carImages.length > 1 && (
+                    <div className="flex gap-2.5 overflow-x-auto pb-1 pt-1 scrollbar-thin scrollbar-thumb-zinc-300">
+                      {carImages.map((img, index) => (
+                        <button
+                          key={index}
+                          onClick={() => setActiveImageIndex(index)}
+                          className={`relative w-20 h-14 sm:w-24 sm:h-16 rounded-md overflow-hidden flex-shrink-0 transition-all border-2 ${
+                            index === activeImageIndex 
+                              ? "border-zinc-900 opacity-100 shadow-md scale-98" 
+                              : "border-transparent opacity-60 hover:opacity-90"
+                          }`}
+                        >
+                          <img src={img} alt={`Thumbnail ${index + 1}`} className="w-full h-full object-cover" />
+                          {index === 0 && car?.thumbnailImage && (
+                            <div className="absolute top-1 left-1 bg-zinc-900 text-white text-[10px] px-1 py-0.5 rounded">
+                              Main
+                            </div>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </>
               )}
             </div>
 
@@ -343,8 +495,21 @@ export default function CarDetailsPage({ params }) {
                         className="prose max-w-none text-zinc-600 text-sm leading-relaxed"
                         dangerouslySetInnerHTML={{ __html: car.overview }}
                       />
+                    ) : car?.description ? (
+                      <div 
+                        className="prose max-w-none text-zinc-600 text-sm leading-relaxed"
+                        dangerouslySetInnerHTML={{ __html: car.description }}
+                      />
                     ) : (
-                      <p className="text-zinc-500 text-sm">No conceptual overview provided for this spec entry.</p>
+                      <p className="text-zinc-500 text-sm">No overview provided for this vehicle.</p>
+                    )}
+                    
+                    {/* Dealer Notes */}
+                    {car?.dealerNotes && (
+                      <div className="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                        <h3 className="text-sm font-bold text-amber-900 mb-2">Dealer Notes</h3>
+                        <p className="text-amber-800 text-sm">{car.dealerNotes}</p>
+                      </div>
                     )}
                   </div>
                 )}
@@ -364,6 +529,21 @@ export default function CarDetailsPage({ params }) {
                         <p className="text-zinc-500 text-sm col-span-2">No custom features indexed.</p>
                       )}
                     </div>
+                    
+                    {/* Highlights */}
+                    {car?.highlights?.length > 0 && (
+                      <div className="mt-6">
+                        <h3 className="text-base font-bold text-zinc-900 mb-3">Key Highlights</h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                          {car.highlights.map((highlight, index) => (
+                            <div key={index} className="flex items-center gap-2 text-sm text-zinc-700">
+                              <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full flex-shrink-0" />
+                              {highlight}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
 
@@ -378,13 +558,62 @@ export default function CarDetailsPage({ params }) {
                             <Cog className="w-4 h-4 text-zinc-600" />
                             Powertrain & Performance
                           </h3>
-                          <p className="text-zinc-600 text-sm font-medium">{car.engine} • {car.drivetrain}</p>
-                          {car.fuel_efficiency && (
-                            <p className="text-zinc-500 text-xs flex items-center gap-1.5 mt-2 pt-2 border-t border-zinc-200/60">
-                              <Fuel className="w-3.5 h-3.5" />
-                              Estimated Efficiency: {car.fuel_efficiency}
+                          <div className="space-y-2 text-sm">
+                            <p className="text-zinc-600 font-medium">
+                              {car.engine} • {car.drivetrain} • {car.transmission}
                             </p>
-                          )}
+                            {car.engineSize && (
+                              <p className="text-zinc-600">Engine Size: {car.engineSize}</p>
+                            )}
+                            {car.engineType && (
+                              <p className="text-zinc-600">Type: {car.engineType}</p>
+                            )}
+                            {car.horsepower && (
+                              <p className="text-zinc-600">{car.horsepower} HP</p>
+                            )}
+                            {car.torque && (
+                              <p className="text-zinc-600">{car.torque} lb-ft Torque</p>
+                            )}
+                            {car.fuelType && (
+                              <p className="text-zinc-600">Fuel Type: {car.fuelType}</p>
+                            )}
+                            {car.fuel_efficiency && (
+                              <p className="text-zinc-500 text-xs flex items-center gap-1.5 mt-2 pt-2 border-t border-zinc-200/60">
+                                <Fuel className="w-3.5 h-3.5" />
+                                Estimated Efficiency: {car.fuel_efficiency}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                      
+                      {/* Fuel Economy Details */}
+                      {(car?.fuelEconomyCity || car?.fuelEconomyHighway || car?.fuelEconomyCombined) && (
+                        <div className="p-4 bg-zinc-50 border border-zinc-100 rounded-lg">
+                          <h3 className="font-semibold text-zinc-900 text-sm mb-2 flex items-center gap-2">
+                            <Fuel className="w-4 h-4 text-zinc-600" />
+                            Fuel Economy
+                          </h3>
+                          <div className="grid grid-cols-3 gap-4 text-center">
+                            {car.fuelEconomyCity && (
+                              <div>
+                                <p className="text-lg font-bold text-zinc-900">{car.fuelEconomyCity}</p>
+                                <p className="text-xs text-zinc-500">City MPG</p>
+                              </div>
+                            )}
+                            {car.fuelEconomyHighway && (
+                              <div>
+                                <p className="text-lg font-bold text-zinc-900">{car.fuelEconomyHighway}</p>
+                                <p className="text-xs text-zinc-500">Highway MPG</p>
+                              </div>
+                            )}
+                            {car.fuelEconomyCombined && (
+                              <div>
+                                <p className="text-lg font-bold text-zinc-900">{car.fuelEconomyCombined}</p>
+                                <p className="text-xs text-zinc-500">Combined MPG</p>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       )}
                       
@@ -421,6 +650,42 @@ export default function CarDetailsPage({ params }) {
                     ) : (
                       <p className="text-zinc-500 text-sm">No custom safety systems cataloged.</p>
                     )}
+                    
+                    {/* Safety Rating */}
+                    {car?.safetyRating && (
+                      <div className="mt-4 p-4 bg-zinc-50 border border-zinc-100 rounded-lg">
+                        <h3 className="font-semibold text-zinc-900 text-sm mb-2">Safety Rating</h3>
+                        <p className="text-zinc-600 text-sm">{car.safetyRating}</p>
+                      </div>
+                    )}
+                    
+                    {/* Additional Safety Info */}
+                    <div className="mt-4 grid grid-cols-2 gap-3">
+                      <div className="p-3 bg-zinc-50 border border-zinc-100 rounded-lg">
+                        <p className="text-xs text-zinc-500">Accident Free</p>
+                        <p className="text-sm font-semibold text-zinc-900">
+                          {car?.accidentFree ? 'Yes' : 'No'}
+                        </p>
+                      </div>
+                      <div className="p-3 bg-zinc-50 border border-zinc-100 rounded-lg">
+                        <p className="text-xs text-zinc-500">Carfax Available</p>
+                        <p className="text-sm font-semibold text-zinc-900">
+                          {car?.carfaxAvailable ? 'Yes' : 'No'}
+                        </p>
+                      </div>
+                      <div className="p-3 bg-zinc-50 border border-zinc-100 rounded-lg">
+                        <p className="text-xs text-zinc-500">Service Records</p>
+                        <p className="text-sm font-semibold text-zinc-900">
+                          {car?.serviceRecords ? 'Yes' : 'No'}
+                        </p>
+                      </div>
+                      <div className="p-3 bg-zinc-50 border border-zinc-100 rounded-lg">
+                        <p className="text-xs text-zinc-500">One Owner</p>
+                        <p className="text-sm font-semibold text-zinc-900">
+                          {car?.oneOwner ? 'Yes' : 'No'}
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>
@@ -435,8 +700,9 @@ export default function CarDetailsPage({ params }) {
                 engine={car?.engine}
                 fuel_efficiency={car?.fuel_efficiency}
                 interior_colour={car?.interior_colour}
-                km={car?.km}
-                stock={car?.stock}
+                km={car?.mileage}
+                mileageUnit={car?.mileageUnit}
+                stock={car?.stock || car?.stockNumber}
                 transmission={car?.transmission}
                 vin={car?.vin}
               />
@@ -447,9 +713,36 @@ export default function CarDetailsPage({ params }) {
               { id: 'exterior', label: 'Exterior Profile', data: car?.exterior, icon: Palette },
               { id: 'interior', label: 'Interior Cabin Archetype', data: car?.interior, icon: Settings },
               { id: 'entertainment', label: 'Infotainment & Telematics', data: car?.entertainment, icon: Music },
-              { id: 'mechanical', label: 'Mechanical Infrastructure', data: car?.mechanical, icon: Wrench }
-            ].map((section) => (
-              section.data && section.data.length > 0 && (
+              { id: 'mechanical', label: 'Mechanical Infrastructure', data: car?.mechanical, icon: Wrench },
+              { id: 'packages', label: 'Available Packages', data: car?.packages, icon: Plus }
+            ].map((section) => {
+              if (section.id === 'packages') {
+                return section.data && section.data.length > 0 && (
+                  <div key={section.id} className="bg-white rounded-xl shadow-sm border border-zinc-200/60 p-6 md:p-8">
+                    <h2 className="text-base font-bold text-zinc-900 tracking-tight mb-4 flex items-center gap-2.5 uppercase text-xs tracking-wider border-b border-zinc-100 pb-3">
+                      <section.icon className="w-4 h-4 text-zinc-500" />
+                      {section.label}
+                    </h2>
+                    <div className="space-y-3">
+                      {section.data.map((pkg, index) => (
+                        <div key={index} className="p-3 bg-zinc-50 border border-zinc-100 rounded-lg">
+                          <div className="flex justify-between items-start">
+                            <h3 className="font-semibold text-zinc-900 text-sm">{pkg.name}</h3>
+                            {pkg.price && (
+                              <span className="text-sm font-bold text-zinc-900">{formatPrice(pkg.price)}</span>
+                            )}
+                          </div>
+                          {pkg.description && (
+                            <p className="text-zinc-600 text-sm mt-1">{pkg.description}</p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
+              
+              return section.data && section.data.length > 0 && (
                 <div key={section.id} className="bg-white rounded-xl shadow-sm border border-zinc-200/60 p-6 md:p-8">
                   <h2 className="text-base font-bold text-zinc-900 tracking-tight mb-4 flex items-center gap-2.5 uppercase text-xs tracking-wider border-b border-zinc-100 pb-3">
                     <section.icon className="w-4 h-4 text-zinc-500" />
@@ -464,8 +757,8 @@ export default function CarDetailsPage({ params }) {
                     ))}
                   </ul>
                 </div>
-              )
-            ))}
+              );
+            })}
           </div>
 
           {/* Sidebar */}
@@ -524,13 +817,23 @@ export default function CarDetailsPage({ params }) {
                 <h3 className="text-sm font-bold text-zinc-900 tracking-tight uppercase tracking-wider mb-4">Quick Readout</h3>
                 <div className="space-y-3 text-sm font-medium">
                   {[
-                    { label: "Year Model", value: car?.year },
-                    { label: "Series Model", value: car?.model, capitalize: true },
+                    { label: "Year", value: car?.modelYear },
+                    { label: "Make", value: car?.carBrand?.brandName },
+                    { label: "Model", value: car?.model, capitalize: true },
+                    { label: "Trim", value: car?.trim, capitalize: true },
+                    { label: "Condition", value: car?.condition },
+                    { label: "Body Style", value: car?.body_style,capitalize: true },
+                    { label: "Segment", value: car?.segment },
+                    { label: "Doors", value: car?.doors },
+                    { label: "Seats", value: car?.seats },
                     { label: "Transmission", value: car?.transmission, capitalize: true },
                     { label: "Drivetrain", value: car?.drivetrain },
                     { label: "Engine", value: car?.engine },
-                    { label: "Fuel System", value: car?.fuel_efficiency },
-                    { label: "Stock ID", value: car?.stock }
+                    { label: "Fuel Type", value: car?.fuelType },
+                    { label: "Exterior Color", value: car?.exterior_colour },
+                    { label: "Interior Color", value: car?.interior_colour },
+                    { label: "Stock ID", value: car?.stock || car?.stockNumber },
+                    { label: "VIN", value: car?.vin }
                   ].map((spec, i) => spec.value && (
                     <div key={i} className="flex justify-between items-center py-1.5 border-b border-zinc-100 last:border-0 last:pb-0">
                       <span className="text-zinc-600 font-semibold">{spec.label}</span>
@@ -539,6 +842,17 @@ export default function CarDetailsPage({ params }) {
                   ))}
                 </div>
               </div>
+              
+              {/* Carfax Report */}
+              {car?.carfaxAvailable && car?.carfaxReport && (
+                <div className="bg-white rounded-xl shadow-sm border border-zinc-200/60 p-6">
+                  <h3 className="text-sm font-bold text-zinc-900 tracking-tight uppercase tracking-wider mb-4">Carfax Report</h3>
+                  <Button className="w-full" variant="outline">
+                    <Shield className="w-4 h-4 mr-2" />
+                    View Carfax Report
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -551,13 +865,68 @@ export default function CarDetailsPage({ params }) {
         )}
       </div>
 
+      {/* Structured Data */}
+      {car && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Vehicle",
+              name: getCarHeading(),
+              model: car.model,
+              modelDate: car.modelYear,
+              manufacturer: car.carBrand?.brandName ? {
+                "@type": "Organization",
+                name: car.carBrand.brandName
+              } : undefined,
+              vehicleConfiguration: car.trim,
+              vehicleIdentificationNumber: car.vin,
+              vehicleTransmission: car.transmission,
+              driveWheelConfiguration: car.drivetrain,
+              numberOfDoors: car.doors,
+              numberOfSeats: car.seats,
+              fuelType: car.fuelType,
+              engine: car.engine ? { 
+                "@type": "EngineSpecification", 
+                name: car.engine,
+                engineType: car.engineType,
+                engineDisplacement: car.engineSize
+              } : undefined,
+              mileageFromOdometer: car.mileage ? { 
+                "@type": "QuantitativeValue", 
+                value: car.mileage, 
+                unitCode: car.mileageUnit === "miles" ? "SMI" : "KMT" 
+              } : undefined,
+              color: car.exterior_colour,
+              interiorColor: car.interior_colour,
+              vehicleBodyStyle: car.body_style,
+              image: car.thumbnailImage || car.image_gallery?.[0],
+              url: `https://radiant-auto.com/car/${slug}`,
+              offers: car.price ? {
+                "@type": "Offer",
+                price: car.price,
+                priceCurrency: "CAD",
+                availability: car.status === "available" 
+                  ? "https://schema.org/InStock" 
+                  : "https://schema.org/SoldOut",
+                itemCondition: car.condition === "New" 
+                  ? "https://schema.org/NewCondition" 
+                  : "https://schema.org/UsedCondition"
+              } : undefined,
+              description: car.overview || car.description
+            }),
+          }}
+        />
+      )}
+
       {/* Fullscreen Interactive Lightbox Modal */}
       {isLightboxOpen && (
         <div className="fixed inset-0 bg-zinc-950/95 backdrop-blur-md z-50 flex flex-col items-center justify-center p-4 select-none animate-in fade-in duration-200">
           {/* Header Controls */}
           <div className="absolute top-4 left-4 right-4 flex justify-between items-center text-white/80 z-10">
             <div className="text-sm font-medium tracking-tight">
-              {car?.name} ({car?.year}) — {activeImageIndex + 1} / {carImages.length}
+              {getCarHeading()} — {activeImageIndex + 1} / {carImages.length}
             </div>
             <button 
               onClick={() => setIsLightboxOpen(false)}
@@ -575,7 +944,7 @@ export default function CarDetailsPage({ params }) {
               className="max-w-full max-h-full object-contain rounded-lg"
             />
 
-            {/* Left Control Arrow */}
+            {/* Navigation Arrows */}
             {carImages.length > 1 && (
               <>
                 <button
@@ -585,7 +954,6 @@ export default function CarDetailsPage({ params }) {
                   <ChevronLeft className="w-6 h-6" />
                 </button>
 
-                {/* Right Control Arrow */}
                 <button
                   onClick={handleNextImage}
                   className="absolute right-2 sm:-right-16 top-1/2 -translate-y-1/2 bg-zinc-900/80 hover:bg-zinc-800 text-white p-3 rounded-full border border-zinc-800 shadow-xl transition-transform active:scale-95"
@@ -596,7 +964,7 @@ export default function CarDetailsPage({ params }) {
             )}
           </div>
 
-          {/* Bottom Interactive Thumbnail Bar */}
+          {/* Bottom Thumbnail Bar */}
           {carImages.length > 1 && (
             <div className="absolute bottom-6 left-4 right-4 flex justify-center gap-2 overflow-x-auto py-2 max-w-3xl mx-auto scrollbar-none">
               {carImages.map((img, index) => (

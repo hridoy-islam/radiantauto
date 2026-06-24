@@ -4,7 +4,14 @@ export const metadata = {
     template: "%s - Radiant Auto",
   },
   description:
-    "Browse detailed information, specs, and pricing on this vehicle at Radiant Auto.",
+    "Browse detailed vehicle information, specifications, features, and pricing.",
+  alternates: {
+    canonical: "/car",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   openGraph: {
     title: "Vehicle Details - Radiant Auto",
     description:

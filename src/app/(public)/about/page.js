@@ -216,16 +216,16 @@ export default function About() {
       {/* Smart Technology Section */}
       <section
         ref={(el) => (sectionRefs.current[1] = el)}
-        className="bg-gradient-to-br from-gray-50 to-gray-100 py-16 lg:py-24"
+        className="b py-16 lg:py-24"
       >
         <div className="container mx-auto px-4">
           <div className="grid items-center gap-16 lg:grid-cols-2 lg:gap-24">
             <div className="relative lg:order-2">
-              <div className="aspect-[4/3] overflow-hidden rounded-3xl shadow-2xl">
+              <div className="aspect-[4/4] overflow-hidden rounded-3xl shadow-2xl">
                 <img
-                  src="https://images.unsplash.com/photo-1468495244123-6c6c332eeece?w=800&q=80"
+                  src="/images/carsell.jpg"
                   alt="Smart technology"
-                  className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+                  className="h-full w-full object-cover transition-transform duration-700 hover:scale-105 "
                 />
               </div>
               <div className="absolute -top-6 -right-6 rounded-2xl bg-gradient-to-br from-primary to-primary/80 p-5 shadow-2xl">
@@ -291,108 +291,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* Why Choose Us Section */}
-      <section
-        ref={(el) => (sectionRefs.current[2] = el)}
-        className="py-16 lg:py-24"
-      >
-        <div className="container mx-auto ">
-          <div className="mx-auto mb-16 max-w-5xl text-center">
-            <span className="inline-block rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold uppercase tracking-widest text-primary">
-              Why Choose Us
-            </span>
-            <h2 className="mt-6 text-4xl font-bold text-gray-900 lg:text-5xl">
-              Built around you,{" "}
-              <span className="text-primary">from start to finish</span>
-            </h2>
-            <p className="mt-4 text-lg text-gray-600">
-              Every decision we make is guided by one question: does this make
-              the experience better for our customers?
-            </p>
-          </div>
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              {
-                title: "Free At-Home Delivery",
-                desc: "We bring your new car straight to your door, anywhere in our service area, at no extra cost.",
-                gradient: "from-blue-500 to-blue-600",
-                icon: (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"
-                  />
-                ),
-              },
-              {
-                title: "10-Day Money-Back",
-                desc: "Not the right fit? Return it within 10 days for a full refund — no questions asked.",
-                gradient: "from-green-500 to-green-600",
-                icon: (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                  />
-                ),
-              },
-              {
-                title: "90-Day Warranty",
-                desc: "Every vehicle comes with a complimentary warranty for added peace of mind after your purchase.",
-                gradient: "from-purple-500 to-purple-600",
-                icon: (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z"
-                  />
-                ),
-              },
-              {
-                title: "Transparent Pricing",
-                desc: "What you see is what you pay. No hidden fees, no last-minute surprises, no negotiation games.",
-                gradient: "from-orange-500 to-orange-600",
-                icon: (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 0 3 6h.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v9.25m-1.5-9H3.375c-.621 0-1.125.504-1.125 1.125v9.25c0 .621.504 1.125 1.125 1.125h15.75c.621 0 1.125-.504 1.125-1.125V6.375c0-.621-.504-1.125-1.125-1.125Z"
-                  />
-                ),
-              },
-            ].map((item, i) => (
-              <div
-                key={i}
-                ref={(el) => (featuresRef.current[i] = el)}
-                className="group relative overflow-hidden rounded-3xl border border-gray-200 bg-white p-8 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:border-transparent"
-              >
-                <div
-                  className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-0 transition-opacity duration-500 group-hover:opacity-10`}
-                />
-                <div
-                  className={`relative z-10 mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${item.gradient} text-white shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6`}
-                >
-                  <svg
-                    className="h-7 w-7"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  >
-                    {item.icon}
-                  </svg>
-                </div>
-                <h3 className="relative z-10 mb-3 text-xl font-bold text-gray-900">
-                  {item.title}
-                </h3>
-                <p className="relative z-10 text-base leading-relaxed text-gray-600">
-                  {item.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+     
 
       {/* CTA Section */}
       <section
@@ -461,7 +360,7 @@ export default function About() {
       </section>
 
       {/* <Testimonial /> */}
-      <Team />
+      {/* <Team /> */}
     </div>
   );
 }

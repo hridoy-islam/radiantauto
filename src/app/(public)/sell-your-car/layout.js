@@ -1,7 +1,14 @@
 export const metadata = {
   title: "Sell Your Car",
   description:
-    "Sell your car quickly and at the best possible price with Radiant Auto. Free market evaluation, no hidden fees, fast payment, and free pickup.",
+    "Sell your car to Radiant Auto. Get a fast, fair offer with free vehicle pickup and instant payment in Saskatoon.",
+  alternates: {
+    canonical: "/sell-your-car",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   openGraph: {
     title: "Sell Your Car - Radiant Auto",
     description:

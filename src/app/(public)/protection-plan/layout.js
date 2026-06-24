@@ -1,7 +1,14 @@
 export const metadata = {
   title: "Vehicle Protection - Buy With Confidence",
   description:
-    "We offer a variety of protection plans beyond the 90-day Complimentary Warranty included on all vehicles. Our warranties cover your car by extending its original warranty, covering costs should something break down. Gap Coverage covers what you still owe on the car should it be totaled or stolen.",
+    "Explore extended warranty and GAP protection plans from Radiant Auto. Protect your vehicle investment with comprehensive coverage.",
+  alternates: {
+    canonical: "/protection-plan",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   openGraph: {
     title: "Vehicle Protection - Radiant Auto",
     description:

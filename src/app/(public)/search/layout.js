@@ -1,7 +1,14 @@
 export const metadata = {
   title: "Search Inventory",
   description:
-    "Browse our extensive inventory of quality vehicles at Radiant Auto. Filter by make, model, year, price, and more to find your perfect car.",
+    "Browse our full inventory of quality used cars in Saskatoon. Filter by make, model, price, and more to find your perfect vehicle.",
+  alternates: {
+    canonical: "/search",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   openGraph: {
     title: "Search Inventory - Radiant Auto",
     description:

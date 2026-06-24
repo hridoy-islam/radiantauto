@@ -1,7 +1,14 @@
 export const metadata = {
   title: "FAQ",
   description:
-    "Find answers to frequently asked questions about buying, selling, financing, and trading in vehicles at Radiant Auto.",
+    "Find answers to frequently asked questions about buying, selling, financing, and warranties at Radiant Auto.",
+  alternates: {
+    canonical: "/faq",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   openGraph: {
     title: "FAQ - Radiant Auto",
     description:

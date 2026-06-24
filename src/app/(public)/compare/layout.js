@@ -1,7 +1,14 @@
 export const metadata = {
   title: "Compare Vehicles",
   description:
-    "Compare side-by-side specs, features, and pricing of your favorite vehicles at Radiant Auto.",
+    "Compare side-by-side specifications, features, and pricing of your favorite vehicles to make an informed buying decision.",
+  alternates: {
+    canonical: "/compare",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   openGraph: {
     title: "Compare Vehicles - Radiant Auto",
     description:

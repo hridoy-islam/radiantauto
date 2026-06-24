@@ -1,7 +1,14 @@
 export const metadata = {
   title: "Buy With Confidence - The Radiant Auto Guarantee",
   description:
-    "We offer a 10-day money-back guarantee on all vehicles, as well as a 90-day complimentary warranty, so you can buy with confidence knowing your new car is a perfect fit.",
+    "Buy with confidence. Learn about Radiant Auto's 90-day complimentary warranty, 10-day money-back guarantee, and vehicle certification.",
+  alternates: {
+    canonical: "/guarantee",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   openGraph: {
     title: "Buy With Confidence - The Radiant Auto Guarantee",
     description:

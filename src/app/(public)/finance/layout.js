@@ -1,7 +1,14 @@
 export const metadata = {
   title: "Finance",
   description:
-    "Explore flexible financing options at Radiant Auto. Get pre-approved in minutes with competitive rates and tailored payment plans.",
+    "Explore flexible financing options for your next vehicle. Apply online and get approved quickly with Radiant Auto's finance team.",
+  alternates: {
+    canonical: "/finance",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   openGraph: {
     title: "Finance - Radiant Auto",
     description:

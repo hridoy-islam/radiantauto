@@ -1,3 +1,4 @@
+// app/admin/dashboard/page.jsx (or your dashboard path)
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -6,18 +7,24 @@ import {
   RefreshCw,
   DollarSign,
   ArrowRight,
-  TrendingUp,
-  Star,
-  Tag,
+  Pencil,
+  Trash2,
   Gauge,
-  Settings,
 } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import axiosInstance from "../../../lib/axios";
 import { Button } from "../../../components/ui/button";
-import { BlinkingDots } from "../../../components/ui/blinking-dots";
 import { Badge } from "../../../components/ui/badge";
+import { Switch } from "../../../components/ui/switch";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+} from "../../../components/ui/table";
 
 export default function AdminDashboardPage() {
   const { user } = useSelector((state) => state?.auth);
@@ -30,58 +37,59 @@ export default function AdminDashboardPage() {
   });
   const [recentCars, setRecentCars] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [featureToggling, setFeatureToggling] = useState(null);
 
   useEffect(() => {
-const fetchDashboardData = async () => {
-  try {
-    setLoading(true);
+    const fetchDashboardData = async () => {
+      try {
+        setLoading(true);
 
-    const today = new Date();
-    const dateOnly = today.toISOString().split("T")[0];
+        const today = new Date();
+        const dateOnly = today.toISOString().split("T")[0];
 
-    const [tradeInsRes, sellCarsRes, carsRes] = await Promise.all([
-      axiosInstance.get("/trade-car", {
-        params: {
-          createdAt: dateOnly,
-          limit: 1,
-        },
-      }),
-      axiosInstance.get("/sell-car", {
-        params: {
-          createdAt: dateOnly,
-          limit: 1,
-        },
-      }),
-      axiosInstance.get("/cars", {
-        params: {
-          limit: 5,
-          status:'available'
-        },
-      }),
-    ]);
+        const [tradeInsRes, sellCarsRes, carsRes] = await Promise.all([
+          axiosInstance.get("/trade-car", {
+            params: {
+              createdAt: dateOnly,
+              limit: 1,
+            },
+          }),
+          axiosInstance.get("/sell-car", {
+            params: {
+              createdAt: dateOnly,
+              limit: 1,
+            },
+          }),
+          axiosInstance.get("/cars", {
+            params: {
+              limit: 5,
+              status: 'available',
+            },
+          }),
+        ]);
 
-    const todayTradeIns = tradeInsRes.data?.data?.meta?.total || 0;
-    const todaySellCars = sellCarsRes.data?.data?.meta?.total || 0;
+        const todayTradeIns = tradeInsRes.data?.data?.meta?.total || 0;
+        const todaySellCars = sellCarsRes.data?.data?.meta?.total || 0;
 
-    const carData = carsRes.data?.data?.result || carsRes.data?.data || [];
-    const availableCars = carData.filter(
-      (car) => car.status === "available"
-    );
+        const carData = carsRes.data?.data?.result || carsRes.data?.data || [];
+        const availableCars = carData.filter(
+          (car) => car.status === "available"
+        );
 
-    setStats({
-      todayTradeIns,
-      todaySellCars,
-      totalAvailableCars:
-        carsRes.data?.data?.meta?.total || availableCars.length,
-    });
+        setStats({
+          todayTradeIns,
+          todaySellCars,
+          totalAvailableCars:
+            carsRes.data?.data?.meta?.total || availableCars.length,
+        });
 
-    setRecentCars(carData.slice(0, 5));
-  } catch (err) {
-    console.error("Failed to fetch dashboard data:", err);
-  } finally {
-    setLoading(false);
-  }
-};
+        setRecentCars(carData.slice(0, 5));
+      } catch (err) {
+        console.error("Failed to fetch dashboard data:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
     fetchDashboardData();
   }, []);
@@ -114,8 +122,58 @@ const fetchDashboardData = async () => {
     router.push("/admin/car-listing");
   };
 
-  const handleViewCarDetails = (id) => {
+  const handleEdit = (id) => {
     router.push(`/admin/car-listing/edit/${id}`);
+  };
+
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this car?")) {
+      try {
+        await axiosInstance.delete(`/cars/${id}`);
+        // Refresh data
+        const carsRes = await axiosInstance.get("/cars", {
+          params: { limit: 5, status: 'available' },
+        });
+        const carData = carsRes.data?.data?.result || carsRes.data?.data || [];
+        setRecentCars(carData.slice(0, 5));
+      } catch (error) {
+        console.error("Error deleting car:", error);
+      }
+    }
+  };
+
+  const handleStatusClick = async (id, currentStatus) => {
+    const newStatus = currentStatus === "available" ? "sold" : "available";
+    try {
+      await axiosInstance.patch(`/cars/${id}`, { status: newStatus });
+      // Refresh data
+      const carsRes = await axiosInstance.get("/cars", {
+        params: { limit: 5, status: 'available' },
+      });
+      const carData = carsRes.data?.data?.result || carsRes.data?.data || [];
+      setRecentCars(carData.slice(0, 5));
+    } catch (error) {
+      console.error("Error updating status:", error);
+    }
+  };
+
+  const handleFeatureToggle = async (id, currentFeature) => {
+    setFeatureToggling(id);
+    try {
+      await axiosInstance.patch(`/cars/${id}`, { 
+        featureCar: !currentFeature 
+      });
+      // Refresh data
+      const carsRes = await axiosInstance.get("/cars", {
+        params: { limit: 5, status: 'available' },
+      });
+      const carData = carsRes.data?.data?.result || carsRes.data?.data || [];
+      setRecentCars(carData.slice(0, 5));
+    } catch (error) {
+      console.error("Error toggling feature:", error);
+    } finally {
+      setFeatureToggling(null);
+    }
   };
 
   // Format price
@@ -191,8 +249,12 @@ const fetchDashboardData = async () => {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
           {statCards.map((stat, idx) => {
             const Icon = stat.icon;
-            const CardContent = (
+            return (
               <div
+                key={idx}
+                onClick={() => router.push(stat.link)}
+                role="button"
+                tabIndex={0}
                 className={`bg-white rounded-xl p-6 border border-gray-200/60 shadow-sm hover:shadow-md hover:border-gray-300/80 transition-all duration-200 group cursor-pointer`}
               >
                 <div className="flex items-center justify-between mb-4">
@@ -210,16 +272,10 @@ const fetchDashboardData = async () => {
                 </div>
               </div>
             );
-
-            return (
-              <div key={idx} onClick={() => router.push(stat.link)} role="button" tabIndex={0}>
-                {CardContent}
-              </div>
-            );
           })}
         </div>
 
-        {/* RECENT CAR LISTINGS */}
+        {/* RECENT CAR LISTINGS - Using the same table as car listing */}
         <div className="bg-white rounded-xl border border-gray-200/60 shadow-sm p-6">
           <div className="flex items-center justify-between mb-6">
             <div>
@@ -247,85 +303,90 @@ const fetchDashboardData = async () => {
                 ))}
               </div>
             ) : (
-              <table className="w-full min-w-[700px]">
-                <thead>
-                  <tr className="border-b border-gray-100">
-                    <th className="pb-3 text-left text-xs font-semibold uppercase tracking-wider">
-                      Car
-                    </th>
-                    <th className="pb-3 text-left text-xs font-semibold uppercase tracking-wider">
-                      Stock/VIN
-                    </th>
-                    <th className="pb-3 text-left text-xs font-semibold uppercase tracking-wider">
-                      Specs
-                    </th>
-                    <th className="pb-3 text-left text-xs font-semibold uppercase tracking-wider">
-                      Price
-                    </th>
-                  
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-b border-black/30 hover:bg-transparent bg-gray-50">
+                    <TableHead className="text-black font-semibold h-12">Car Details</TableHead>
+                    <TableHead className="text-black font-semibold h-12">Specs</TableHead>
+                    <TableHead className="text-black font-semibold h-12">Price</TableHead>
+                    <TableHead className="text-black font-semibold h-12">Status</TableHead>
+                    <TableHead className="text-black font-semibold h-12 text-center">Featured</TableHead>
+                    <TableHead className="text-black font-semibold h-12">Listed</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {recentCars.map((car) => (
-                    <tr
+                    <TableRow
                       key={car._id}
-                      className="group hover:bg-gray-50/40 transition-colors cursor-pointer"
-                      onClick={() => handleViewCarDetails(car._id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEdit(car._id);
+                      }}
+                      className="border-b border-black/10 hover:bg-gray-50/50 transition-colors cursor-pointer"
                     >
-                      <td className="py-3">
-                        <div className="flex items-center gap-3">
-                          
-                          <div>
-                            <p className="text-sm font-medium text-gray-900 group-hover:text-gray-900 transition-colors">
-                              {car.name}
-                            </p>
-                            <p className="text-xs text-gray-500">
-                              {car.body_style} • {car.exterior_colour}
-                            </p>
-                          </div>
+                      <TableCell className="py-4 pl-4">
+                        <div>
+                          <p className="font-semibold text-black">{car.name}</p>
+                          <p className="text-xs text-gray-500">
+                            {car.carBrand?.brandName || "—"} • {car.model}
+                          </p>
                         </div>
-                      </td>
-                      <td className="py-3">
-                        <div className="space-y-0.5">
-                          {car.stock && (
-                            <p className="text-xs font-mono text-gray-600">
-                              {car.stock}
-                            </p>
-                          )}
-                          {car.vin && (
-                            <p className="text-xs font-mono text-gray-400">
-                              {car.vin.substring(0, 8)}...
-                            </p>
-                          )}
-                        </div>
-                      </td>
-                      <td className="py-3">
+                      </TableCell>
+                      
+                      <TableCell className="py-4">
                         <div className="space-y-1">
-                          <div className="flex items-center gap-2 text-xs text-gray-600">
-                            <Gauge className="w-3 h-3" />
-                            {car.km?.toLocaleString()} km
-                          </div>
-                          {car.transmission && getTransmissionBadge(car.transmission)}
+                          {car.transmission && <div>{getTransmissionBadge(car.transmission)}</div>}
+                          {car.engine && (
+                            <p className="text-xs text-gray-500">
+                              {car.engine} • {car.drivetrain}
+                            </p>
+                          )}
                         </div>
-                      </td>
-                      <td className="py-3">
-                        <p className="text-sm font-semibold text-gray-900">
-                          {formatPrice(car.price)}
-                        </p>
-                      </td>
-                    
-                    </tr>
+                      </TableCell>
+                      <TableCell className="py-4">
+                        <p className="font-bold text-black text-lg">{formatPrice(car.price)}</p>
+                      </TableCell>
+                      <TableCell className="py-4">
+                        <div className="flex items-center gap-2">
+                          {getStatusBadge(car.status)}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleStatusClick(car._id, car.status);
+                            }}
+                            className="text-xs text-primary hover:text-primary/80 underline font-medium"
+                          >
+                            {car.status === "available" ? "Mark Sold" : "Mark Available"}
+                          </button>
+                        </div>
+                      </TableCell>
+                      <TableCell className="py-4 text-center">
+                        <div className="flex items-center justify-center">
+                          <Switch
+                            checked={car.featureCar === true}
+                            onCheckedChange={(e) => {
+                              handleFeatureToggle(car._id, car.featureCar);
+                            }}
+                            disabled={featureToggling === car._id}
+                            onClick={(e) => e.stopPropagation()}
+                          />
+                          {car.featureCar && (
+                            <span className="inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800 ml-2">
+                              Featured
+                            </span>
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell className="py-4">
+                        <span className="text-sm text-gray-500">
+                          {car.createdAt ? formatDate(car.createdAt) : "—"}
+                        </span>
+                      </TableCell>
+                     
+                    </TableRow>
                   ))}
-
-                  {recentCars.length === 0 && (
-                    <tr>
-                      <td colSpan={5} className="py-10 text-center text-sm text-gray-500">
-                        No car listings found.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             )}
           </div>
         </div>

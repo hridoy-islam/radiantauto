@@ -10,7 +10,7 @@ interface BlinkingDotsProps {
 
 export function BlinkingDots({
   size = 'large',
-  color = 'bg-primary-foreground',
+  color = 'bg-primary',
   variant = 'bounce'
 }: BlinkingDotsProps) {
   const containerRef = useRef<HTMLDivElement>(null);

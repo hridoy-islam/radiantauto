@@ -182,7 +182,6 @@ export default function TradeInDetailPage() {
               <h1 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">
                 Trade-In Details
               </h1>
-              {getStatusBadge(data.status)}
             </div>
           </div>
           <Button onClick={() => router.back()} size="sm">

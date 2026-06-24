@@ -9,6 +9,9 @@ export const metadata = {
   },
   description:
     "We offer a comprehensive range of services designed to meet all your automotive needs. Buy, sell, or trade-in your vehicle with confidence.",
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: "Radiant Auto - Buy, Sell & Trade-In Vehicles in Saskatoon",
     description:
@@ -32,6 +35,10 @@ export const metadata = {
     description:
       "We offer a comprehensive range of services designed to meet all your automotive needs.",
     images: ["https://radiant-auto.com/images/titlebg.jpeg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 

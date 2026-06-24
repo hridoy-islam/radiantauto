@@ -223,6 +223,24 @@ const Faq = () => {
       />
 
       <Tab tabs={tabData} />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: Object.values(faqData).flat().map((item) => ({
+              "@type": "Question",
+              name: item.header,
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: item.text,
+              },
+            })),
+          }),
+        }}
+      />
     </>
   );
 };

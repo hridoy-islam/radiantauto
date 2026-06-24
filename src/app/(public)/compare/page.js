@@ -21,7 +21,12 @@ import {
   ChevronDown,
   Star,
   Shield,
-  Check
+  Check,
+  Battery,
+  Zap,
+  Users,
+  Award,
+  MapPin
 } from "lucide-react";
 import { Button } from "../../../components/ui/button";
 import { Badge } from "../../../components/ui/badge";
@@ -43,8 +48,12 @@ const formatPrice = (price) => {
   }).format(price || 0);
 };
 
-const formatMileage = (km) => {
-  return new Intl.NumberFormat("en-US").format(km || 0);
+const formatMileage = (mileage, unit = "km") => {
+  return `${new Intl.NumberFormat("en-US").format(mileage || 0)} ${unit}`;
+};
+
+const formatNumber = (num) => {
+  return new Intl.NumberFormat("en-US").format(num || 0);
 };
 
 export default function ComparePage() {
@@ -103,31 +112,163 @@ export default function ComparePage() {
     setShowSearch(false);
   };
 
-  const allSpecs = useMemo(() => {
+  // Define specification groups based on actual model schema
+  const specGroups = useMemo(() => {
     if (cars.length === 0) return [];
-    const keys = [
-      { label: "Price", key: "price", type: "price" },
-      { label: "Year", key: "year", type: "text" },
-      { label: "Mileage", key: "km", type: "mileage" },
-      { label: "Transmission", key: "transmission", type: "text" },
-      { label: "Drivetrain", key: "drivetrain", type: "text" },
-      { label: "Engine", key: "engine", type: "text" },
-      { label: "Body Style", key: "body_style", type: "text" },
-      { label: "Exterior Color", key: "exterior_colour", type: "text" },
-      { label: "Interior Color", key: "interior_colour", type: "text" },
-      { label: "Fuel Efficiency", key: "fuel_efficiency", type: "text" },
-      { label: "Stock ID", key: "stock", type: "text" },
-      { label: "VIN", key: "vin", type: "text" },
+
+    return [
+      {
+        title: "Pricing & Availability",
+        icon: <DollarSign className="w-4 h-4" />,
+        specs: [
+          { label: "Price", key: "price", format: "price" },
+          { label: "Condition", key: "condition", format: "text" },
+          { label: "Status", key: "status", format: "badge" },
+          { label: "Stock Number", key: "stock", format: "text" },
+          { label: "VIN", key: "vin", format: "text" },
+        ]
+      },
+      {
+        title: "Basic Information",
+        icon: <CarIcon className="w-4 h-4" />,
+        specs: [
+          { label: "Make", key: "carBrand", format: "brand" },
+          { label: "Model", key: "model", format: "text" },
+          { label: "Trim", key: "trim", format: "text" },
+          { label: "Model Year", key: "modelYear", format: "text" },
+          { label: "Body Style", key: "body_style", format: "text" },
+          { label: "Segment", key: "segment", format: "text" },
+        ]
+      },
+      {
+        title: "Engine & Performance",
+        icon: <Fuel className="w-4 h-4" />,
+        specs: [
+          { label: "Engine", key: "engine", format: "text" },
+          { label: "Engine Size", key: "engineSize", format: "text" },
+          { label: "Engine Type", key: "engineType", format: "text" },
+          { label: "Horsepower", key: "horsepower", format: "number" },
+          { label: "Torque", key: "torque", format: "number" },
+          { label: "Acceleration (0-60)", key: "acceleration", format: "number" },
+          { label: "Transmission", key: "transmission", format: "text" },
+          { label: "Transmission Details", key: "transmissionDetails", format: "text" },
+          { label: "Drivetrain", key: "drivetrain", format: "text" },
+        ]
+      },
+      {
+        title: "Fuel & Efficiency",
+        icon: <Gauge className="w-4 h-4" />,
+        specs: [
+          { label: "Fuel Type", key: "fuelType", format: "text" },
+          { label: "Fuel Efficiency", key: "fuel_efficiency", format: "text" },
+          { label: "City MPG", key: "fuelEconomyCity", format: "number" },
+          { label: "Highway MPG", key: "fuelEconomyHighway", format: "number" },
+          { label: "Combined MPG", key: "fuelEconomyCombined", format: "number" },
+          { label: "Electric Range", key: "electricRange", format: "number" },
+          { label: "Battery Capacity", key: "batteryCapacity", format: "number" },
+          { label: "Emissions", key: "emissions", format: "number" },
+        ]
+      },
+      {
+        title: "Mileage & Usage",
+        icon: <Gauge className="w-4 h-4" />,
+        specs: [
+          { label: "Mileage", key: "mileage", format: "mileage" },
+          { label: "Mileage Unit", key: "mileageUnit", format: "text" },
+          { label: "Previous Owners", key: "previousOwners", format: "number" },
+          { label: "One Owner", key: "oneOwner", format: "boolean" },
+        ]
+      },
+      {
+        title: "Dimensions & Capacity",
+        icon: <Settings className="w-4 h-4" />,
+        specs: [
+          { label: "Doors", key: "doors", format: "number" },
+          { label: "Seats", key: "seats", format: "number" },
+          { label: "Cargo Capacity", key: "cargoCapacity", format: "number" },
+          { label: "Towing Capacity", key: "towingCapacity", format: "number" },
+        ]
+      },
+      {
+        title: "Exterior",
+        icon: <Palette className="w-4 h-4" />,
+        specs: [
+          { label: "Exterior Color", key: "exterior_colour", format: "text" },
+          { label: "Interior Color", key: "interior_colour", format: "text" },
+        ]
+      },
+      {
+        title: "History & Condition",
+        icon: <Shield className="w-4 h-4" />,
+        specs: [
+          { label: "Accident Free", key: "accidentFree", format: "boolean" },
+          { label: "Carfax Available", key: "carfaxAvailable", format: "boolean" },
+          { label: "Service Records", key: "serviceRecords", format: "boolean" },
+          { label: "Province Registered", key: "provinceRegistered", format: "text" },
+          { label: "Country", key: "country", format: "text" },
+        ]
+      },
+      {
+        title: "Safety & Ratings",
+        icon: <Star className="w-4 h-4" />,
+        specs: [
+          { label: "Safety Rating", key: "safetyRating", format: "text" },
+        ]
+      },
+      {
+        title: "Dealer Information",
+        icon: <MapPin className="w-4 h-4" />,
+        specs: [
+          { label: "Dealer Notes", key: "dealerNotes", format: "text" },
+        ]
+      },
     ];
-    return keys;
   }, [cars]);
 
   const getSpecValue = (car, spec) => {
     const val = car?.[spec.key];
-    if (!val) return "—";
-    if (spec.type === "price") return formatPrice(val);
-    if (spec.type === "mileage") return `${formatMileage(val)} km`;
-    return val;
+    if (val === undefined || val === null || val === "") return "—";
+    
+    switch (spec.format) {
+      case "price":
+        return formatPrice(val);
+      case "mileage":
+        return formatMileage(val, car?.mileageUnit);
+      case "number":
+        return formatNumber(val);
+      case "boolean":
+        return val ? (
+          <Check className="w-4 h-4 text-emerald-500" />
+        ) : (
+          <X className="w-4 h-4 text-red-400" />
+        );
+      case "badge":
+        const statusColors = {
+          available: "bg-emerald-100 text-emerald-700",
+          sold: "bg-red-100 text-red-700",
+          pending: "bg-yellow-100 text-yellow-700",
+          reserved: "bg-blue-100 text-blue-700",
+          "on-hold": "bg-gray-100 text-gray-700",
+        };
+        return (
+          <Badge className={statusColors[val] || "bg-gray-100 text-gray-700"}>
+            {val}
+          </Badge>
+        );
+      case "brand":
+        return typeof val === 'object' ? val?.brandName || val?.name || "—" : val;
+      default:
+        return val;
+    }
+  };
+
+  const hasAnySpec = (specs) => {
+    return specs.some(spec => 
+      cars.some(car => {
+        const val = car?.[spec.key];
+        return val !== undefined && val !== null && val !== "";
+      })
+    );
   };
 
   if (cars.length === 0 && !showSearch) {
@@ -138,7 +279,7 @@ export default function ComparePage() {
           title={"Vehicle Comparison"}
           text={"Add vehicles to compare their specs side by side."}
         />
-        <div className="container mx-auto  py-20">
+        <div className="container mx-auto py-20">
           <div className="max-w-5xl mx-auto text-center">
             <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-primary/10 flex items-center justify-center">
               <BarChart3 className="w-10 h-10 text-primary" />
@@ -183,7 +324,7 @@ export default function ComparePage() {
                         {car.name}
                       </p>
                       <p className="text-sm text-gray-500">
-                        {car.year} &middot; {formatMileage(car.km)} km &middot;{" "}
+                        {car.modelYear} &middot; {formatMileage(car.mileage, car.mileageUnit)} &middot;{" "}
                         {formatPrice(car.price)}
                       </p>
                     </div>
@@ -293,7 +434,7 @@ export default function ComparePage() {
                         {car.name}
                       </p>
                       <p className="text-xs text-gray-500">
-                        {car.year} &middot; {formatMileage(car.km)} km
+                        {car.modelYear} &middot; {formatMileage(car.mileage, car.mileageUnit)}
                       </p>
                     </div>
                     <Plus className="w-4 h-4 text-gray-300 group-hover:text-primary transition-colors flex-shrink-0" />
@@ -334,7 +475,7 @@ export default function ComparePage() {
                           {car.name}
                         </p>
                         <p className="text-white/80 text-xs">
-                          {car.year}
+                          {car.modelYear}
                         </p>
                       </div>
                     </div>
@@ -350,16 +491,13 @@ export default function ComparePage() {
                 {cars.map((car, idx) => {
                   const prices = cars.map((c) => c.price || 0).filter(Boolean);
                   const minPrice = Math.min(...prices);
-                  const maxMileage = Math.max(
-                    ...cars.map((c) => c.km || 0)
-                  );
+                  const mileages = cars.map((c) => c.mileage || 0).filter(Boolean);
+                  const minMileage = Math.min(...mileages);
                   const isBestPrice = car.price === minPrice;
-                  const isLowestKm =
-                    cars.filter((c) => c.km).length > 0 &&
-                    car.km === Math.min(...cars.map((c) => c.km || Infinity));
+                  const isLowestMileage = mileages.length > 0 && car.mileage === minMileage;
                   const badges = [];
                   if (isBestPrice) badges.push("Best Price");
-                  if (isLowestKm) badges.push("Lowest Mileage");
+                  if (isLowestMileage) badges.push("Lowest Mileage");
                   return (
                     <div key={idx} className="flex flex-wrap gap-1.5">
                       {badges.map((badge) => (
@@ -377,35 +515,51 @@ export default function ComparePage() {
               </div>
             )}
 
-            {/* Spec Rows */}
-            <div className="space-y-1">
-              {allSpecs.map((spec, specIdx) => (
-                <div
-                  key={spec.key}
-                  className={`grid grid-cols-[200px_repeat(auto-fill,minmax(220px,1fr))] gap-3 items-center py-3 px-4 rounded-xl ${
-                    specIdx % 2 === 0 ? "bg-gray-50" : "bg-white"
-                  }`}
-                >
-                  <div className="flex items-center gap-2">
-                    <div className="w-1 h-5 rounded-full bg-primary/60" />
-                    <span className="text-sm font-semibold text-gray-700">
-                      {spec.label}
-                    </span>
-                  </div>
-                  {cars.map((car) => (
-                    <div key={car._id} className="text-sm text-gray-900 font-medium">
-                      {getSpecValue(car, spec)}
+            {/* Spec Groups */}
+            {specGroups.map((group) => {
+              if (!hasAnySpec(group.specs)) return null;
+              
+              return (
+                <div key={group.title} className="mb-10">
+                  <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    <div className="p-2 bg-primary/10 rounded-lg">
+                      {group.icon}
                     </div>
-                  ))}
+                    {group.title}
+                  </h3>
+                  <div className="space-y-1">
+                    {group.specs.map((spec, specIdx) => (
+                      <div
+                        key={spec.key}
+                        className={`grid grid-cols-[200px_repeat(auto-fill,minmax(220px,1fr))] gap-3 items-center py-3 px-4 rounded-xl ${
+                          specIdx % 2 === 0 ? "bg-gray-50" : "bg-white"
+                        }`}
+                      >
+                        <div className="flex items-center gap-2">
+                          <div className="w-1 h-5 rounded-full bg-primary/60" />
+                          <span className="text-sm font-semibold text-gray-700">
+                            {spec.label}
+                          </span>
+                        </div>
+                        {cars.map((car) => (
+                          <div key={car._id} className="text-sm text-gray-900 font-medium">
+                            {getSpecValue(car, spec)}
+                          </div>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              ))}
-            </div>
+              );
+            })}
 
             {/* Features Section */}
             {cars.some((c) => c.features?.length > 0) && (
-              <div className="mt-10">
+              <div className="mb-10">
                 <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                  <Check className="w-5 h-5 text-primary" />
+                  <div className="p-2 bg-primary/10 rounded-lg">
+                    <Check className="w-4 h-4" />
+                  </div>
                   Features
                 </h3>
                 <div className="space-y-1">
@@ -443,10 +597,12 @@ export default function ComparePage() {
 
             {/* Safety Section */}
             {cars.some((c) => c.safety?.length > 0) && (
-              <div className="mt-10">
+              <div className="mb-10">
                 <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                  <Shield className="w-5 h-5 text-primary" />
-                  Safety
+                  <div className="p-2 bg-primary/10 rounded-lg">
+                    <Shield className="w-4 h-4" />
+                  </div>
+                  Safety Features
                 </h3>
                 <div className="space-y-1">
                   {Array.from(
@@ -480,13 +636,55 @@ export default function ComparePage() {
                 </div>
               </div>
             )}
+
+            {/* Awards Section */}
+            {cars.some((c) => c.awards?.length > 0) && (
+              <div className="mb-10">
+                <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                  <div className="p-2 bg-primary/10 rounded-lg">
+                    <Award className="w-4 h-4" />
+                  </div>
+                  Awards & Recognition
+                </h3>
+                <div className="space-y-1">
+                  {Array.from(
+                    new Set(
+                      cars.flatMap((c) =>
+                        Array.isArray(c.awards) ? c.awards : []
+                      )
+                    )
+                  ).map((item, idx) => (
+                    <div
+                      key={idx}
+                      className={`grid grid-cols-[200px_repeat(auto-fill,minmax(220px,1fr))] gap-3 items-center py-2.5 px-4 rounded-xl ${
+                        idx % 2 === 0 ? "bg-gray-50" : "bg-white"
+                      }`}
+                    >
+                      <span className="text-sm text-gray-600 pl-3">
+                        {item}
+                      </span>
+                      {cars.map((car) => (
+                        <div key={car._id} className="flex items-center">
+                          {Array.isArray(car.awards) &&
+                          car.awards.includes(item) ? (
+                            <Check className="w-4 h-4 text-emerald-500" />
+                          ) : (
+                            <span className="w-4 h-4 text-gray-300">—</span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
         {/* CTA */}
         <div className="mt-12 text-center py-8 border-t border-gray-200">
           <p className="text-gray-500 text-sm mb-4">
-            Can&apos;t decide? Browse more vehicles or contact us for expert advice.
+            Can't decide? Browse more vehicles or contact us for expert advice.
           </p>
           <Link href="/search">
             <Button variant="default" size="lg" className="rounded-full">
@@ -499,3 +697,11 @@ export default function ComparePage() {
     </>
   );
 }
+
+// Need to add DollarSign import
+const DollarSign = ({ className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <line x1="12" y1="2" x2="12" y2="22"></line>
+    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+  </svg>
+);

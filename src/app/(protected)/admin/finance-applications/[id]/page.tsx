@@ -212,9 +212,7 @@ export default function FinanceApplicantDetailsPage() {
                   <p className="text-xs  font-medium">Annual Income</p>
                   <p className="text-xl font-bold text-gray-900">{formatCurrency(data.gross_annual_income)}</p>
                 </div>
-                <div className="p-2 bg-green-100 rounded-lg">
-                  <TrendingUp className="w-5 h-5 text-green-600" />
-                </div>
+                
               </div>
             </CardContent>
           </Card>
@@ -225,9 +223,7 @@ export default function FinanceApplicantDetailsPage() {
                   <p className="text-xs  font-medium">Employment</p>
                   <p className="text-lg font-bold text-gray-900 truncate">{data.employer_company}</p>
                 </div>
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <Building2 className="w-5 h-5 text-blue-600" />
-                </div>
+                
               </div>
             </CardContent>
           </Card>
@@ -238,9 +234,7 @@ export default function FinanceApplicantDetailsPage() {
                   <p className="text-xs  font-medium">Residence</p>
                   <p className="text-lg font-bold text-gray-900 capitalize">{data.residence_type}</p>
                 </div>
-                <div className="p-2 bg-purple-100 rounded-lg">
-                  <Home className="w-5 h-5 text-purple-600" />
-                </div>
+               
               </div>
             </CardContent>
           </Card>
@@ -251,9 +245,7 @@ export default function FinanceApplicantDetailsPage() {
                   <p className="text-xs  font-medium">Status</p>
                   <p className="text-lg font-bold text-gray-900 capitalize">{data.marital_status}</p>
                 </div>
-                <div className="p-2 bg-orange-100 rounded-lg">
-                  <Users className="w-5 h-5 text-orange-600" />
-                </div>
+               
               </div>
             </CardContent>
           </Card>

@@ -1,7 +1,14 @@
 export const metadata = {
   title: "About Us",
   description:
-    "Learn more about Radiant Auto's commitment to quality car care and customer service.",
+    "Learn about Radiant Auto's story, mission, and team. Saskatoon's trusted auto dealer committed to transparent no-haggle vehicle sales.",
+  alternates: {
+    canonical: "/about",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   openGraph: {
     title: "About Radiant Auto",
     description:

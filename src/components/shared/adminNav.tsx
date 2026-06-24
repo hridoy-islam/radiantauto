@@ -23,7 +23,8 @@ import {
   DollarSign,
   ArrowRightLeft,
   CarFrontIcon,
-  CarIcon
+  CarIcon,
+  WalletCards
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "../ui/sheet";
 import { Button } from "../ui/button";
@@ -44,10 +45,12 @@ export function AdminSidebar() {
   const navItems = [
     { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
     { label: "Car Listing", href: "/admin/car-listing", icon: CarIcon },
+    // { label: "Car Brands", href: "/admin/car-brand", icon: Layers },
     { label: "Contacts", href: "/admin/contact", icon: PhoneIcon },
     { label: "Finance Applications", href: "/admin/finance-applications", icon: DollarSign },
     { label: "Trade In", href: "/admin/trade-in", icon: ArrowRightLeft  },
     { label: "Sell Cars", href: "/admin/sell-cars", icon: CarFrontIcon  },
+    { label: "Car Brand", href: "/admin/car-brand", icon: Layers   },
     
     // { 
     //   label: "Settings", 

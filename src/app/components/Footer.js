@@ -12,6 +12,7 @@ import {
   FaPhoneAlt,
   FaEnvelope,
   FaInstagram,
+  FaClock,
 } from "react-icons/fa";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -63,7 +64,7 @@ const Footer = () => {
             <div className="flex items-center gap-3">
               {[
                 { href: "https://www.facebook.com/share/1FeaE3rXsY/?mibextid=wwXIfr", icon: FaFacebookF, label: "Facebook" },
-                { href: "https://www.instagram.com/radiant.aar?igsh=NjZoYXcwcXhkZ2gz", icon: FaInstagram, label: "YouTube" },
+                { href: "https://www.instagram.com/radiant.aar?igsh=NjZoYXcwcXhkZ2gz", icon: FaInstagram, label: "Instagram" },
               ].map((social, i) => (
                 <Link
                   key={i}
@@ -113,8 +114,8 @@ const Footer = () => {
               <li className="flex items-start gap-3">
                 <FaMapMarkerAlt className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-primary" />
                 <span>
-                  213 33rd St WSaskatoon <br />
-                  SK S7L 0V2, Canada
+                  213 33rd St W, Saskatoon{" "}
+                  <br />SK S7L 0V2, Canada
                 </span>
               </li>
               <li className="flex items-center gap-3">
@@ -124,6 +125,23 @@ const Footer = () => {
               <li className="flex items-center gap-3">
                 <FaEnvelope className="h-3.5 w-3.5 flex-shrink-0 text-primary" />
                 <span>sales@radiant-auto.com</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <FaClock className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-primary" />
+                <div className="space-y-1">
+                  <p className="flex justify-between gap-3">
+                    <span>Mon - Fri:</span>
+                    <span className="font-medium">9 AM - 6 PM</span>
+                  </p>
+                  <p className="flex justify-between gap-3">
+                    <span>Saturday:</span>
+                    <span className="font-medium">10 AM - 4 PM</span>
+                  </p>
+                  <p className="flex justify-between gap-3">
+                    <span>Sunday:</span>
+                    <span className="">Closed</span>
+                  </p>
+                </div>
               </li>
             </ul>
           </div>
@@ -142,9 +160,6 @@ const Footer = () => {
               >
                 Privacy Policy
               </Link>
-              {/* <Link href="/faq" className="text-sm text-gray-700 transition-colors hover:text-primary">
-                Terms of Service
-              </Link> */}
             </div>
           </div>
         </div>

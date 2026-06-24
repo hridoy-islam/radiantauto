@@ -1,13 +1,15 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Gauge, Calendar, Settings,GitCompareArrows, ArrowRight, Heart, Share2, BarChart3, Check } from "lucide-react";
+import { Gauge, GitCompareArrows, ArrowRight, Check, Fuel, Activity, ShieldCheck } from "lucide-react";
 import { Badge } from "../../components/ui/badge";
 import { Button } from "../../components/ui/button";
 import { addToCompare, removeFromCompare, isInCompare } from "../../lib/compare";
+import { useToast } from "../../components/ui/use-toast";
 
 export default function Car({ car }) {
   const [inCompare, setInCompare] = useState(false);
   const [animating, setAnimating] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     if (car?._id) {
@@ -19,16 +21,27 @@ export default function Car({ car }) {
     e.preventDefault();
     e.stopPropagation();
     setAnimating(true);
+
     if (inCompare) {
       removeFromCompare(car._id);
       setInCompare(false);
+      toast({
+        title: "Comparison Updated",
+        description: "Removed from compare",
+        variant: "destructive",
+      });
     } else {
       addToCompare(car);
       setInCompare(true);
+      toast({
+        title: "Comparison Updated",
+        description: "Added to compare",
+      });
     }
+
     setTimeout(() => setAnimating(false), 300);
   };
-  // Format price with commas
+
   const formatPrice = (price) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -38,161 +51,140 @@ export default function Car({ car }) {
     }).format(price);
   };
 
-  // Format mileage
-  const formatMileage = (km) => {
-    return new Intl.NumberFormat("en-US").format(km);
+  const formatMileage = (mileage) => {
+    return new Intl.NumberFormat("en-US").format(mileage || 0);
+  };
+
+  const getCarHeading = () => {
+    const year = car?.modelYear || car?.year;
+    const make = car?.carBrand?.brandName || "";
+    const model = car?.model || "";
+    const trim = car?.trim || "";
+
+    const parts = [year, make, model, trim].filter(Boolean);
+    return parts.join(" ") || "Untitled Car";
   };
 
   return (
-    <div className="mx-auto h-full min-w-[300px] px-4 xs:min-w-[368px] sm:min-w-[510px] md:min-w-[340px] lg:min-w-[312px] xl:min-w-[282px] 2xl:min-w-[325px]">
-      <div className="group mb-10 overflow-hidden rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-[450px]">
-        {/* Image Container - Fixed Height */}
-        <div className="relative overflow-hidden flex-shrink-0">
-          <Link href={`/car/${car?.url}`}>
-            <div className="relative h-[150px] w-full overflow-hidden">
-              <img
-                src={
-                  car?.thumbnailImage || "/images/placeholder.png"
-                }
-                alt={car?.name || "Car"}
-                className="h-full w-full object-cover object-center transform group-hover:scale-105 transition-transform duration-500"
-              />
-              {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </div>
-          </Link>
+    <div className="h-full w-full max-w-[360px] mx-auto">
+      <div className="relative group flex flex-col h-full bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+        
+        {/* Compact Image Container */}
+        <Link href={`/car/${car?.url}`} className="relative block overflow-hidden aspect-[16/10] bg-gray-50">
+          <img
+            src={car?.thumbnailImage || "/images/placeholder.png"}
+            alt={getCarHeading()}
+            className="h-full w-full object-cover object-center transform group-hover:scale-102 transition-transform duration-500"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
           {/* Status Badge */}
           {car?.status && (
-            <div className="absolute top-4 left-4">
+            <div className="absolute top-2.5 left-2.5">
               <Badge
-                className={`${
+                className={`text-[10px] px-2 py-0.5 font-semibold tracking-wide uppercase ${
                   car.status === "available"
-                    ? "bg-green-500/90 text-white border-green-400"
-                    : "bg-red-500/90 text-white border-red-400"
-                } backdrop-blur-sm`}
+                    ? "bg-emerald-600 text-white hover:bg-emerald-600"
+                    : "bg-gray-700 text-white hover:bg-gray-700"
+                }`}
               >
-                {car.status === "available" ? "Available" : "Sold"}
+                {car.status === "available" ? "Available" : car.status}
               </Badge>
             </div>
           )}
 
-          {/* Compare Button - Now with opacity transitions for hover effect */}
+          {/* Compare FAB */}
           <button
             onClick={handleCompare}
-            className={`absolute top-4 right-4 p-2 rounded-full transition-all duration-200 shadow-md ${
+            className={`absolute top-2.5 right-2.5 p-2 rounded-full shadow-md backdrop-blur-md transition-all duration-200 ${
               inCompare
-                ? "bg-primary text-white shadow-primary/30 scale-110 opacity-100"
-                : "bg-white/90 text-gray-700 hover:bg-white hover:scale-105 opacity-0 group-hover:opacity-100"
-            } ${animating ? "scale-90" : ""}`}
+                ? "bg-primary text-white scale-105"
+                : "bg-white/90 text-gray-700 hover:bg-white hover:scale-105"
+            } ${animating ? "scale-95" : ""}`}
             title={inCompare ? "Remove from compare" : "Add to compare"}
           >
-            {inCompare ? (
-              <Check className="w-4 h-4" />
-            ) : (
-              <GitCompareArrows  className="w-4 h-4" />
-            )}
+            {inCompare ? <Check className="w-3.5 h-3.5" /> : <GitCompareArrows className="w-3.5 h-3.5" />}
           </button>
-        </div>
+        </Link>
 
-        {/* Content - Flex grows to fill remaining space */}
-        <div className="p-6 flex flex-col flex-grow">
-          {/* Top Section - Flex grow pushes bottom section down */}
-          <div className="flex-grow">
-            {/* Year & Body Style */}
-            <div className="flex items-center justify-between gap-2 mb-2 min-h-[24px]">
-              {car?.year ? (
-                <div className="flex items-center gap-1.5 text-sm text-gray-500">
-                  <Calendar className="w-3.5 h-3.5 text-primary flex-shrink-0" />
-                  <span className="font-semibold">{car.year}</span>
-                </div>
-              ) : (
-                <div />
-              )}
-              {car?.body_style && (
-                <Badge variant="outline" className="text-xs capitalize flex-shrink-0">
-                  {car.body_style}
-                </Badge>
-              )}
-            </div>
+        {/* Content Section */}
+        <div className="flex flex-col flex-grow p-4">
+          
+          {/* Tags & Pills Row */}
+          <div className="flex items-center gap-1.5 mb-2 flex-wrap">
+            {car?.condition && (
+              <span className="text-[10px] font-bold uppercase tracking-wider text-primary bg-blue-50 px-1.5 py-0.5 rounded">
+                {car.condition}
+              </span>
+            )}
+            {car?.body_style && (
+              <span className="text-[10px] font-medium text-gray-500 capitalize bg-gray-100 px-1.5 py-0.5 rounded">
+                {car.body_style}
+              </span>
+            )}
+          </div>
 
-            {/* Car Name */}
-            <h3 className="mb-1 min-h-[28px]">
-              <Link
-                href={`/car/${car?.url}`}
-                className="text-lg font-bold text-gray-900 hover:text-primary transition-colors line-clamp-2"
-              >
-                {car?.name || "Untitled Car"}
-              </Link>
+          {/* Title Heading */}
+          <Link href={`/car/${car?.url}`}>
+            <h3 className="text-sm font-bold text-gray-900 hover:text-primary transition-colors line-clamp-1 mb-3">
+              {getCarHeading()}
             </h3>
+          </Link>
 
-            {/* Car Model */}
-            {car?.model && (
-              <p className="text-sm font-medium text-gray-500  capitalize">
-                Model: {car.model}
+          {/* Technical Specs 2x2 Clean Professional Grid */}
+          <div className="grid grid-cols-2 gap-x-3 gap-y-2 mb-4 text-xs border-b border-gray-50 pb-3.5">
+            {/* Mileage */}
+            <div className="flex items-center gap-1.5 text-gray-600">
+              <Gauge className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
+              <span className="truncate font-medium">
+                {formatMileage(car?.mileage)} <span className="text-[10px] text-gray-400 font-normal">{car?.mileageUnit || "km"}</span>
+              </span>
+            </div>
+
+            {/* Fuel Type */}
+            <div className="flex items-center gap-1.5 text-gray-600">
+              <Fuel className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
+              <span className="truncate font-medium">{car?.fuelType || "N/A"}</span>
+            </div>
+
+            {/* Drivetrain */}
+            <div className="flex items-center gap-1.5 text-gray-600">
+              <Activity className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
+              <span className="truncate font-medium">{car?.drivetrain || car?.transmission || "N/A"}</span>
+            </div>
+
+            {/* Accident Free Validation */}
+            <div className="flex items-center gap-1.5 text-gray-600">
+              <ShieldCheck className={`w-3.5 h-3.5 flex-shrink-0 ${car?.accidentFree !== false ? "text-emerald-500" : "text-gray-400"}`} />
+              <span className="truncate font-medium">
+                {car?.accidentFree !== false ? "Accident Free" : "Report Avail."}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex-grow" />
+
+          {/* Modernized Pricing & Actions Row */}
+          <div className="flex items-center justify-between gap-2 pt-1">
+            <div>
+              <p className="text-xl font-black text-gray-900 tracking-tight">
+                {formatPrice(car?.price || 0)}
               </p>
-            )}
-
-            {/* Key Specs */}
-            <div className="flex flex-wrap items-center gap-4  border-b border-gray-100 min-h-[56px]">
-              <div className="flex items-center gap-1.5 text-sm text-gray-600">
-                <Gauge className="w-4 h-4 text-primary flex-shrink-0" />
-                <span className="font-medium">{formatMileage(car?.km || 0)}</span>
-                <span className="text-gray-400 text-xs">km</span>
-              </div>
-              {car?.transmission && (
-                <div className="flex items-center gap-1.5 text-sm text-gray-600">
-                  <Settings className="w-4 h-4 text-primary flex-shrink-0" />
-                  <span className="font-medium capitalize">{car.transmission}</span>
-                </div>
-              )}
-              {car?.drivetrain && (
-                <Badge variant="secondary" className="text-xs">
-                  {car.drivetrain}
-                </Badge>
-              )}
-            </div>
-          </div>
-
-          {/* Bottom Section - Fixed at bottom */}
-          <div className="mt-auto">
-            {/* Price & Action */}
-            <div className="flex items-center justify-between mb-3">
-              <div>
-                <p className="text-2xl font-bold text-gray-900">
-                  {formatPrice(car?.price || 0)}
-                </p>
-                {car?.exterior_colour && (
-                  <p className="text-xs text-gray-500 mt-0.5">
-                    {car.exterior_colour}
-                  </p>
-                )}
-                {!car?.exterior_colour && <div className="h-[20px]" />}
-              </div>
-              <Link href={`/car/${car?.url}`}>
-                <Button variant="link" className="group/btn p-0 h-auto">
-                  <span className="font-medium">View Details</span>
-                  <ArrowRight className="w-4 h-4 ml-1 transform group-hover/btn:translate-x-1 transition-transform" />
-                </Button>
-              </Link>
+             
             </div>
 
-            {/* Engine Info */}
-            {car?.engine ? (
-              <div className="flex flex-wrap gap-2 min-h-[28px]">
-                <Badge variant="outline" className="text-xs bg-gray-50">
-                  {car.engine}
-                </Badge>
-                {car?.fuel_efficiency && (
-                  <Badge variant="outline" className="text-xs bg-gray-50">
-                    {car.fuel_efficiency}
-                  </Badge>
-                )}
-              </div>
-            ) : (
-              <div className="min-h-[28px]" />
-            )}
+            <Link href={`/car/${car?.url}`}>
+              <Button 
+                variant="default" 
+                size="sm"
+                className="bg-gray-900 hover:bg-primary text-white font-medium text-xs px-3 h-9 transition-colors group/btn"
+              >
+                <span>Details</span>
+                <ArrowRight className="w-3.5 h-3.5 ml-1 transform group-hover/btn:translate-x-0.5 transition-transform" />
+              </Button>
+            </Link>
           </div>
+
         </div>
       </div>
     </div>

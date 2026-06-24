@@ -1,7 +1,14 @@
 export const metadata = {
   title: "Customer Reviews",
   description:
-    "Read what our customers say about their experience at Radiant Auto. See why thousands trust us for their automotive needs.",
+    "Read customer reviews and testimonials for Radiant Auto. See why Saskatoon drivers trust us for their automotive needs.",
+  alternates: {
+    canonical: "/reviews",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   openGraph: {
     title: "Customer Reviews - Radiant Auto",
     description:

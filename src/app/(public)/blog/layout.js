@@ -1,7 +1,14 @@
 export const metadata = {
   title: "Blog",
   description:
-    "Stay updated with the latest automotive news, tips, and insights from Radiant Auto.",
+    "Read the latest automotive tips, buying guides, and industry insights from Radiant Auto. Stay informed before your next vehicle purchase.",
+  alternates: {
+    canonical: "/blog",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   openGraph: {
     title: "Blog - Radiant Auto",
     description:

@@ -411,7 +411,7 @@ export default function CarListManagementPage() {
                       <div>
                         <p className="font-semibold text-black">{car.name}</p>
                         <p className="text-xs text-gray-500">
-                          {car.body_style} • {car.exterior_colour}
+                          {car.carBrand?.brandName || "—"} • {car.model}
                         </p>
                       </div>
                     </TableCell>

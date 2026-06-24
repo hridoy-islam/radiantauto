@@ -1,7 +1,14 @@
 export const metadata = {
   title: "Trade In Your Car",
   description:
-    "Get the best value for your current vehicle with Radiant Auto's hassle-free trade-in process. Free appraisal, instant offer, and same-day processing.",
+    "Trade in your vehicle and get a great value towards your next purchase. Fast appraisal and instant offer from Radiant Auto.",
+  alternates: {
+    canonical: "/trade-in",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   openGraph: {
     title: "Trade In Your Car - Radiant Auto",
     description:

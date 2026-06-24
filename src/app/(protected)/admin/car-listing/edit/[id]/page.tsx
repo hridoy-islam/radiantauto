@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { useState, useEffect, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 import axiosInstance from "../../../../../../lib/axios";
@@ -20,64 +20,57 @@ import {
   Tag,
   FileText,
   Image as ImageIcon,
-  CheckCircle2,
-  RefreshCw,
   Loader2,
   Star,
-  Pencil,
   Crown,
+  History,
+  Video,
 } from "lucide-react";
+
+// Import react-select
+import Select from "react-select";
+
 import { Button } from "../../../../../../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../../../../components/ui/card";
-import { Separator } from "../../../../../../components/ui/separator";
 
 interface UploadedImage {
   name: string;
   url: string;
 }
 
-interface CarData {
-  _id: string;
-  name: string;
-  url: string;
-  model: string;
-  year: string;
-  image_gallery?: string[];
-  thumbnailImage?: string;
-  exterior_colour?: string;
-  interior_colour?: string;
-  body_style?: string;
-  transmission?: string;
-  stock?: string;
-  vin?: string;
-  km?: number;
-  engine?: string;
-  fuel_efficiency?: string;
-  drivetrain?: string;
-  price?: number;
-  overview?: string;
-  features?: string[];
-  exterior?: string[];
-  interior?: string[];
-  entertainment?: string[];
-  mechanical?: string[];
-  safety?: string[];
-  techspecs?: string[];
-  title?: string;
-  meta_description?: string;
-  meta_keywords?: string[];
-  og_title?: string;
-  og_description?: string;
-  og_image?: string;
-  status?: string;
-  featureCar?: boolean;
-}
+const customSelectStyles = {
+  control: (provided: any, state: any) => ({
+    ...provided,
+    minHeight: "42px",
+    borderRadius: "0.5rem",
+    borderColor: state.isFocused ? "rgb(var(--primary) / 0.8)" : "#d1d5db",
+    boxShadow: state.isFocused ? "0 0 0 2px rgb(var(--primary) / 0.2)" : "none",
+    "&:hover": {
+      borderColor: "#9ca3af",
+    },
+    fontSize: "0.875rem",
+    backgroundColor: "white",
+  }),
+  option: (provided: any, state: any) => ({
+    ...provided,
+    fontSize: "0.875rem",
+    backgroundColor: state.isSelected
+      ? "#dbeafe"
+      : state.isFocused
+      ? "#f3f4f6"
+      : "white",
+    color: "#1f2937",
+    "&:active": {
+      backgroundColor: "#bfdbfe",
+    },
+  }),
+};
 
 export default function EditCarPage() {
   const router = useRouter();
   const params = useParams();
+  const id = params?.id; // Assumes folder structure is [id]/page.tsx
   const { toast } = useToast();
-  const carId = params.id as string;
   
   const fileInputRef = useRef<HTMLInputElement>(null);
   const thumbnailInputRef = useRef<HTMLInputElement>(null);
@@ -92,7 +85,8 @@ export default function EditCarPage() {
   const [thumbnailImage, setThumbnailImage] = useState<UploadedImage | null>(null);
   const [isUploadingThumbnail, setIsUploadingThumbnail] = useState(false);
   const [thumbnailError, setThumbnailError] = useState<string | null>(null);
-  const [existingThumbnailUrl, setExistingThumbnailUrl] = useState<string>("");
+
+  const [carBrands, setCarBrands] = useState<{ value: string; label: string }[]>([]);
 
   const [features, setFeatures] = useState([""]);
   const [exterior, setExterior] = useState([""]);
@@ -102,146 +96,155 @@ export default function EditCarPage() {
   const [safety, setSafety] = useState([""]);
   const [techspecs, setTechspecs] = useState([""]);
   const [metaKeywords, setMetaKeywords] = useState([""]);
-  const [autoGenerateSlug, setAutoGenerateSlug] = useState(true);
+  const [highlights, setHighlights] = useState([""]);
+  const [awards, setAwards] = useState([""]);
 
- const {
-  register,
-  handleSubmit,
-  setValue,
-  watch,
-  reset,
-  formState: { errors },
-} = useForm({
-  defaultValues: {
-    name: "",
-    url: "",
-    model: "",
-    year: "",
-    exterior_colour: "",
-    interior_colour: "",
-    body_style: "",
-    transmission: "",
-    stock: "",
-    vin: "",
-    km: "",
-    engine: "",
-    fuel_efficiency: "",
-    drivetrain: "",
-    price: "",
-    overview: "",
-    title: "",
-    meta_description: "",
-    og_title: "",
-    og_description: "",
-    og_image: "",
-    featureCar: false,
-  },
-});
-  const watchName = watch("name");
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      name: "",
+      model: "",
+      carBrand: "", 
+      modelYear: "",
+      manufactureYear: "",
+      trim: "",
+      condition: "",
+      segment: "",
+      exterior_colour: "",
+      exteriorColor: "",
+      interior_colour: "",
+      interiorColor: "",
+      body_style: "",
+      transmission: "",
+      transmissionDetails: "",
+      stock: "",
+      stockNumber: "",
+      vin: "",
+      mileage: "",
+      mileageUnit: "km",
+      engine: "",
+      engineSize: "",
+      engineType: "",
+      horsepower: "",
+      torque: "",
+      fuelType: "",
+      fuel_efficiency: "",
+      fuelEconomyCity: "",
+      fuelEconomyHighway: "",
+      fuelEconomyCombined: "",
+      drivetrain: "",
+      doors: "",
+      seats: "",
+      price: "",
+      overview: "",
+      description: "",
+      dealerNotes: "",
+      title: "",
+      url: "",
+      videoUrl: "",
+      logo: "",
+      cargoCapacity: "",
+      acceleration: "",
+      towingCapacity: "",
+      electricRange: "",
+      batteryCapacity: "",
+      emissions: "",
+      provinceRegistered: "",
+      country: "",
+      accidentFree: undefined,
+      carfaxAvailable: undefined,
+      carfaxReport: "",
+      oneOwner: undefined,
+      previousOwners: "",
+      serviceRecords: undefined,
+      status: "available",
+      safetyRating: "",
+      listingUrl: "",
+      schema: "",
+      meta_description: "",
+      og_title: "",
+      og_description: "",
+      og_image: "",
+      featureCar: undefined,
+    },
+  });
 
-  // Auto-generate slug from name
+  // Fetch Brands and Existing Car Data
   useEffect(() => {
-    if (autoGenerateSlug && watchName) {
-      const slug = watchName
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-+|-+$/g, "")
-        .trim();
-      setValue("url", slug);
-    }
-  }, [watchName, autoGenerateSlug, setValue]);
-
-  // Fetch car data
-  useEffect(() => {
-    const fetchCarData = async () => {
+    const fetchInitialData = async () => {
       try {
         setIsLoading(true);
-        const response = await axiosInstance.get(`/cars/${carId}`);
-        
-        if (response.data.success) {
-          const carData: CarData = response.data.data;
+        // 1. Fetch Brands
+        const brandRes = await axiosInstance.get("/car-brand", { params: { limit: 100 } });
+        const brandData = brandRes?.data?.data?.result || brandRes?.data?.data || brandRes?.data || [];
+        const options = (Array.isArray(brandData) ? brandData : []).map((b: any) => ({
+          value: b._id,
+          label: b.brandName,
+        }));
+        setCarBrands(options);
+
+        // 2. Fetch Existing Car Details
+        if (id) {
+          const carRes = await axiosInstance.get(`/cars/${id}`);
+          const carData = carRes?.data?.data || carRes?.data;
           
-          // Set form values
-          reset({
-            name: carData.name || "",
-            url: carData.url || "",
-             model: carData.model || "", // Add this
-  year: carData.year || "",   // Add this
-            exterior_colour: carData.exterior_colour || "",
-            interior_colour: carData.interior_colour || "",
-            body_style: carData.body_style || "",
-            transmission: carData.transmission || "",
-            stock: carData.stock || "",
-            vin: carData.vin || "",
-            km: carData.km?.toString() || "",
-            engine: carData.engine || "",
-            fuel_efficiency: carData.fuel_efficiency || "",
-            drivetrain: carData.drivetrain || "",
-            price: carData.price?.toString() || "",
-            overview: carData.overview || "",
-            title: carData.title || "",
-            meta_description: carData.meta_description || "",
-            og_title: carData.og_title || "",
-            og_description: carData.og_description || "",
-            og_image: carData.og_image || "",
-            featureCar: carData.featureCar || false,
-          });
+          if (carData) {
+            // Populate basic react-hook-form values
+            reset({
+              ...carData,
+              carBrand: carData.carBrand?._id || carData.carBrand || "", // Ensure we capture id ref strings correctly
+            });
 
-          // Set array fields
-          if (carData.features?.length) setFeatures(carData.features);
-          if (carData.exterior?.length) setExterior(carData.exterior);
-          if (carData.interior?.length) setInterior(carData.interior);
-          if (carData.entertainment?.length) setEntertainment(carData.entertainment);
-          if (carData.mechanical?.length) setMechanical(carData.mechanical);
-          if (carData.safety?.length) setSafety(carData.safety);
-          if (carData.techspecs?.length) setTechspecs(carData.techspecs);
-          if (carData.meta_keywords?.length) setMetaKeywords(carData.meta_keywords);
+            // Hydrate custom text input arrays
+            if (carData.features?.length) setFeatures(carData.features);
+            if (carData.exterior?.length) setExterior(carData.exterior);
+            if (carData.interior?.length) setInterior(carData.interior);
+            if (carData.entertainment?.length) setEntertainment(carData.entertainment);
+            if (carData.mechanical?.length) setMechanical(carData.mechanical);
+            if (carData.safety?.length) setSafety(carData.safety);
+            if (carData.techspecs?.length) setTechspecs(carData.techspecs);
+            if (carData.meta_keywords?.length) setMetaKeywords(carData.meta_keywords);
+            if (carData.highlights?.length) setHighlights(carData.highlights);
+            if (carData.awards?.length) setAwards(carData.awards);
 
-          // Set image gallery
-          if (carData.image_gallery?.length) {
-            setImages(
-              carData.image_gallery.map((url, index) => ({
-                name: `Image ${index + 1}`,
-                url: url,
-              }))
-            );
-          }
-
-          // Set existing thumbnail
-          if (carData.thumbnailImage) {
-            setExistingThumbnailUrl(carData.thumbnailImage);
+            // Hydrate Images
+            if (carData.thumbnailImage) {
+              setThumbnailImage({ name: "Current Thumbnail", url: carData.thumbnailImage });
+            }
+            if (carData.image_gallery?.length) {
+              setImages(carData.image_gallery.map((url: string, i: number) => ({ name: `Gallery Image ${i+1}`, url })));
+            }
           }
         }
-      } catch (error: any) {
-        console.error("Error fetching car data:", error);
+      } catch (err) {
+        console.error("Failed to load component runtime parameters", err);
         toast({
-          title: "Error",
-          description: "Failed to fetch car data. Please try again.",
-          variant: "destructive",
+          title: "Error Loading Data",
+          description: "Could not fetch existing vehicle profile configuration details.",
+          variant: "destructive"
         });
-        router.back();
       } finally {
         setIsLoading(false);
       }
     };
 
-    if (carId) {
-      fetchCarData();
-    }
-  }, [carId, reset, toast, router]);
+    fetchInitialData();
+  }, [id, reset]);
 
-  // Handle thumbnail image upload
   const handleThumbnailChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate file type
     if (!file.type.startsWith('image/')) {
       setThumbnailError('Please select an image file');
       return;
     }
 
-    // Validate size limit (20MB)
     if (file.size > 20 * 1024 * 1024) {
       setThumbnailError('File too large. Maximum size is 20MB');
       return;
@@ -252,7 +255,7 @@ export default function EditCarPage() {
 
     try {
       const formData = new FormData();
-      formData.append("entityId", carId);
+      formData.append("entityId", id as string || "");
       formData.append("file_type", "document");
       formData.append("file", file);
 
@@ -266,13 +269,10 @@ export default function EditCarPage() {
         name: file.name,
         url: thumbnailUrl,
       });
-      
-      // Clear existing thumbnail URL since we're replacing it
-      setExistingThumbnailUrl("");
 
       toast({
         title: "Thumbnail Uploaded",
-        description: "Thumbnail image has been uploaded successfully.",
+        description: "Thumbnail image has been updated successfully.",
       });
     } catch (err) {
       setThumbnailError("Failed to upload thumbnail image.");
@@ -289,11 +289,9 @@ export default function EditCarPage() {
 
   const handleRemoveThumbnail = () => {
     setThumbnailImage(null);
-    setExistingThumbnailUrl("");
     setThumbnailError(null);
   };
 
-  // Handle immediate image upload to API backend
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
@@ -307,7 +305,6 @@ export default function EditCarPage() {
       return;
     }
 
-    // Validate size limit (20MB per image)
     for (const file of files) {
       if (file.size > 20 * 1024 * 1024) {
         setUploadError(`File too large: ${file.name}. Must be less than 20MB.`);
@@ -321,7 +318,7 @@ export default function EditCarPage() {
     try {
       const uploadPromises = files.map(async (file) => {
         const formData = new FormData();
-        formData.append("entityId", carId); 
+        formData.append("entityId", id as string || ""); 
         formData.append("file_type", "document");
         formData.append("file", file);
 
@@ -351,7 +348,7 @@ export default function EditCarPage() {
       });
     } finally {
       setIsUploading(false);
-      if (fileInputRef.current) fileInputRef.current.value = "";
+      if (fileInputRef.current) fileInputRef.current.value = ""; 
     }
   };
 
@@ -363,7 +360,6 @@ export default function EditCarPage() {
     setImages([]);
   };
 
-  // Handle array fields
   const addField = (setter: any, currentArray: string[]) => {
     setter([...currentArray, ""]);
   };
@@ -384,71 +380,65 @@ export default function EditCarPage() {
     try {
       setIsSubmitting(true);
 
-      const formData = new FormData();
+      const arrayFields: Record<string, string[]> = {
+        features: features.filter((i) => i.trim() !== ""),
+        exterior: exterior.filter((i) => i.trim() !== ""),
+        interior: interior.filter((i) => i.trim() !== ""),
+        entertainment: entertainment.filter((i) => i.trim() !== ""),
+        mechanical: mechanical.filter((i) => i.trim() !== ""),
+        safety: safety.filter((i) => i.trim() !== ""),
+        techspecs: techspecs.filter((i) => i.trim() !== ""),
+        meta_keywords: metaKeywords.filter((i) => i.trim() !== ""),
+        highlights: highlights.filter((i) => i.trim() !== ""),
+        awards: awards.filter((i) => i.trim() !== ""),
+      };
 
-      // Append all normal form fields
+      const payload: Record<string, any> = {};
+
+      const booleanFields = ["featureCar", "accidentFree", "carfaxAvailable", "oneOwner", "serviceRecords"];
+
       Object.keys(data).forEach((key) => {
         const value = data[key];
+        if (booleanFields.includes(key)) return;
         if (value !== undefined && value !== null && value !== "") {
-          formData.append(key, value.toString());
+          payload[key] = value;
         }
       });
 
-      // Handle thumbnail image
-      if (thumbnailImage) {
-        // Use newly uploaded thumbnail
-        formData.append("thumbnailImage", thumbnailImage.url);
-      } else if (existingThumbnailUrl) {
-        // Keep existing thumbnail
-        formData.append("thumbnailImage", existingThumbnailUrl);
-      }
-      // If both are empty, thumbnail is being removed
-
-      // Pass the uploaded image URLs
-      images.forEach((img) => {
-        formData.append("image_gallery", img.url);
+      booleanFields.forEach((field) => {
+        payload[field] = data[field] === true || data[field] === "true";
       });
 
-      // Append dynamic list fields (filter out empty inputs)
-      const arrayFields: Record<string, string[]> = {
-        features,
-        exterior,
-        interior,
-        entertainment,
-        mechanical,
-        safety,
-        techspecs,
-        meta_keywords: metaKeywords,
-      };
+      // Handle structural deletion updates if clear
+      payload.thumbnailImage = thumbnailImage ? thumbnailImage.url : "";
+      payload.image_gallery = images.map((img) => img.url);
 
-      Object.keys(arrayFields).forEach((key) => {
-        const filteredArray = arrayFields[key].filter((item) => item.trim() !== "");
-        filteredArray.forEach((item) => {
-          formData.append(key, item);
-        });
+      Object.assign(payload, arrayFields);
+
+      // Perform a update PUT Request
+      const response = await axiosInstance.patch(`/cars/${id}`, payload, {
+        headers: { "Content-Type": "application/json" },
       });
 
-      const response = await axiosInstance.patch(`/cars/${carId}`, formData);
-
-      if (response.data.success) {
+      if (response.data.success || response.status === 200) {
         toast({
           title: "Success!",
-          description: "Car listing updated successfully!",
+          description: "Car configuration profile modified cleanly!",
           variant: "default",
         });
         router.back();
       } else {
         toast({
           title: "Error",
-          description: response.data.message || "Failed to update car listing.",
+          description: response.data.message || "Failed to update target vehicle file settings.",
           variant: "destructive",
         });
       }
     } catch (error: any) {
-      console.error("Update error:", error);
+      console.error("Submission error:", error);
       toast({
         title: "Error",
-        description: error?.response?.data?.message || "Failed to update car listing.",
+        description: error?.response?.data?.message || "Failed to edit car runtime configurations.",
         variant: "destructive",
       });
     } finally {
@@ -456,12 +446,78 @@ export default function EditCarPage() {
     }
   };
 
+  // Static options arrays for React-Select
+  const statusOptions = [
+    { value: "available", label: "Available" },
+    { value: "sold", label: "Sold" },
+    { value: "pending", label: "Pending" },
+    { value: "reserved", label: "Reserved" },
+    { value: "on-hold", label: "On Hold" },
+  ];
+
+  const conditionOptions = [
+    { value: "New", label: "New" },
+    { value: "Used", label: "Used" },
+    { value: "Certified Pre-Owned", label: "Certified Pre-Owned" },
+  ];
+
+  const segmentOptions = [
+    { value: "Economy", label: "Economy" },
+    { value: "Compact", label: "Compact" },
+    { value: "Mid-size", label: "Mid-size" },
+    { value: "Full-size", label: "Full-size" },
+    { value: "Luxury", label: "Luxury" },
+    { value: "Sports", label: "Sports" },
+    { value: "Commercial", label: "Commercial" },
+  ];
+
+   const bodyStyleOptions = [
+    { value: "sedan", label: "Sedan" },
+    { value: "suv", label: "SUV" },
+    { value: "truck", label: "Truck" },
+    { value: "van", label: "Van" },
+    { value: "coupe", label: "Coupe" },
+    { value: "convertible", label: "Convertible" },
+    { value: "wagon", label: "Wagon" },
+    { value: "hatchback", label: "Hatchback" },
+    { value: "crossover", label: "Crossover" },
+    { value: "minivan", label: "Minivan" },
+  ];
+
+  const mileageUnitOptions = [
+    { value: "km", label: "km" },
+    { value: "miles", label: "miles" },
+  ];
+
+  
+
+  const transmissionOptions = [
+    { value: "Automatic", label: "Automatic" },
+    { value: "Manual", label: "Manual" },
+    { value: "CVT", label: "CVT" },
+  ];
+
+  const drivetrainOptions = [
+    { value: "FWD", label: "FWD" },
+    { value: "RWD", label: "RWD" },
+    { value: "AWD", label: "AWD" },
+    { value: "4WD", label: "4WD" },
+  ];
+
+  const fuelTypeOptions = [
+    { value: "Gasoline", label: "Gasoline" },
+    { value: "Diesel", label: "Diesel" },
+    { value: "Hybrid", label: "Hybrid" },
+    { value: "Plug-In Hybrid", label: "Plug-In Hybrid" },
+    { value: "Electric", label: "Electric" },
+  ];
+
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-center">
-          <Loader2 className="w-12 h-12 animate-spin text-primary mx-auto mb-4" />
-          <p className="text-gray-500">Loading car data...</p>
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="text-center space-y-2">
+          <Loader2 className="w-10 h-10 animate-spin text-primary mx-auto" />
+          <p className="text-sm text-gray-500">Loading car profiles specifications...</p>
         </div>
       </div>
     );
@@ -469,16 +525,16 @@ export default function EditCarPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="mx-auto">
+      <div className="mx-auto ">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex justify-between w-full items-center gap-4">
             <div>
               <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-                <Pencil className="w-6 h-6 text-primary" />
+                <Car className="w-6 h-6 text-primary" />
                 Edit Car Listing
               </h1>
-              <p className="text-sm text-gray-500">Update car information in your inventory</p>
+              <p className="text-sm text-gray-500">Modify properties on this specific inventory system index.</p>
             </div>
             <Button type="button" onClick={() => router.back()}>
               <ArrowLeft className="w-4 h-4 mr-2" />Back
@@ -496,8 +552,8 @@ export default function EditCarPage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Car Name <span className="text-red-500">*</span>
                   </label>
@@ -515,91 +571,160 @@ export default function EditCarPage() {
                   )}
                 </div>
                 <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                  <Controller
+                    name="status"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        styles={customSelectStyles}
+                        options={statusOptions}
+                        value={statusOptions.find(o => o.value === field.value)}
+                        onChange={(val) => field.onChange(val?.value)}
+                        placeholder="Select status"
+                      />
+                    )}
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    URL Slug <span className="text-red-500">*</span>
+                    Car Brand <span className="text-red-500">*</span>
                   </label>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      className={`w-full rounded-lg border ${errors.url ? 'border-red-500' : 'border-gray-300'} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition pr-10`}
-                      placeholder="e.g., 2024-toyota-camry-xse"
-                      {...register("url", { required: "URL slug is required" })}
-                      onChange={(e) => {
-                        setValue("url", e.target.value);
-                        setAutoGenerateSlug(false);
-                      }}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setAutoGenerateSlug(true);
-                        if (watchName) {
-                          const slug = watchName
-                            .toLowerCase()
-                            .replace(/[^a-z0-9]+/g, "-")
-                            .replace(/^-+|-+$/g, "")
-                            .trim();
-                          setValue("url", slug);
-                        }
-                      }}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition"
-                      title="Auto-generate from name"
-                    >
-                      <RefreshCw className="w-4 h-4" />
-                    </button>
-                  </div>
-                  {errors.url && (
+                  <Controller
+                    name="carBrand"
+                    control={control}
+                    rules={{ required: "Car brand is required" }}
+                    render={({ field }) => (
+                      <Select
+                        styles={customSelectStyles}
+                        options={carBrands}
+                        value={carBrands.find(o => o.value === field.value)}
+                        onChange={(val) => field.onChange(val?.value)}
+                        placeholder="Select brand..."
+                        isClearable
+                      />
+                    )}
+                  />
+                  {errors.carBrand && (
                     <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
                       <AlertCircle className="w-3 h-3" />
-                      {errors.url.message}
+                      {errors.carBrand.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Model <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className={`w-full rounded-lg border ${errors.model ? 'border-red-500' : 'border-gray-300'} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition`}
+                    placeholder="e.g., Camry XSE"
+                    {...register("model", { required: "Model is required" })}
+                  />
+                  {errors.model && (
+                    <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
+                      <AlertCircle className="w-3 h-3" />
+                      {errors.model.message}
                     </p>
                   )}
                 </div>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1">
-        Model <span className="text-red-500">*</span>
-      </label>
-      <input
-        type="text"
-        className={`w-full rounded-lg border ${errors.model ? 'border-red-500' : 'border-gray-300'} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition`}
-        placeholder="e.g., Camry XSE"
-        {...register("model", { required: "Model is required" })}
-      />
-      {errors.model && (
-        <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
-          <AlertCircle className="w-3 h-3" />
-          {errors.model.message}
-        </p>
-      )}
-    </div>
-    <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1">
-        Year <span className="text-red-500">*</span>
-      </label>
-      <input
-        type="text"
-        className={`w-full rounded-lg border ${errors.year ? 'border-red-500' : 'border-gray-300'} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition`}
-        placeholder="e.g., 2024"
-        {...register("year", { 
-          required: "Year is required",
-          pattern: {
-            value: /^\d{4}$/,
-            message: "Please enter a valid year (e.g., 2024)"
-          }
-        })}
-      />
-      {errors.year && (
-        <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
-          <AlertCircle className="w-3 h-3" />
-          {errors.year.message}
-        </p>
-      )}
-    </div>
-  </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Model Year <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    className={`w-full rounded-lg border ${errors.modelYear ? 'border-red-500' : 'border-gray-300'} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition`}
+                    placeholder="e.g., 2024"
+                    {...register("modelYear", { required: "Model year is required" })}
+                  />
+                  {errors.modelYear && (
+                    <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
+                      <AlertCircle className="w-3 h-3" />
+                      {errors.modelYear.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Manufacture Year <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    className={`w-full rounded-lg border ${errors.manufactureYear ? 'border-red-500' : 'border-gray-300'} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition`}
+                    placeholder="e.g., 2023"
+                    {...register("manufactureYear", { required: "Manufacture year is required" })}
+                  />
+                  {errors.manufactureYear && (
+                    <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
+                      <AlertCircle className="w-3 h-3" />
+                      {errors.manufactureYear.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Trim</label>
+                  <input
+                    type="text"
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
+                    placeholder="e.g., XSE, Limited"
+                    {...register("trim")}
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Condition <span className="text-red-500">*</span></label>
+                  <Controller
+                    name="condition"
+                    control={control}
+                    rules={{ required: "Condition is required" }}
+                    render={({ field }) => (
+                      <Select
+                        styles={customSelectStyles}
+                        options={conditionOptions}
+                        value={conditionOptions.find(o => o.value === field.value)}
+                        onChange={(val) => field.onChange(val?.value)}
+                        placeholder="Select condition"
+                      />
+                    )}
+                  />
+                  {errors.condition && (
+                    <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
+                      <AlertCircle className="w-3 h-3" />
+                      {errors.condition.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Segment</label>
+                  <Controller
+                    name="segment"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        styles={customSelectStyles}
+                        options={segmentOptions}
+                        value={segmentOptions.find(o => o.value === field.value)}
+                        onChange={(val) => field.onChange(val?.value)}
+                        placeholder="Select segment"
+                        isClearable
+                      />
+                    )}
+                  />
+                </div>
+               
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Price <span className="text-red-500">*</span>
@@ -626,94 +751,148 @@ export default function EditCarPage() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1">
                     <Gauge className="w-4 h-4 text-primary" />
-                    Mileage (km) <span className="text-red-500">*</span>
+                    Mileage
                   </label>
                   <input
                     type="number"
-                    className={`w-full rounded-lg border ${errors.km ? 'border-red-500' : 'border-gray-300'} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition`}
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
                     placeholder="e.g., 15000"
-                    {...register("km", { 
-                      required: "Mileage is required",
-                      min: { value: 0, message: "Mileage must be positive" }
-                    })}
+                    {...register("mileage")}
                   />
-                  {errors.km && (
-                    <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
-                      <AlertCircle className="w-3 h-3" />
-                      {errors.km.message}
-                    </p>
-                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Mileage Unit</label>
+                  <Controller
+                    name="mileageUnit"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        styles={customSelectStyles}
+                        options={mileageUnitOptions}
+                        value={mileageUnitOptions.find(o => o.value === field.value)}
+                        onChange={(val) => field.onChange(val?.value)}
+                        placeholder="Select unit"
+                      />
+                    )}
+                  />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1">
                     <Tag className="w-4 h-4 text-primary" />
-                    Stock # <span className="text-red-500">*</span>
+                    Stock #
                   </label>
                   <input
                     type="text"
-                    className={`w-full rounded-lg border ${errors.stock ? 'border-red-500' : 'border-gray-300'} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition`}
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
                     placeholder="e.g., STK001"
-                    {...register("stock", { required: "Stock number is required" })}
+                    {...register("stock")}
                   />
-                  {errors.stock && (
-                    <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
-                      <AlertCircle className="w-3 h-3" />
-                      {errors.stock.message}
-                    </p>
-                  )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Stock Number</label>
+                  <input
+                    type="text"
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
+                    placeholder="Stock alternative identifier"
+                    {...register("stockNumber")}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">VIN</label>
+                  <input
+                    type="text"
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
+                    placeholder="Vehicle Identification Number"
+                    {...register("vin")}
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Custom Listing Path URL</label>
+                  <input
+                    type="text"
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
+                    placeholder="e.g., unique-car-slug"
+                    {...register("url")}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Safety Rating</label>
+                  <input
+                    type="text"
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
+                    placeholder="e.g., 5-Star NHTSA"
+                    {...register("safetyRating")}
+                  />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  VIN <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  className={`w-full rounded-lg border ${errors.vin ? 'border-red-500' : 'border-gray-300'} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition`}
-                  placeholder="Vehicle Identification Number"
-                  {...register("vin", { required: "VIN is required" })}
+                <label className="block text-sm font-medium text-gray-700 mb-1">Overview</label>
+                <textarea
+                  rows={3}
+                  className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition resize-none"
+                  placeholder="Brief description preview..."
+                  {...register("overview")}
                 />
-                {errors.vin && (
-                  <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
-                    <AlertCircle className="w-3 h-3" />
-                    {errors.vin.message}
-                  </p>
-                )}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Overview <span className="text-red-500">*</span>
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Full Description</label>
                 <textarea
                   rows={4}
-                  className={`w-full rounded-lg border ${errors.overview ? 'border-red-500' : 'border-gray-300'} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition resize-none`}
-                  placeholder="Brief description of the car..."
-                  {...register("overview", { required: "Overview is required" })}
+                  className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition resize-none"
+                  placeholder="Detailed layout specifications narrative..."
+                  {...register("description")}
                 />
-                {errors.overview && (
-                  <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
-                    <AlertCircle className="w-3 h-3" />
-                    {errors.overview.message}
-                  </p>
-                )}
               </div>
 
-              <div className="flex md:w-1/3 items-center gap-3 p-4 bg-amber-50/50 border border-amber-200 rounded-lg">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Dealer Notes</label>
+                <textarea
+                  rows={3}
+                  className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition resize-none"
+                  placeholder="Special pricing offers or dealership context parameters..."
+                  {...register("dealerNotes")}
+                />
+              </div>
+
+              <div className="flex items-center gap-3 p-4 bg-amber-50/50 border border-amber-200 rounded-lg">
                 <Crown className="w-5 h-5 text-amber-600" />
                 <div className="flex-1">
-                  <label className="text-sm font-medium text-gray-700">
-                    Feature This Car
-                  </label>
-                  <p className="text-xs text-gray-500">
-                    Featured cars appear prominently on the homepage
-                  </p>
+                  <label className="text-sm font-medium text-gray-700">Feature This Car</label>
+                  <p className="text-xs text-gray-500">Featured cars appear prominently on the homepage</p>
                 </div>
                 <input
                   type="checkbox"
                   className="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary"
                   {...register("featureCar")}
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Media Links */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Video className="w-5 h-5 text-primary" />
+                Media & Assets
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Video Asset URL</label>
+                <input
+                  type="text"
+                  className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
+                  placeholder="https://youtube.com/watch?v=..."
+                  {...register("videoUrl")}
                 />
               </div>
             </CardContent>
@@ -730,144 +909,305 @@ export default function EditCarPage() {
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Body Style <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    className={`w-full rounded-lg border ${errors.body_style ? 'border-red-500' : 'border-gray-300'} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition bg-white`}
-                    {...register("body_style", { required: "Body style is required" })}
-                  >
-                    <option value="">Select body style</option>
-                    <option value="sedan">Sedan</option>
-                    <option value="coupe">Coupe</option>
-                    <option value="hatchback">Hatchback</option>
-                  </select>
-                  {errors.body_style && (
-                    <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
-                      <AlertCircle className="w-3 h-3" />
-                      {errors.body_style.message}
-                    </p>
-                  )}
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Body Style</label>
+                  <Controller
+                    name="body_style"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        styles={customSelectStyles}
+                        options={bodyStyleOptions}
+                        value={bodyStyleOptions.find(o => o.value === field.value)}
+                        onChange={(val) => field.onChange(val?.value)}
+                        placeholder="Select body style"
+                        isClearable
+                      />
+                    )}
+                  />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Transmission <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    className={`w-full rounded-lg border ${errors.transmission ? 'border-red-500' : 'border-gray-300'} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition bg-white`}
-                    {...register("transmission", { required: "Transmission is required" })}
-                  >
-                    <option value="">Select transmission</option>
-                    <option value="automatic">Automatic</option>
-                    <option value="manual">Manual</option>
-                  </select>
-                  {errors.transmission && (
-                    <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
-                      <AlertCircle className="w-3 h-3" />
-                      {errors.transmission.message}
-                    </p>
-                  )}
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Transmission</label>
+                  <Controller
+                    name="transmission"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        styles={customSelectStyles}
+                        options={transmissionOptions}
+                        value={transmissionOptions.find(o => o.value === field.value)}
+                        onChange={(val) => field.onChange(val?.value)}
+                        placeholder="Select transmission"
+                        isClearable
+                      />
+                    )}
+                  />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Engine <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    className={`w-full rounded-lg border ${errors.engine ? 'border-red-500' : 'border-gray-300'} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition bg-white`}
-                    {...register("engine", { required: "Engine is required" })}
-                  >
-                    <option value="">Select engine</option>
-                    <option value="V6">V6</option>
-                    <option value="V8">V8</option>
-                    <option value="I4">I4</option>
-                    <option value="I6">I6</option>
-                  </select>
-                  {errors.engine && (
-                    <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
-                      <AlertCircle className="w-3 h-3" />
-                      {errors.engine.message}
-                    </p>
-                  )}
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Drivetrain <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    className={`w-full rounded-lg border ${errors.drivetrain ? 'border-red-500' : 'border-gray-300'} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition bg-white`}
-                    {...register("drivetrain", { required: "Drivetrain is required" })}
-                  >
-                    <option value="">Select drivetrain</option>
-                    <option value="FWD">FWD</option>
-                    <option value="RWD">RWD</option>
-                    <option value="AWD">AWD</option>
-                  </select>
-                  {errors.drivetrain && (
-                    <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
-                      <AlertCircle className="w-3 h-3" />
-                      {errors.drivetrain.message}
-                    </p>
-                  )}
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1">
-                    <Palette className="w-4 h-4 text-primary" />
-                    Exterior Color <span className="text-red-500">*</span>
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Transmission Details</label>
                   <input
                     type="text"
-                    className={`w-full rounded-lg border ${errors.exterior_colour ? 'border-red-500' : 'border-gray-300'} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition`}
-                    placeholder="e.g., Pearl White"
-                    {...register("exterior_colour", { required: "Exterior color is required" })}
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
+                    placeholder="e.g., 8-Speed Automatic"
+                    {...register("transmissionDetails")}
                   />
-                  {errors.exterior_colour && (
-                    <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
-                      <AlertCircle className="w-3 h-3" />
-                      {errors.exterior_colour.message}
-                    </p>
-                  )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1">
-                    <Palette className="w-4 h-4 text-primary" />
-                    Interior Color <span className="text-red-500">*</span>
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Drivetrain</label>
+                  <Controller
+                    name="drivetrain"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        styles={customSelectStyles}
+                        options={drivetrainOptions}
+                        value={drivetrainOptions.find(o => o.value === field.value)}
+                        onChange={(val) => field.onChange(val?.value)}
+                        placeholder="Select drivetrain"
+                        isClearable
+                      />
+                    )}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Fuel Type</label>
+                  <Controller
+                    name="fuelType"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        styles={customSelectStyles}
+                        options={fuelTypeOptions}
+                        value={fuelTypeOptions.find(o => o.value === field.value)}
+                        onChange={(val) => field.onChange(val?.value)}
+                        placeholder="Select fuel type"
+                        isClearable
+                      />
+                    )}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Engine</label>
                   <input
                     type="text"
-                    className={`w-full rounded-lg border ${errors.interior_colour ? 'border-red-500' : 'border-gray-300'} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition`}
-                    placeholder="e.g., Black Leather"
-                    {...register("interior_colour", { required: "Interior color is required" })}
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
+                    placeholder="e.g., 2.5L 4-Cylinder"
+                    {...register("engine")}
                   />
-                  {errors.interior_colour && (
-                    <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
-                      <AlertCircle className="w-3 h-3" />
-                      {errors.interior_colour.message}
-                    </p>
-                  )}
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Doors</label>
+                  <input
+                    type="number"
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
+                    placeholder="e.g., 4"
+                    {...register("doors")}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Seats</label>
+                  <input
+                    type="number"
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
+                    placeholder="e.g., 5"
+                    {...register("seats")}
+                  />
                 </div>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Fuel Efficiency <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  className={`w-full rounded-lg border ${errors.fuel_efficiency ? 'border-red-500' : 'border-gray-300'} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition`}
-                  placeholder="e.g., 28 City / 39 Highway"
-                  {...register("fuel_efficiency", { required: "Fuel efficiency is required" })}
-                />
-                {errors.fuel_efficiency && (
-                  <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
-                    <AlertCircle className="w-3 h-3" />
-                    {errors.fuel_efficiency.message}
-                  </p>
-                )}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Cargo Capacity (L)</label>
+                  <input
+                    type="number"
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
+                    placeholder="e.g., 450"
+                    {...register("cargoCapacity")}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Acceleration (0-100 km/h)</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
+                    placeholder="e.g., 5.8"
+                    {...register("acceleration")}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Towing Capacity (kg)</label>
+                  <input
+                    type="number"
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
+                    placeholder="e.g., 1500"
+                    {...register("towingCapacity")}
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Fuel Efficiency</label>
+                  <input
+                    type="text"
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
+                    placeholder="e.g., 28 City / 39 Highway"
+                    {...register("fuel_efficiency")}
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1">
+                    <Palette className="w-4 h-4 text-primary" />
+                    Exterior Color Standard
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
+                    placeholder="e.g., Pearl White"
+                    {...register("exterior_colour")}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1">
+                    <Palette className="w-4 h-4 text-primary" />
+                    Exterior Accent Variant Color
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
+                    placeholder="Secondary configuration color"
+                    {...register("exteriorColor")}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1">
+                    <Palette className="w-4 h-4 text-primary" />
+                    Interior Color Standard
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
+                    placeholder="e.g., Black Leather"
+                    {...register("interior_colour")}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1">
+                    <Palette className="w-4 h-4 text-primary" />
+                    Interior Accent Variant Color
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
+                    placeholder="Secondary stitch line config color"
+                    {...register("interiorColor")}
+                  />
+                </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Thumbnail Image */}
+          {/* Registration & Location */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Tag className="w-5 h-5 text-primary" />
+                Origin & Registration Info
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Province Registered</label>
+                <input
+                  type="text"
+                  className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
+                  placeholder="e.g., Ontario"
+                  {...register("provinceRegistered")}
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Verification Checkboxes */}
+          <Card>
+            <CardContent className="pt-6 space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                  <input
+                    type="checkbox"
+                    id="accidentFree"
+                    className="w-4 h-4 rounded text-primary focus:ring-primary"
+                    {...register("accidentFree")}
+                  />
+                  <label htmlFor="accidentFree" className="text-sm font-medium text-gray-700 cursor-pointer">
+                    Accident Free Certified
+                  </label>
+                </div>
+                <div className="flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                  <input
+                    type="checkbox"
+                    id="oneOwner"
+                    className="w-4 h-4 rounded text-primary focus:ring-primary"
+                    {...register("oneOwner")}
+                  />
+                  <label htmlFor="oneOwner" className="text-sm font-medium text-gray-700 cursor-pointer">
+                    Single Owner Verified
+                  </label>
+                </div>
+                <div className="flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                  <input
+                    type="checkbox"
+                    id="serviceRecords"
+                    className="w-4 h-4 rounded text-primary focus:ring-primary"
+                    {...register("serviceRecords")}
+                  />
+                  <label htmlFor="serviceRecords" className="text-sm font-medium text-gray-700 cursor-pointer">
+                    Continuous Service Maintenance Records Present
+                  </label>
+                </div>
+                <div className="flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                  <input
+                    type="checkbox"
+                    id="carfaxAvailable"
+                    className="w-4 h-4 rounded text-primary focus:ring-primary"
+                    {...register("carfaxAvailable")}
+                  />
+                  <label htmlFor="carfaxAvailable" className="text-sm font-medium text-gray-700 cursor-pointer">
+                    CARFAX Report Integration Verification Token
+                  </label>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Previous Owners Count</label>
+                  <input
+                    type="number"
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
+                    placeholder="0"
+                    {...register("previousOwners")}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">CARFAX Report Link Url</label>
+                  <input
+                    type="text"
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
+                    placeholder="https://carfax.com/report/..."
+                    {...register("carfaxReport")}
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Thumbnail Image Upload */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -885,8 +1225,7 @@ export default function EditCarPage() {
                       <Upload className="w-4 h-4" />
                     )}
                     <span className="text-sm font-medium">
-                      {isUploadingThumbnail ? "Uploading..." : 
-                       existingThumbnailUrl || thumbnailImage ? "Change Thumbnail" : "Upload Thumbnail"}
+                      {isUploadingThumbnail ? "Uploading..." : "Upload Thumbnail"}
                     </span>
                   </div>
                   <input
@@ -898,7 +1237,7 @@ export default function EditCarPage() {
                     disabled={isUploadingThumbnail}
                   />
                 </label>
-                {(existingThumbnailUrl || thumbnailImage) && (
+                {thumbnailImage && (
                   <button
                     type="button"
                     onClick={handleRemoveThumbnail}
@@ -908,60 +1247,39 @@ export default function EditCarPage() {
                   </button>
                 )}
               </div>
-
               {thumbnailError && (
                 <p className="text-sm text-red-500 flex items-center gap-1 mb-4">
                   <AlertCircle className="w-4 h-4" />
                   {thumbnailError}
                 </p>
               )}
-
-              <p className="text-xs text-gray-500 mb-4">
-                Upload a main thumbnail image for the car listing. This will be used as the preview image.
-              </p>
-
-              {(existingThumbnailUrl || thumbnailImage) && (
-                <div className="relative group w-48">
-                  <img
-                    src={thumbnailImage?.url || existingThumbnailUrl}
-                    alt={thumbnailImage?.name || "Current thumbnail"}
-                    className="w-full h-40 object-cover rounded-lg border-2 border-amber-300"
-                  />
-                  <div className="absolute top-2 left-2 bg-amber-500 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
-                    <Star className="w-3 h-3" />
-                    {thumbnailImage ? "New Thumbnail" : "Current Thumbnail"}
-                  </div>
-                  <button
-                    type="button"
-                    onClick={handleRemoveThumbnail}
-                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition shadow-lg"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
+              {thumbnailImage && (
+                <div className="relative w-40 h-28 border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                  <img src={thumbnailImage.url} alt="Thumbnail preview" className="w-full h-full object-cover" />
                 </div>
               )}
             </CardContent>
           </Card>
 
-          {/* Image Gallery */}
+          {/* Gallery Images Upload */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <ImageIcon className="w-5 h-5 text-primary" />
-                Image Gallery <span className="text-xs text-gray-500 font-normal">(Optional)</span>
+                Car Image Gallery <span className="text-xs text-gray-500 font-normal">(Max 20 images)</span>
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center gap-4 mb-4">
                 <label className="cursor-pointer">
-                  <div className="flex items-center gap-2 px-4 py-2.5 bg-blue-50 text-primary rounded-lg border-2 border-dashed border-blue-300 hover:border-blue-400 hover:bg-blue-100 transition">
+                  <div className="flex items-center gap-2 px-4 py-2.5 bg-blue-50 text-blue-700 rounded-lg border-2 border-dashed border-blue-300 hover:border-blue-400 hover:bg-blue-100 transition">
                     {isUploading ? (
                       <Loader2 className="w-4 h-4 animate-spin" />
                     ) : (
                       <Upload className="w-4 h-4" />
                     )}
                     <span className="text-sm font-medium">
-                      {isUploading ? "Uploading..." : "Add Images"}
+                      {isUploading ? "Uploading..." : "Upload Images"}
                     </span>
                   </div>
                   <input
@@ -984,27 +1302,20 @@ export default function EditCarPage() {
                   </button>
                 )}
               </div>
-
               {uploadError && (
                 <p className="text-sm text-red-500 flex items-center gap-1 mb-4">
                   <AlertCircle className="w-4 h-4" />
                   {uploadError}
                 </p>
               )}
-
               <p className="text-xs text-gray-500 mb-4">
-                {images.length}/20 images uploaded
+                {images.length}/20 images uploaded successfully
               </p>
-
               {images.length > 0 && (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                   {images.map((img, index) => (
                     <div key={index} className="relative group">
-                      <img
-                        src={img.url}
-                        alt={img.name || `Image ${index + 1}`}
-                        className="w-full h-32 object-cover rounded-lg border border-gray-200"
-                      />
+                      <img src={img.url} alt={img.name || `Uploaded ${index + 1}`} className="w-full h-32 object-cover rounded-lg border border-gray-200" />
                       <button
                         type="button"
                         onClick={() => handleDeleteImage(index)}
@@ -1028,34 +1339,51 @@ export default function EditCarPage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              {/* Features */}
+              {/* Highlights */}
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <label className="text-sm font-medium text-gray-700">Features</label>
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="outline"
-                    onClick={() => addField(setFeatures, features)}
-                  >
+                  <label className="text-sm font-medium text-gray-700">Vehicle Highlights</label>
+                  <Button type="button" size="sm" variant="outline" onClick={() => addField(setHighlights, highlights)}>
                     <Plus className="w-3 h-3 mr-1" /> Add
                   </Button>
                 </div>
-                {features.map((feature, index) => (
+                {highlights.map((item, index) => (
+                  <div key={index} className="flex gap-2 mb-2">
+                    <input
+                      type="text"
+                      className="flex-1 rounded-lg border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
+                      placeholder={`Highlight ${index + 1}`}
+                      value={item}
+                      onChange={(e) => updateField(setHighlights, highlights, index, e.target.value)}
+                    />
+                    {highlights.length > 1 && (
+                      <button type="button" onClick={() => removeField(setHighlights, highlights, index)} className="text-red-500 hover:text-red-600">
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              {/* Features */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-sm font-medium text-gray-700">General Features</label>
+                  <Button type="button" size="sm" variant="outline" onClick={() => addField(setFeatures, features)}>
+                    <Plus className="w-3 h-3 mr-1" /> Add
+                  </Button>
+                </div>
+                {features.map((item, index) => (
                   <div key={index} className="flex gap-2 mb-2">
                     <input
                       type="text"
                       className="flex-1 rounded-lg border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
                       placeholder={`Feature ${index + 1}`}
-                      value={feature}
+                      value={item}
                       onChange={(e) => updateField(setFeatures, features, index, e.target.value)}
                     />
                     {features.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => removeField(setFeatures, features, index)}
-                        className="text-red-500 hover:text-red-600"
-                      >
+                      <button type="button" onClick={() => removeField(setFeatures, features, index)} className="text-red-500 hover:text-red-600">
                         <X className="w-4 h-4" />
                       </button>
                     )}
@@ -1066,13 +1394,8 @@ export default function EditCarPage() {
               {/* Exterior */}
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <label className="text-sm font-medium text-gray-700">Exterior</label>
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="outline"
-                    onClick={() => addField(setExterior, exterior)}
-                  >
+                  <label className="text-sm font-medium text-gray-700">Exterior Features</label>
+                  <Button type="button" size="sm" variant="outline" onClick={() => addField(setExterior, exterior)}>
                     <Plus className="w-3 h-3 mr-1" /> Add
                   </Button>
                 </div>
@@ -1086,11 +1409,7 @@ export default function EditCarPage() {
                       onChange={(e) => updateField(setExterior, exterior, index, e.target.value)}
                     />
                     {exterior.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => removeField(setExterior, exterior, index)}
-                        className="text-red-500 hover:text-red-600"
-                      >
+                      <button type="button" onClick={() => removeField(setExterior, exterior, index)} className="text-red-500 hover:text-red-600">
                         <X className="w-4 h-4" />
                       </button>
                     )}
@@ -1101,13 +1420,8 @@ export default function EditCarPage() {
               {/* Interior */}
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <label className="text-sm font-medium text-gray-700">Interior</label>
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="outline"
-                    onClick={() => addField(setInterior, interior)}
-                  >
+                  <label className="text-sm font-medium text-gray-700">Interior Layout Configs</label>
+                  <Button type="button" size="sm" variant="outline" onClick={() => addField(setInterior, interior)}>
                     <Plus className="w-3 h-3 mr-1" /> Add
                   </Button>
                 </div>
@@ -1121,11 +1435,7 @@ export default function EditCarPage() {
                       onChange={(e) => updateField(setInterior, interior, index, e.target.value)}
                     />
                     {interior.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => removeField(setInterior, interior, index)}
-                        className="text-red-500 hover:text-red-600"
-                      >
+                      <button type="button" onClick={() => removeField(setInterior, interior, index)} className="text-red-500 hover:text-red-600">
                         <X className="w-4 h-4" />
                       </button>
                     )}
@@ -1137,12 +1447,7 @@ export default function EditCarPage() {
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <label className="text-sm font-medium text-gray-700">Entertainment</label>
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="outline"
-                    onClick={() => addField(setEntertainment, entertainment)}
-                  >
+                  <Button type="button" size="sm" variant="outline" onClick={() => addField(setEntertainment, entertainment)}>
                     <Plus className="w-3 h-3 mr-1" /> Add
                   </Button>
                 </div>
@@ -1156,11 +1461,7 @@ export default function EditCarPage() {
                       onChange={(e) => updateField(setEntertainment, entertainment, index, e.target.value)}
                     />
                     {entertainment.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => removeField(setEntertainment, entertainment, index)}
-                        className="text-red-500 hover:text-red-600"
-                      >
+                      <button type="button" onClick={() => removeField(setEntertainment, entertainment, index)} className="text-red-500 hover:text-red-600">
                         <X className="w-4 h-4" />
                       </button>
                     )}
@@ -1171,13 +1472,8 @@ export default function EditCarPage() {
               {/* Mechanical */}
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <label className="text-sm font-medium text-gray-700">Mechanical</label>
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="outline"
-                    onClick={() => addField(setMechanical, mechanical)}
-                  >
+                  <label className="text-sm font-medium text-gray-700">Mechanical Specs</label>
+                  <Button type="button" size="sm" variant="outline" onClick={() => addField(setMechanical, mechanical)}>
                     <Plus className="w-3 h-3 mr-1" /> Add
                   </Button>
                 </div>
@@ -1186,16 +1482,12 @@ export default function EditCarPage() {
                     <input
                       type="text"
                       className="flex-1 rounded-lg border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
-                      placeholder={`Mechanical detail ${index + 1}`}
+                      placeholder={`Mechanical feature ${index + 1}`}
                       value={item}
                       onChange={(e) => updateField(setMechanical, mechanical, index, e.target.value)}
                     />
                     {mechanical.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => removeField(setMechanical, mechanical, index)}
-                        className="text-red-500 hover:text-red-600"
-                      >
+                      <button type="button" onClick={() => removeField(setMechanical, mechanical, index)} className="text-red-500 hover:text-red-600">
                         <X className="w-4 h-4" />
                       </button>
                     )}
@@ -1206,13 +1498,8 @@ export default function EditCarPage() {
               {/* Safety */}
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <label className="text-sm font-medium text-gray-700">Safety</label>
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="outline"
-                    onClick={() => addField(setSafety, safety)}
-                  >
+                  <label className="text-sm font-medium text-gray-700">Safety Infrastructure</label>
+                  <Button type="button" size="sm" variant="outline" onClick={() => addField(setSafety, safety)}>
                     <Plus className="w-3 h-3 mr-1" /> Add
                   </Button>
                 </div>
@@ -1226,11 +1513,7 @@ export default function EditCarPage() {
                       onChange={(e) => updateField(setSafety, safety, index, e.target.value)}
                     />
                     {safety.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => removeField(setSafety, safety, index)}
-                        className="text-red-500 hover:text-red-600"
-                      >
+                      <button type="button" onClick={() => removeField(setSafety, safety, index)} className="text-red-500 hover:text-red-600">
                         <X className="w-4 h-4" />
                       </button>
                     )}
@@ -1242,12 +1525,7 @@ export default function EditCarPage() {
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <label className="text-sm font-medium text-gray-700">Technical Specs</label>
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="outline"
-                    onClick={() => addField(setTechspecs, techspecs)}
-                  >
+                  <Button type="button" size="sm" variant="outline" onClick={() => addField(setTechspecs, techspecs)}>
                     <Plus className="w-3 h-3 mr-1" /> Add
                   </Button>
                 </div>
@@ -1261,11 +1539,33 @@ export default function EditCarPage() {
                       onChange={(e) => updateField(setTechspecs, techspecs, index, e.target.value)}
                     />
                     {techspecs.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => removeField(setTechspecs, techspecs, index)}
-                        className="text-red-500 hover:text-red-600"
-                      >
+                      <button type="button" onClick={() => removeField(setTechspecs, techspecs, index)} className="text-red-500 hover:text-red-600">
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              {/* Awards */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-sm font-medium text-gray-700">Awards Received</label>
+                  <Button type="button" size="sm" variant="outline" onClick={() => addField(setAwards, awards)}>
+                    <Plus className="w-3 h-3 mr-1" /> Add
+                  </Button>
+                </div>
+                {awards.map((item, index) => (
+                  <div key={index} className="flex gap-2 mb-2">
+                    <input
+                      type="text"
+                      className="flex-1 rounded-lg border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
+                      placeholder={`Award ${index + 1}`}
+                      value={item}
+                      onChange={(e) => updateField(setAwards, awards, index, e.target.value)}
+                    />
+                    {awards.length > 1 && (
+                      <button type="button" onClick={() => removeField(setAwards, awards, index)} className="text-red-500 hover:text-red-600">
                         <X className="w-4 h-4" />
                       </button>
                     )}
@@ -1275,42 +1575,50 @@ export default function EditCarPage() {
             </CardContent>
           </Card>
 
-          {/* SEO Metadata - Optional */}
+          {/* SEO Metadata */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Tag className="w-5 h-5 text-primary" />
-                SEO Metadata <span className="text-xs text-gray-500 font-normal">(Optional)</span>
+                <History className="w-5 h-5 text-primary" />
+                SEO Metadata Configurations
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Meta Title</label>
-                <input
-                  type="text"
-                  className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
-                  placeholder="SEO title"
-                  {...register("title")}
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Meta Title</label>
+                  <input
+                    type="text"
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
+                    placeholder="Search engine title layout..."
+                    {...register("title")}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Listing Destination Link URL</label>
+                  <input
+                    type="text"
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
+                    placeholder="Canonical page route index reference..."
+                    {...register("listingUrl")}
+                  />
+                </div>
               </div>
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Meta Description</label>
                 <textarea
-                  rows={3}
+                  rows={2}
                   className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition resize-none"
                   placeholder="SEO description"
                   {...register("meta_description")}
                 />
               </div>
+
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <label className="text-sm font-medium text-gray-700">Meta Keywords</label>
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="outline"
-                    onClick={() => addField(setMetaKeywords, metaKeywords)}
-                  >
+                  <Button type="button" size="sm" variant="outline" onClick={() => addField(setMetaKeywords, metaKeywords)}>
                     <Plus className="w-3 h-3 mr-1" /> Add
                   </Button>
                 </div>
@@ -1324,26 +1632,35 @@ export default function EditCarPage() {
                       onChange={(e) => updateField(setMetaKeywords, metaKeywords, index, e.target.value)}
                     />
                     {metaKeywords.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => removeField(setMetaKeywords, metaKeywords, index)}
-                        className="text-red-500 hover:text-red-600"
-                      >
+                      <button type="button" onClick={() => removeField(setMetaKeywords, metaKeywords, index)} className="text-red-500 hover:text-red-600">
                         <X className="w-4 h-4" />
                       </button>
                     )}
                   </div>
                 ))}
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">OG Title</label>
-                <input
-                  type="text"
-                  className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
-                  placeholder="Open Graph title"
-                  {...register("og_title")}
-                />
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">OG Title</label>
+                  <input
+                    type="text"
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
+                    placeholder="Open Graph title"
+                    {...register("og_title")}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">OG Image URL</label>
+                  <input
+                    type="text"
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
+                    placeholder="https://example.com/image.jpg"
+                    {...register("og_image")}
+                  />
+                </div>
               </div>
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">OG Description</label>
                 <textarea
@@ -1351,15 +1668,6 @@ export default function EditCarPage() {
                   className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition resize-none"
                   placeholder="Open Graph description"
                   {...register("og_description")}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">OG Image URL</label>
-                <input
-                  type="text"
-                  className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition"
-                  placeholder="https://example.com/image.jpg"
-                  {...register("og_image")}
                 />
               </div>
             </CardContent>
@@ -1383,12 +1691,12 @@ export default function EditCarPage() {
               {isSubmitting ? (
                 <>
                   <Loader2 className="animate-spin h-5 w-5 mr-2 text-white" />
-                  Updating...
+                  Saving Changes...
                 </>
               ) : (
                 <>
                   <Save className="w-4 h-4 mr-2" />
-                  Update Listing
+                  Save Configurations
                 </>
               )}
             </Button>
