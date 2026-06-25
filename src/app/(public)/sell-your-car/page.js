@@ -6,22 +6,22 @@ import { useRouter } from "next/navigation";
 import PageTitle from "../../components/PageTitle";
 import { useToast } from "../../../components/ui/use-toast";
 import axiosInstance from "../../../lib/axios";
-import { 
-  User, 
-  Phone, 
-  Mail, 
-  Car, 
-  Settings, 
-  Calendar, 
-  Gauge, 
-  Upload, 
+import {
+  User,
+  Phone,
+  Mail,
+  Car,
+  Settings,
+  Calendar,
+  Gauge,
+  Upload,
   X,
   CheckCircle2,
   AlertCircle,
   ArrowRight,
   FileText,
   Camera,
-  Loader2
+  Loader2,
 } from "lucide-react";
 import { Button } from "../../../components/ui/button";
 
@@ -32,7 +32,7 @@ export default function SellYourCar() {
   const [uploadError, setUploadError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  
+
   const fileInputRef = useRef(null);
   const formTopRef = useRef(null);
   const router = useRouter();
@@ -55,40 +55,44 @@ export default function SellYourCar() {
       mileage: "",
       transmissiontype: "",
       comment: "",
-    }
+    },
   });
 
-const onSubmit = async (data) => {
-  try {
-    setIsSubmitting(true);
-    
-    // Since images are already uploaded, we can post normal JSON or FormData.
-    // If your backend still accepts standard JSON for the form data, you can match its needs here:
-    const payload = {
-      ...data,
-      images: images.map(img => img.url) // passes an array of uploaded image URLs
-    };
+  const onSubmit = async (data) => {
+    try {
+      setIsSubmitting(true);
 
-    const response = await axiosInstance.post("/sell-car", payload);
+      // Since images are already uploaded, we can post normal JSON or FormData.
+      // If your backend still accepts standard JSON for the form data, you can match its needs here:
+      const payload = {
+        ...data,
+        images: images.map((img) => img.url), // passes an array of uploaded image URLs
+      };
+
+      const response = await axiosInstance.post("/sell-car", payload);
 
       if (formTopRef.current) {
-        formTopRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+        formTopRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
       }
       reset();
       setImages([]);
       setIsSubmitted(true);
-
-  } catch (error) {
-    console.error("Submission error:", error);
-    toast({
-      title: "Error",
-      description: error?.response?.data?.message || "Failed to submit request. Please try again.",
-      variant: "destructive",
-    });
-  } finally {
-    setIsSubmitting(false);
-  }
-};
+    } catch (error) {
+      console.error("Submission error:", error);
+      toast({
+        title: "Error",
+        description:
+          error?.response?.data?.message ||
+          "Failed to submit request. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   // Immediate upload to API backend handler
   const handleImageChange = async (e) => {
     const files = Array.from(e.target.files || []);
@@ -117,23 +121,23 @@ const onSubmit = async (data) => {
     try {
       const uploadPromises = files.map(async (file) => {
         const formData = new FormData();
-        formData.append("entityId", ""); 
+        formData.append("entityId", "");
         formData.append("file_type", "document");
         formData.append("file", file);
 
         const res = await axiosInstance.post("/documents", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
-        
-        return { 
-          name: file.name, 
-          url: res.data?.data?.fileUrl || res.data?.fileUrl || "" 
+
+        return {
+          name: file.name,
+          url: res.data?.data?.fileUrl || res.data?.fileUrl || "",
         };
       });
 
       const uploadedResults = await Promise.all(uploadPromises);
       setImages((prev) => [...prev, ...uploadedResults]);
-      
+
       // toast({
       //   title: "Images Uploaded",
       //   description: `Successfully uploaded ${uploadedResults.length} image(s).`,
@@ -180,14 +184,15 @@ const onSubmit = async (data) => {
                 Submission Successful!
               </h2>
               <p className="text-gray-600 mb-6">
-                We have received your car details. Our team will review your submission 
-                and contact you within 24-48 hours with a competitive offer.
+                We have received your car details. Our team will review your
+                submission and contact you within 24-48 hours with a competitive
+                offer.
               </p>
               <div className="flex gap-4 justify-center">
                 <Button
                   onClick={() => {
                     setIsSubmitted(false);
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    window.scrollTo({ top: 0, behavior: "smooth" });
                   }}
                   className="bg-primary text-white hover:bg-primary/90"
                 >
@@ -213,12 +218,19 @@ const onSubmit = async (data) => {
 
       <div className="container my-10" ref={formTopRef}>
         <div className="px-4 lg:w-8/12 xl:w-7/12 mx-auto">
+          <div className="bg-gradient-to-r from-primary to-primary/80 px-8 py-6 rounded-t-lg">
+            <div className="flex items-center gap-3">
+              <Car className="w-6 h-6 text-white" />
+              <h2 className="text-xl font-bold text-white">
+                {" "}
+                Tell Us About Your Car
+              </h2>
+            </div>
+            <p className="text-blue-100 text-sm mt-1">
+              Fill in the details below to get started
+            </p>
+          </div>
           <div className="rounded-lg bg-white p-8 shadow-lg sm:p-12">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <Car className="w-6 h-6 text-primary" />
-              Tell Us About Your Car
-            </h2>
-
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               {/* Personal Information Section */}
               <div>
@@ -233,9 +245,11 @@ const onSubmit = async (data) => {
                     </label>
                     <input
                       type="text"
-                      className={`w-full rounded-lg border ${errors.firstname ? 'border-red-500' : 'border-gray-300'} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition`}
+                      className={`w-full rounded-lg border ${errors.firstname ? "border-red-500" : "border-gray-300"} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition`}
                       placeholder="Enter first name"
-                      {...register("firstname", { required: "First name is required" })}
+                      {...register("firstname", {
+                        required: "First name is required",
+                      })}
                     />
                     {errors.firstname && (
                       <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
@@ -250,9 +264,11 @@ const onSubmit = async (data) => {
                     </label>
                     <input
                       type="text"
-                      className={`w-full rounded-lg border ${errors.lastname ? 'border-red-500' : 'border-gray-300'} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition`}
+                      className={`w-full rounded-lg border ${errors.lastname ? "border-red-500" : "border-gray-300"} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition`}
                       placeholder="Enter last name"
-                      {...register("lastname", { required: "Last name is required" })}
+                      {...register("lastname", {
+                        required: "Last name is required",
+                      })}
                     />
                     {errors.lastname && (
                       <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
@@ -273,14 +289,14 @@ const onSubmit = async (data) => {
                   </label>
                   <input
                     type="tel"
-                    className={`w-full rounded-lg border ${errors.phone ? 'border-red-500' : 'border-gray-300'} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition`}
+                    className={`w-full rounded-lg border ${errors.phone ? "border-red-500" : "border-gray-300"} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition`}
                     placeholder="Enter phone number"
-                    {...register("phone", { 
+                    {...register("phone", {
                       required: "Phone number is required",
                       pattern: {
                         value: /^[0-9+\-\s()]*$/,
-                        message: "Please enter a valid phone number"
-                      }
+                        message: "Please enter a valid phone number",
+                      },
                     })}
                   />
                   {errors.phone && (
@@ -297,14 +313,14 @@ const onSubmit = async (data) => {
                   </label>
                   <input
                     type="email"
-                    className={`w-full rounded-lg border ${errors.email ? 'border-red-500' : 'border-gray-300'} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition`}
+                    className={`w-full rounded-lg border ${errors.email ? "border-red-500" : "border-gray-300"} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition`}
                     placeholder="Enter email address"
-                    {...register("email", { 
+                    {...register("email", {
                       required: "Email is required",
                       pattern: {
                         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                        message: "Invalid email address"
-                      }
+                        message: "Invalid email address",
+                      },
                     })}
                   />
                   {errors.email && (
@@ -331,7 +347,7 @@ const onSubmit = async (data) => {
                     </label>
                     <input
                       type="text"
-                      className={`w-full rounded-lg border ${errors.brand ? 'border-red-500' : 'border-gray-300'} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition`}
+                      className={`w-full rounded-lg border ${errors.brand ? "border-red-500" : "border-gray-300"} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition`}
                       placeholder="e.g., Toyota"
                       {...register("brand", { required: "Brand is required" })}
                     />
@@ -348,7 +364,7 @@ const onSubmit = async (data) => {
                     </label>
                     <input
                       type="text"
-                      className={`w-full rounded-lg border ${errors.model ? 'border-red-500' : 'border-gray-300'} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition`}
+                      className={`w-full rounded-lg border ${errors.model ? "border-red-500" : "border-gray-300"} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition`}
                       placeholder="e.g., Camry"
                       {...register("model", { required: "Model is required" })}
                     />
@@ -369,14 +385,14 @@ const onSubmit = async (data) => {
                     </label>
                     <input
                       type="text"
-                      className={`w-full rounded-lg border ${errors.year ? 'border-red-500' : 'border-gray-300'} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition`}
+                      className={`w-full rounded-lg border ${errors.year ? "border-red-500" : "border-gray-300"} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition`}
                       placeholder="e.g., 2020"
-                      {...register("year", { 
+                      {...register("year", {
                         required: "Year is required",
                         pattern: {
                           value: /^\d{4}$/,
-                          message: "Please enter a valid year"
-                        }
+                          message: "Please enter a valid year",
+                        },
                       })}
                     />
                     {errors.year && (
@@ -393,14 +409,14 @@ const onSubmit = async (data) => {
                     </label>
                     <input
                       type="number"
-                      className={`w-full rounded-lg border ${errors.mileage ? 'border-red-500' : 'border-gray-300'} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition`}
+                      className={`w-full rounded-lg border ${errors.mileage ? "border-red-500" : "border-gray-300"} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition`}
                       placeholder="Enter mileage"
-                      {...register("mileage", { 
+                      {...register("mileage", {
                         required: "Mileage is required",
                         min: {
                           value: 0,
-                          message: "Mileage cannot be negative"
-                        }
+                          message: "Mileage cannot be negative",
+                        },
                       })}
                     />
                     {errors.mileage && (
@@ -418,8 +434,10 @@ const onSubmit = async (data) => {
                     Transmission Type <span className="text-red-500">*</span>
                   </label>
                   <select
-                    className={`w-full rounded-lg border ${errors.transmissiontype ? 'border-red-500' : 'border-gray-300'} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition bg-white`}
-                    {...register("transmissiontype", { required: "Transmission type is required" })}
+                    className={`w-full rounded-lg border ${errors.transmissiontype ? "border-red-500" : "border-gray-300"} px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/80 focus:border-transparent transition bg-white`}
+                    {...register("transmissiontype", {
+                      required: "Transmission type is required",
+                    })}
                   >
                     <option value="">Select transmission type</option>
                     <option value="Automatic">Automatic</option>
@@ -438,7 +456,8 @@ const onSubmit = async (data) => {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-1">
                   <Camera className="w-4 h-4 text-primary" />
-                  Upload Car Photos <span className="text-xs text-gray-500">(Max 10 photos)</span>
+                  Upload Car Photos{" "}
+                  <span className="text-xs text-gray-500">(Max 10 photos)</span>
                 </label>
                 <div className="flex items-center gap-4">
                   <label className="cursor-pointer">
@@ -472,7 +491,7 @@ const onSubmit = async (data) => {
                     </button>
                   )}
                 </div>
-                
+
                 {uploadError && (
                   <p className="text-sm text-red-500 flex items-center gap-1 mt-2">
                     <AlertCircle className="w-4 h-4" />
@@ -529,9 +548,25 @@ const onSubmit = async (data) => {
               >
                 {isSubmitting ? (
                   <>
-                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    <svg
+                      className="animate-spin h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
                     </svg>
                     Submitting...
                   </>

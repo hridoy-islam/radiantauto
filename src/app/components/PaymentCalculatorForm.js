@@ -99,16 +99,16 @@ export const PaymentCalculatorForm = () => {
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12  mx-auto">
           <div ref={formRef}>
             <Card className="border-0 shadow-xl shadow-gray-200/80">
-              <CardHeader className="pb-6 border-b border-gray-100">
+              <CardHeader className="pb-6 bg-primary rounded-t-lg">
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-xl bg-primary/10">
+                  <div className="p-2.5 rounded-xl bg-white">
                     <Calculator className="w-5 h-5 text-primary" />
                   </div>
                   <div>
-                    <CardTitle className="text-xl text-gray-900">
+                    <CardTitle className="text-xl text-white">
                       Calculate Payment
                     </CardTitle>
-                    <p className="text-sm text-gray-500 mt-0.5">
+                    <p className="text-sm text-white mt-0.5">
                       Enter your loan details below
                     </p>
                   </div>
@@ -224,16 +224,16 @@ export const PaymentCalculatorForm = () => {
 
           <div ref={resultsRef}>
             <Card className="border-0 shadow-xl shadow-gray-200/80 h-full">
-              <CardHeader className="pb-6 border-b border-gray-100">
+              <CardHeader className="pb-6 bg-primary rounded-t-lg">
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-xl bg-primary/10">
+                  <div className="p-2.5 rounded-xl bg-white">
                     <TrendingUp className="w-5 h-5 text-primary" />
                   </div>
                   <div>
-                    <CardTitle className="text-xl text-gray-900">
+                    <CardTitle className="text-xl text-white">
                       Payment Details
                     </CardTitle>
-                    <p className="text-sm text-gray-500 mt-0.5">
+                    <p className="text-sm text-white mt-0.5">
                       Your estimated monthly breakdown
                     </p>
                   </div>
@@ -307,9 +307,9 @@ export const PaymentCalculatorForm = () => {
                 <div className="mt-auto pt-4">
                   <div className="border-t border-gray-100 mb-4" />
                   <div className="flex items-start gap-2">
-                    <Info className="w-3.5 h-3.5 text-gray-400 mt-0.5 shrink-0" />
-                    <p className="text-xs text-gray-400 leading-relaxed">
-                      <span className="font-semibold text-gray-500">
+                    <Info className="w-3.5 h-3.5 text-gray-800 mt-0.5 shrink-0" />
+                    <p className="text-xs text-gray-800 leading-relaxed">
+                      <span className="font-semibold text-gray-800">
                         Disclaimer:
                       </span>{" "}
                       At Radiant Auto there are no hidden fees. The price

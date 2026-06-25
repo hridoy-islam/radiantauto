@@ -368,18 +368,17 @@ export default function TradeInManagementPage() {
                         >
                           <Eye className="w-3.5 h-3.5" />
                         </Button>
-                        {/* <Button
+                        <Button
                           size="icon"
-                          variant="outline"
+                          variant="destructive"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleDeleteClick(tradeIn._id);
                           }}
                           title="Delete Request"
-                          className="h-8 w-8 hover:bg-red-50 hover:text-red-600"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
-                        </Button> */}
+                        </Button>
                       </div>
                     </TableCell>
                   </TableRow>

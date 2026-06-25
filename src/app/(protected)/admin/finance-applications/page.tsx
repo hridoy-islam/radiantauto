@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, Users, Search, Eye } from "lucide-react";
+import { Loader2, Users, Search, Eye, Trash2 } from "lucide-react";
 import axiosInstance from "../../../../lib/axios";
 
 // Shadcn UI Imports
@@ -19,11 +19,21 @@ import { Input } from "../../../../components/ui/input";
 import { DynamicPagination } from "../../../../components/shared/DynamicPagination";
 import { BlinkingDots } from "../../../../components/ui/blinking-dots";
 import { useToast } from "../../../../components/ui/use-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "../../../../components/ui/alert-dialog";
 
 interface IFinanceApplicant {
   _id: string;
   first_name: string;
-  middle_name?: string ;
+  middle_name?: string;
   last_name: string;
   email: string;
   phone: string;
@@ -42,6 +52,11 @@ export default function FinanceApplicantsPage() {
   // Filter States
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [activeSearch, setActiveSearch] = useState<string>("");
+
+  // Delete States
+  const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
 
   // Pagination States
   const [currentPage, setCurrentPage] = useState(1);
@@ -92,6 +107,77 @@ export default function FinanceApplicantsPage() {
   // Navigates directly to the specific dynamic detail route
   const handleViewDetails = (id: string) => {
     router.push(`/admin/finance-applications/${id}`);
+  };
+
+  const handleDeleteClick = (id: string) => {
+    setDeleteId(id);
+    setShowDeleteDialog(true);
+  };
+
+  // Fixed: Single, complete handleDeleteConfirm function
+  const handleDeleteConfirm = async () => {
+    if (!deleteId) return;
+
+    try {
+      setDeleteLoading(true);
+      const response = await axiosInstance.delete(`/finance-applicants/${deleteId}`);
+
+      if (response.data.success) {
+        toast({
+          title: "Success",
+          description: "Finance application deleted successfully.",
+          variant: "default",
+        });
+        fetchApplicants(currentPage, entriesPerPage, activeSearch);
+      } else {
+        toast({
+          title: "Error",
+          description: response.data.message || "Failed to delete finance application.",
+          variant: "destructive",
+        });
+      }
+    } catch (error: any) {
+      console.error("Delete error:", error);
+      toast({
+        title: "Error",
+        description: error?.response?.data?.message || "Failed to delete finance application.",
+        variant: "destructive",
+      });
+    } finally {
+      setDeleteLoading(false);
+      setShowDeleteDialog(false);
+      setDeleteId(null);
+    }
+  };
+
+  const formatCurrency = (amount?: number) => {
+    if (!amount) return "—";
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 2,
+    }).format(amount);
+  };
+
+  const getStatusBadge = (status?: string) => {
+    if (!status) return <span className="text-black/50">—</span>;
+
+    const statusConfig: Record<string, string> = {
+      pending: "bg-yellow-100 text-yellow-800",
+      approved: "bg-green-100 text-green-800",
+      rejected: "bg-red-100 text-red-800",
+      Pending: "bg-yellow-100 text-yellow-800",
+      Approved: "bg-green-100 text-green-800",
+      Rejected: "bg-red-100 text-red-800",
+    };
+
+    const className = statusConfig[status] || "bg-gray-100 text-gray-800";
+
+    return (
+      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${className}`}>
+        {status}
+      </span>
+    );
   };
 
   return (
@@ -157,7 +243,7 @@ export default function FinanceApplicantsPage() {
                   <TableHead className="text-black font-semibold h-12">
                     Phone Number
                   </TableHead>
-                  
+                 
                   <TableHead className="text-black font-semibold h-12 text-right pr-4">
                     Actions
                   </TableHead>
@@ -167,35 +253,49 @@ export default function FinanceApplicantsPage() {
                 {applicants.map((applicant) => (
                   <TableRow
                     key={applicant._id}
-                    onClick={() => handleViewDetails(applicant._id)}
-                    className="border-b border-black/10 hover:bg-black/[0.01] transition-colors cursor-pointer"
+                    className="border-b border-black/10 hover:bg-black/[0.01] transition-colors"
                   >
-                    <TableCell className="py-4 pl-4 font-bold text-black">
-{[
-  applicant.first_name,
-  applicant.middle_name,
-  applicant.last_name
-]
-  .filter(Boolean)
-  .join(' ')  }                  </TableCell>
+                    <TableCell 
+                      className="py-4 pl-4 font-bold text-black cursor-pointer"
+                      onClick={() => handleViewDetails(applicant._id)}
+                    >
+                      {[
+                        applicant.first_name,
+                        applicant.middle_name,
+                        applicant.last_name
+                      ]
+                        .filter(Boolean)
+                        .join(' ')}
+                    </TableCell>
                     <TableCell className="text-black/80 py-4 font-medium">
                       {applicant.email}
                     </TableCell>
                     <TableCell className="font-medium text-black/80 py-4">
                       {applicant.phone || "—"}
                     </TableCell>
-                   
+                    
                     <TableCell className="text-right py-4 pr-4">
                       <div className="flex items-center justify-end gap-2">
                         <Button
                           size="icon"
                           onClick={(e) => {
-                            e.stopPropagation(); // Prevents double-firing row onClick
+                            e.stopPropagation();
                             handleViewDetails(applicant._id);
                           }}
                           title="View Applicant Details"
                         >
                           <Eye className="w-3.5 h-3.5" />
+                        </Button>
+                        <Button
+                          size="icon"
+                          variant="destructive"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteClick(applicant._id);
+                          }}
+                          title="Delete Application"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
                         </Button>
                       </div>
                     </TableCell>
@@ -218,6 +318,36 @@ export default function FinanceApplicantsPage() {
           )}
         </div>
       )}
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the finance application and remove all
+              associated data.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleteLoading}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteConfirm}
+              disabled={deleteLoading}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              {deleteLoading ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Deleting...
+                </>
+              ) : (
+                "Delete"
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

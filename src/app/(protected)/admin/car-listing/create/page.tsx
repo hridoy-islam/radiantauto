@@ -160,7 +160,7 @@ export default function CreateCarPage() {
       serviceRecords: undefined,
       status: "available",
       safetyRating: "",
-      listingUrl: "",
+      // listingUrl: "",
       schema: "",
       meta_description: "",
       og_title: "",
@@ -1535,7 +1535,7 @@ export default function CreateCarPage() {
                     {...register("title")}
                   />
                 </div>
-                <div>
+                {/* <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Listing Destination Link URL</label>
                   <input
                     type="text"
@@ -1543,7 +1543,7 @@ export default function CreateCarPage() {
                     placeholder="Canonical page route index reference..."
                     {...register("listingUrl")}
                   />
-                </div>
+                </div> */}
               </div>
 
               <div>

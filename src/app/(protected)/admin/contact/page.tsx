@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Loader2, Mail, Search, Eye } from "lucide-react";
+import { Loader2, Mail, Search, Eye, Trash2 } from "lucide-react";
 import axiosInstance from "../../../../lib/axios";
 
 // Shadcn UI Imports
@@ -26,6 +26,16 @@ import { Input } from "../../../../components/ui/input";
 import { DynamicPagination } from "../../../../components/shared/DynamicPagination";
 import { BlinkingDots } from "../../../../components/ui/blinking-dots";
 import { useToast } from "../../../../components/ui/use-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "../../../../components/ui/alert-dialog";
 
 interface IContactItem {
   _id: string;
@@ -50,6 +60,11 @@ export default function ContactsPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(100);
   const [selectedContact, setSelectedContact] = useState<IContactItem | null>(null);
+
+  // Delete States
+  const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
   
   const { toast } = useToast();
 
@@ -97,6 +112,46 @@ export default function ContactsPage() {
   const handleViewOpen = (contact: IContactItem) => {
     setSelectedContact(contact);
     setViewDialogOpen(true);
+  };
+
+  const handleDeleteClick = (id: string) => {
+    setDeleteId(id);
+    setShowDeleteDialog(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!deleteId) return;
+
+    try {
+      setDeleteLoading(true);
+      const response = await axiosInstance.delete(`/contact/${deleteId}`);
+
+      if (response.data.success) {
+        toast({
+          title: "Success",
+          description: "Contact inquiry deleted successfully.",
+          variant: "default",
+        });
+        fetchContacts(currentPage, entriesPerPage, activeSearch);
+      } else {
+        toast({
+          title: "Error",
+          description: response.data.message || "Failed to delete contact inquiry.",
+          variant: "destructive",
+        });
+      }
+    } catch (error: any) {
+      console.error("Delete error:", error);
+      toast({
+        title: "Error",
+        description: error?.response?.data?.message || "Failed to delete contact inquiry.",
+        variant: "destructive",
+      });
+    } finally {
+      setDeleteLoading(false);
+      setShowDeleteDialog(false);
+      setDeleteId(null);
+    }
   };
 
   return (
@@ -199,6 +254,17 @@ export default function ContactsPage() {
                         >
                           <Eye className="w-3.5 h-3.5" />
                         </Button>
+                        <Button
+                          size="icon"
+                          variant="destructive"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteClick(contact._id);
+                          }}
+                          title="Delete Message"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </Button>
                       </div>
                     </TableCell>
                   </TableRow>
@@ -266,6 +332,36 @@ export default function ContactsPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the contact inquiry and remove all
+              associated data.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleteLoading}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteConfirm}
+              disabled={deleteLoading}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              {deleteLoading ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Deleting...
+                </>
+              ) : (
+                "Delete"
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
