@@ -115,7 +115,7 @@ const Contact = () => {
         </div>
         <div>
           <h4 className="font-semibold text-gray-900 mb-1">Email Address</h4>
-          <p className="text-sm text-gray-600">sales@radiant-auto.com</p>
+          <p className="text-sm text-gray-600">info@radiant-auto.com</p>
         </div>
       </div>
       
@@ -309,7 +309,7 @@ const Contact = () => {
             url: "https://radiant-auto.com",
             image: "https://radiant-auto.com/images/titlebg.jpeg",
             telephone: "+1 306 261 4800",
-            email: "sales@radiant-auto.com",
+            email: "info@radiant-auto.com",
             priceRange: "$$",
             address: {
               "@type": "PostalAddress",

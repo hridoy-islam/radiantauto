@@ -124,7 +124,7 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-3">
                 <FaEnvelope className="h-3.5 w-3.5 flex-shrink-0 text-primary" />
-                <span>sales@radiant-auto.com</span>
+                <span>info@radiant-auto.com</span>
               </li>
               <li className="flex items-start gap-3">
                 <FaClock className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-primary" />

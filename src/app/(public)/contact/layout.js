@@ -1,7 +1,7 @@
 export const metadata = {
   title: "Contact Us",
   description:
-    "Get in touch with Radiant Auto in Saskatoon. Call +1 306 261 4800, email sales@radiant-auto.com, or visit 213 33rd St W.",
+    "Get in touch with Radiant Auto in Saskatoon. Call +1 306 261 4800, email info@radiant-auto.com, or visit 213 33rd St W.",
   alternates: {
     canonical: "/contact",
   },

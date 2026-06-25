@@ -56,7 +56,7 @@ const jsonLd = {
   url: "https://radiant-auto.com",
   image: "https://radiant-auto.com/images/titlebg.jpeg",
   telephone: "+1 306 261 4800",
-  email: "sales@radiant-auto.com",
+  email: "info@radiant-auto.com",
   priceRange: "$$",
   address: {
     "@type": "PostalAddress",
