@@ -94,17 +94,17 @@ export default function Car({ car }) {
           )}
 
           {/* Compare FAB */}
-          <button
-            onClick={handleCompare}
-            className={`absolute top-2.5 right-2.5 p-2 rounded-full shadow-md backdrop-blur-md transition-all duration-200 ${
-              inCompare
-                ? "bg-primary text-white scale-105"
-                : "bg-white/90 text-gray-700 hover:bg-white hover:scale-105"
-            } ${animating ? "scale-95" : ""}`}
-            title={inCompare ? "Remove from compare" : "Add to compare"}
-          >
-            {inCompare ? <Check className="w-3.5 h-3.5" /> : <GitCompareArrows className="w-3.5 h-3.5" />}
-          </button>
+    <button
+  onClick={handleCompare}
+  className={`absolute top-2.5 right-2.5 px-2 py-2 rounded-full shadow-md backdrop-blur-md transition-all duration-200 text-[10px] font-medium leading-none ${
+    inCompare
+      ? "bg-primary text-white scale-105"
+      : "bg-white/90 text-gray-700 hover:bg-white "
+  } ${animating ? "scale-95" : ""}`}
+  title={inCompare ? "Remove from compare" : "Add to compare"}
+>
+  {inCompare ? "Remove" : "Compare"}
+</button>
         </Link>
 
         {/* Content Section */}
