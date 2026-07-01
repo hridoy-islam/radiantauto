@@ -44,7 +44,7 @@ import { Badge } from "../../../../components/ui/badge";
 import { Separator } from "../../../../components/ui/separator";
 import { BlinkingDots } from "../../../../components/ui/blinking-dots";
 import { addToCompare, removeFromCompare, isInCompare } from "../../../../lib/compare";
-import { toast } from "../../../../components/ui/use-toast"; // Assuming you have a toast component
+import { useRouter } from "next/navigation";
 
 export default function CarDetailsPage({ params }) {
   const { slug } = params;
@@ -57,6 +57,8 @@ export default function CarDetailsPage({ params }) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [inCompare, setInCompare] = useState(false);
+  const [showCompareDialog, setShowCompareDialog] = useState(false);
+  const router = useRouter();
   
   // Video states
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
@@ -187,15 +189,14 @@ export default function CarDetailsPage({ params }) {
     if (inCompare) {
       removeFromCompare(car._id);
       setInCompare(false);
-      toast({
-        description: "Removed from compare list",
-      });
     } else {
       addToCompare(car);
       setInCompare(true);
-      toast({
-        description: "Added to compare list",
-      });
+      setShowCompareDialog(true);
+      setTimeout(() => {
+        setShowCompareDialog(false);
+        router.push("/compare");
+      }, 2000);
     }
   };
 
@@ -919,6 +920,49 @@ export default function CarDetailsPage({ params }) {
           }}
         />
       )}
+
+      {/* Compare Modal */}
+     {showCompareDialog && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    {/* Backdrop with subtle gradient */}
+    <div 
+      className="absolute inset-0 bg-gradient-to-br from-zinc-900/80 via-zinc-900/70 to-zinc-800/80 backdrop-blur-sm transition-opacity duration-300" 
+      onClick={() => setShowCompareDialog(false)}
+    />
+    
+    {/* Dialog */}
+    <div className="relative bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden animate-in zoom-in-95 fade-in duration-300">
+      {/* Top accent bar */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-primary to-primary/70" />
+      
+      {/* Content */}
+      <div className="p-8 pt-10">
+        {/* Icon with ring animation */}
+        <div className="flex justify-center mb-6">
+          <div className="relative">
+            <div className="absolute inset-0 bg-emerald-100 rounded-full animate-ping opacity-25 w-20 h-20" />
+            <div className="relative w-20 h-20 bg-gradient-to-br from-primary to-primary/80 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/25 rotate-3 transform hover:rotate-0 transition-transform duration-300">
+              <Check className="w-10 h-10 text-white" strokeWidth={2.5} />
+            </div>
+          </div>
+        </div>
+
+        {/* Text content */}
+        <div className="text-center mb-6">
+          <h3 className="text-2xl font-bold text-zinc-900 mb-2">
+            Added to Compare
+          </h3>
+          <p className="text-zinc-500 text-sm leading-relaxed">
+            Your vehicle has been added to the comparison list. You can now compare it with other vehicles.
+          </p>
+        </div>
+
+
+        
+      </div>
+    </div>
+  </div>
+)}
 
       {/* Fullscreen Interactive Lightbox Modal */}
       {isLightboxOpen && (

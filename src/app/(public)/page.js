@@ -145,64 +145,65 @@ export default function Home() {
     });
   }, []);
 
-  const testimonials = [
-    {
-      name: "Michael Rodriguez",
-      role: "Business Owner",
-      quote: "The team made buying my dream car an absolute pleasure. Transparent process from start to finish.",
-      rating: 5,
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face",
-      car: "2024 BMW X5",
-    },
-    {
-      name: "Sarah Thompson",
-      role: "Marketing Director",
-      quote: "Amazing trade-in experience! Got a fair price and upgraded to a newer model the same day.",
-      rating: 5,
-      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face",
-      car: "2024 Tesla Model Y",
-    },
-    {
-      name: "David Chen",
-      role: "Software Engineer",
-      quote: "From browsing online to test drive, everything was seamless. Their CPO program gave me peace of mind.",
-      rating: 5,
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face",
-      car: "2023 Mercedes C-Class",
-    },
-    {
-      name: "Emily Parker",
-      role: "Healthcare Professional",
-      quote: "Exceptional customer service! They found me the perfect SUV for my family within my budget.",
-      rating: 5,
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face",
-      car: "2024 Honda CR-V",
-    },
-    {
-      name: "James Wilson",
-      role: "Real Estate Agent",
-      quote: "The financing options were incredible. Got approved in minutes and drove home the same day.",
-      rating: 5,
-      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=face",
-      car: "2024 Lexus RX",
-    },
-    {
-      name: "Lisa Anderson",
-      role: "Teacher",
-      quote: "First-time buyer and they made it so easy. No pressure, just honest advice and great selection.",
-      rating: 5,
-      image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&h=80&fit=crop&crop=face",
-      car: "2023 Toyota Camry",
-    },
-    {
-      name: "Robert Kim",
-      role: "Tech Entrepreneur",
-      quote: "Their online buying process is revolutionary. Scheduled delivery and completed everything from home.",
-      rating: 5,
-      image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=80&h=80&fit=crop&crop=face",
-      car: "2024 Porsche Taycan",
-    },
-  ];
+const testimonials = [
+  {
+    name: "Michael Rodriguez",
+    role: "Business Owner",
+    quote: "The team made buying my dream car an absolute pleasure. Transparent process from start to finish.",
+    rating: 5,
+        image: "/p1.jpg",
+    car: "2024 BMW X5",
+  },
+  {
+    name: "Sarah Anderson",
+    role: "Marketing Director",
+    quote: "Amazing trade-in experience! Got a fair price and upgraded to a newer model the same day.",
+    rating: 5,
+    image: "/p2.jpg",
+    car: "2024 Tesla Model Y",
+  },
+  {
+    name: "David Chen",
+    role: "Software Engineer",
+    quote: "From browsing online to test drive, everything was seamless. Their CPO program gave me peace of mind.",
+    rating: 5,
+    image: "/p3.jpg",
+    car: "2023 Mercedes C-Class",
+  },
+  {
+    name: "Emily Parker",
+    role: "Healthcare Professional",
+    quote: "Exceptional customer service! They found me the perfect SUV for my family within my budget.",
+    rating: 5,
+    image: "/p4.jpg",
+    car: "2024 Honda CR-V",
+  },
+  {
+    name: "James Wilson",
+    role: "Real Estate Agent",
+    quote: "The financing options were incredible. Got approved in minutes and drove home the same day.",
+    rating: 5,
+    image: "/p5.jpg",
+    car: "2024 Lexus RX",
+  },
+  {
+    name: "Lisa Nguyen",
+    role: "Teacher",
+    quote: "First-time buyer and they made it so easy. No pressure, just honest advice and great selection.",
+    rating: 5,
+    image: "/p6.jpg",
+    car: "2023 Toyota Camry",
+  },
+  {
+    name: "Robert Kim",
+    role: "Tech Entrepreneur",
+    quote: "Their online buying process is revolutionary. Scheduled delivery and completed everything from home.",
+    rating: 5,
+    image: "/p7.jpg",
+    car: "2024 Porsche Taycan",
+  },
+]
+
 
   const renderTestimonialCard = (testimonial, index) => (
     <div

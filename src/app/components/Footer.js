@@ -1,8 +1,6 @@
 "use client";
 import Link from "next/link";
-import React, { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import React from "react";
 import {
   FaFacebookF,
   FaTwitter,
@@ -15,36 +13,9 @@ import {
   FaClock,
 } from "react-icons/fa";
 
-gsap.registerPlugin(ScrollTrigger);
-
 const Footer = () => {
-  const footerRef = useRef(null);
-
-  useEffect(() => {
-    if (!footerRef.current) return;
-    gsap.fromTo(
-      footerRef.current.querySelectorAll(".gsap-footer"),
-      { opacity: 0, y: 40 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.12,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: footerRef.current,
-          start: "top 90%",
-          toggleActions: "play none none none",
-        },
-      },
-    );
-  }, []);
-
   return (
-    <footer
-      ref={footerRef}
-      className="relative bg-white border-t border-gray-100 pt-16 pb-8 overflow-hidden"
-    >
+    <footer className="relative bg-white border-t border-gray-100 pt-16 pb-8 overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-primary/5 blur-3xl" />
         <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-primary/5 blur-3xl" />
@@ -52,7 +23,7 @@ const Footer = () => {
 
       <div className="container mx-auto relative z-10">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-12">
-          <div className="sm:col-span-2 lg:col-span-4 gsap-footer">
+          <div className="sm:col-span-2 lg:col-span-4">
             <Link href="/" className="inline-block mb-5">
               <img src="/images/logo.png" alt="logo" className="h-10 w-auto" />
             </Link>
@@ -78,7 +49,7 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="lg:col-span-2 lg:col-start-6 gsap-footer">
+          <div className="lg:col-span-2 lg:col-start-6">
             <h4 className="mb-5 text-sm font-semibold uppercase tracking-wider text-gray-900">
               Resources
             </h4>
@@ -93,7 +64,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div className="lg:col-span-2 gsap-footer">
+          <div className="lg:col-span-2">
             <h4 className="mb-5 text-sm font-semibold uppercase tracking-wider text-gray-900">
               Quick Links
             </h4>
@@ -106,7 +77,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div className="lg:col-span-3 gsap-footer">
+          <div className="lg:col-span-3">
             <h4 className="mb-5 text-sm font-semibold uppercase tracking-wider text-gray-900">
               Contact
             </h4>
@@ -147,7 +118,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-gray-200 gsap-footer">
+        <div className="mt-12 pt-8 border-t border-gray-200">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <p className="text-sm text-gray-700">
               &copy; {new Date().getFullYear()} Radiant Auto. All rights
