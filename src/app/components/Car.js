@@ -25,11 +25,11 @@ export default function Car({ car }) {
     if (inCompare) {
       removeFromCompare(car._id);
       setInCompare(false);
-      toast({
-        title: "Comparison Updated",
-        description: "Removed from compare",
-        variant: "destructive",
-      });
+      // toast({
+      //   title: "Comparison Updated",
+      //   description: "Removed from compare",
+      //   variant: "destructive",
+      // });
     } else {
       addToCompare(car);
       setInCompare(true);
