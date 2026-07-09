@@ -1,21 +1,23 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Gauge, GitCompareArrows, ArrowRight, Check, Fuel, Activity, ShieldCheck } from "lucide-react";
+import { Gauge, BarChart3, ArrowRight, Check, Fuel, Activity, ShieldCheck } from "lucide-react";
 import { Badge } from "../../components/ui/badge";
 import { Button } from "../../components/ui/button";
 import { addToCompare, removeFromCompare, isInCompare } from "../../lib/compare";
-import { useToast } from "../../components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 export default function Car({ car }) {
   const [inCompare, setInCompare] = useState(false);
   const [animating, setAnimating] = useState(false);
-  const { toast } = useToast();
+  const [showCompareDialog, setShowCompareDialog] = useState(false);
 
   useEffect(() => {
     if (car?._id) {
       setInCompare(isInCompare(car._id));
     }
   }, [car?._id]);
+
+  const router = useRouter();
 
   const handleCompare = (e) => {
     e.preventDefault();
@@ -25,18 +27,14 @@ export default function Car({ car }) {
     if (inCompare) {
       removeFromCompare(car._id);
       setInCompare(false);
-      // toast({
-      //   title: "Comparison Updated",
-      //   description: "Removed from compare",
-      //   variant: "destructive",
-      // });
     } else {
       addToCompare(car);
       setInCompare(true);
-      toast({
-        title: "Comparison Updated",
-        description: "Added to compare",
-      });
+      setShowCompareDialog(true);
+      setTimeout(() => {
+        setShowCompareDialog(false);
+        router.push("/compare");
+      }, 2000);
     }
 
     setTimeout(() => setAnimating(false), 300);
@@ -101,9 +99,9 @@ export default function Car({ car }) {
       ? "bg-primary text-white scale-105"
       : "bg-white/90 text-gray-700 hover:bg-white "
   } ${animating ? "scale-95" : ""}`}
-  title={inCompare ? "Remove from compare" : "Add to compare"}
+  title={inCompare ? "In Compare List" : "Add to compare"}
 >
-  {inCompare ? "Remove" : "Compare"}
+  {inCompare ? "In List" : "Compare"}
 </button>
         </Link>
 
@@ -187,6 +185,36 @@ export default function Car({ car }) {
 
         </div>
       </div>
+
+      {/* Added to Compare Dialog */}
+      {showCompareDialog && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div
+            className="absolute inset-0 bg-gradient-to-br from-zinc-900/80 via-zinc-900/70 to-zinc-800/80 backdrop-blur-sm transition-opacity duration-300"
+            onClick={() => setShowCompareDialog(false)}
+          />
+          <div className="relative bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden animate-in zoom-in-95 fade-in duration-300">
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-primary to-primary/70" />
+            <div className="p-8 pt-10">
+              <div className="flex justify-center mb-6">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-emerald-100 rounded-full animate-ping opacity-25 w-20 h-20" />
+                  <div className="relative w-20 h-20 bg-gradient-to-br from-primary to-primary/80 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/25 rotate-3 transform hover:rotate-0 transition-transform duration-300">
+                    <Check className="w-10 h-10 text-white" strokeWidth={2.5} />
+                  </div>
+                </div>
+              </div>
+              <div className="text-center mb-6">
+                <h3 className="text-2xl font-bold text-zinc-900 mb-2">Added to Compare</h3>
+                <p className="text-zinc-500 text-sm leading-relaxed">
+                  Your vehicle has been added to the comparison list. You can now compare it with other vehicles.
+                </p>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

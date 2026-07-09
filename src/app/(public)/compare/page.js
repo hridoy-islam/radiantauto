@@ -26,7 +26,7 @@ import {
   Zap,
   Users,
   Award,
-  MapPin
+  MapPin,
 } from "lucide-react";
 import { Button } from "../../../components/ui/button";
 import { Badge } from "../../../components/ui/badge";
@@ -34,7 +34,7 @@ import { Input } from "../../../components/ui/input";
 import {
   getCompareList,
   removeFromCompare,
-  clearCompare
+  clearCompare,
 } from "../../../lib/compare";
 import axiosInstance from "../../../lib/axios";
 import PageTitle from "../../components/PageTitle";
@@ -88,13 +88,11 @@ export default function ComparePage() {
     setSearching(true);
     try {
       const res = await axiosInstance.get(
-        `/cars?status=available&searchTerm=${q}&limit=8`
+        `/cars?status=available&searchTerm=${q}&limit=8`,
       );
       const result = res.data.data.result || res.data.data || [];
       setSearchResults(
-        result.filter(
-          (item) => !cars.some((c) => c._id === item._id)
-        )
+        result.filter((item) => !cars.some((c) => c._id === item._id)),
       );
     } catch {
       setSearchResults([]);
@@ -126,7 +124,7 @@ export default function ComparePage() {
           { label: "Status", key: "status", format: "badge" },
           { label: "Stock Number", key: "stock", format: "text" },
           { label: "VIN", key: "vin", format: "text" },
-        ]
+        ],
       },
       {
         title: "Basic Information",
@@ -138,7 +136,7 @@ export default function ComparePage() {
           { label: "Model Year", key: "modelYear", format: "text" },
           { label: "Body Style", key: "body_style", format: "text" },
           { label: "Segment", key: "segment", format: "text" },
-        ]
+        ],
       },
       {
         title: "Engine & Performance",
@@ -149,11 +147,19 @@ export default function ComparePage() {
           { label: "Engine Type", key: "engineType", format: "text" },
           { label: "Horsepower", key: "horsepower", format: "number" },
           { label: "Torque", key: "torque", format: "number" },
-          { label: "Acceleration (0-60)", key: "acceleration", format: "number" },
+          {
+            label: "Acceleration (0-60)",
+            key: "acceleration",
+            format: "number",
+          },
           { label: "Transmission", key: "transmission", format: "text" },
-          { label: "Transmission Details", key: "transmissionDetails", format: "text" },
+          {
+            label: "Transmission Details",
+            key: "transmissionDetails",
+            format: "text",
+          },
           { label: "Drivetrain", key: "drivetrain", format: "text" },
-        ]
+        ],
       },
       {
         title: "Fuel & Efficiency",
@@ -163,11 +169,19 @@ export default function ComparePage() {
           { label: "Fuel Efficiency", key: "fuel_efficiency", format: "text" },
           { label: "City MPG", key: "fuelEconomyCity", format: "number" },
           { label: "Highway MPG", key: "fuelEconomyHighway", format: "number" },
-          { label: "Combined MPG", key: "fuelEconomyCombined", format: "number" },
+          {
+            label: "Combined MPG",
+            key: "fuelEconomyCombined",
+            format: "number",
+          },
           { label: "Electric Range", key: "electricRange", format: "number" },
-          { label: "Battery Capacity", key: "batteryCapacity", format: "number" },
+          {
+            label: "Battery Capacity",
+            key: "batteryCapacity",
+            format: "number",
+          },
           { label: "Emissions", key: "emissions", format: "number" },
-        ]
+        ],
       },
       {
         title: "Mileage & Usage",
@@ -177,7 +191,7 @@ export default function ComparePage() {
           { label: "Mileage Unit", key: "mileageUnit", format: "text" },
           { label: "Previous Owners", key: "previousOwners", format: "number" },
           { label: "One Owner", key: "oneOwner", format: "boolean" },
-        ]
+        ],
       },
       {
         title: "Dimensions & Capacity",
@@ -187,7 +201,7 @@ export default function ComparePage() {
           { label: "Seats", key: "seats", format: "number" },
           { label: "Cargo Capacity", key: "cargoCapacity", format: "number" },
           { label: "Towing Capacity", key: "towingCapacity", format: "number" },
-        ]
+        ],
       },
       {
         title: "Exterior",
@@ -195,32 +209,42 @@ export default function ComparePage() {
         specs: [
           { label: "Exterior Color", key: "exterior_colour", format: "text" },
           { label: "Interior Color", key: "interior_colour", format: "text" },
-        ]
+        ],
       },
       {
         title: "History & Condition",
         icon: <Shield className="w-4 h-4" />,
         specs: [
           { label: "Accident Free", key: "accidentFree", format: "boolean" },
-          { label: "Carfax Available", key: "carfaxAvailable", format: "boolean" },
-          { label: "Service Records", key: "serviceRecords", format: "boolean" },
-          { label: "Province Registered", key: "provinceRegistered", format: "text" },
+          {
+            label: "Carfax Available",
+            key: "carfaxAvailable",
+            format: "boolean",
+          },
+          {
+            label: "Service Records",
+            key: "serviceRecords",
+            format: "boolean",
+          },
+          {
+            label: "Province Registered",
+            key: "provinceRegistered",
+            format: "text",
+          },
           { label: "Country", key: "country", format: "text" },
-        ]
+        ],
       },
       {
         title: "Safety & Ratings",
         icon: <Star className="w-4 h-4" />,
         specs: [
           { label: "Safety Rating", key: "safetyRating", format: "text" },
-        ]
+        ],
       },
       {
         title: "Dealer Information",
         icon: <MapPin className="w-4 h-4" />,
-        specs: [
-          { label: "Dealer Notes", key: "dealerNotes", format: "text" },
-        ]
+        specs: [{ label: "Dealer Notes", key: "dealerNotes", format: "text" }],
       },
     ];
   }, [cars]);
@@ -228,7 +252,7 @@ export default function ComparePage() {
   const getSpecValue = (car, spec) => {
     const val = car?.[spec.key];
     if (val === undefined || val === null || val === "") return "—";
-    
+
     switch (spec.format) {
       case "price":
         return formatPrice(val);
@@ -256,18 +280,20 @@ export default function ComparePage() {
           </Badge>
         );
       case "brand":
-        return typeof val === 'object' ? val?.brandName || val?.name || "—" : val;
+        return typeof val === "object"
+          ? val?.brandName || val?.name || "—"
+          : val;
       default:
         return val;
     }
   };
 
   const hasAnySpec = (specs) => {
-    return specs.some(spec => 
-      cars.some(car => {
+    return specs.some((spec) =>
+      cars.some((car) => {
         const val = car?.[spec.key];
         return val !== undefined && val !== null && val !== "";
-      })
+      }),
     );
   };
 
@@ -324,7 +350,8 @@ export default function ComparePage() {
                         {car.name}
                       </p>
                       <p className="text-sm text-gray-500">
-                        {car.modelYear} &middot; {formatMileage(car.mileage, car.mileageUnit)} &middot;{" "}
+                        {car.modelYear} &middot;{" "}
+                        {formatMileage(car.mileage, car.mileageUnit)} &middot;{" "}
                         {formatPrice(car.price)}
                       </p>
                     </div>
@@ -333,9 +360,13 @@ export default function ComparePage() {
                 ))}
               </div>
             )}
-            {searchQuery.length >= 2 && searchResults.length === 0 && !searching && (
-              <p className="text-gray-400 text-sm">No vehicles found. Try a different search.</p>
-            )}
+            {searchQuery.length >= 2 &&
+              searchResults.length === 0 &&
+              !searching && (
+                <p className="text-gray-400 text-sm">
+                  No vehicles found. Try a different search.
+                </p>
+              )}
           </div>
         </div>
       </>
@@ -388,7 +419,9 @@ export default function ComparePage() {
         {showSearch && (
           <div className="mb-10 p-6 bg-gray-50 border border-gray-200 rounded-2xl">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-gray-900">Add Another Vehicle</h3>
+              <h3 className="font-semibold text-gray-900">
+                Add Another Vehicle
+              </h3>
               <button
                 onClick={() => {
                   setShowSearch(false);
@@ -434,7 +467,8 @@ export default function ComparePage() {
                         {car.name}
                       </p>
                       <p className="text-xs text-gray-500">
-                        {car.modelYear} &middot; {formatMileage(car.mileage, car.mileageUnit)}
+                        {car.modelYear} &middot;{" "}
+                        {formatMileage(car.mileage, car.mileageUnit)}
                       </p>
                     </div>
                     <Plus className="w-4 h-4 text-gray-300 group-hover:text-primary transition-colors flex-shrink-0" />
@@ -442,9 +476,13 @@ export default function ComparePage() {
                 ))}
               </div>
             )}
-            {searchQuery.length >= 2 && searchResults.length === 0 && !searching && (
-              <p className="mt-3 text-sm text-gray-400">No matching vehicles found.</p>
-            )}
+            {searchQuery.length >= 2 &&
+              searchResults.length === 0 &&
+              !searching && (
+                <p className="mt-3 text-sm text-gray-400">
+                  No matching vehicles found.
+                </p>
+              )}
           </div>
         )}
 
@@ -452,13 +490,14 @@ export default function ComparePage() {
         <div className="overflow-x-auto pb-6">
           <div className="min-w-[900px]">
             {/* Image Row */}
+            {/* Image Row */}
             <div className="grid grid-cols-[200px_repeat(auto-fill,minmax(220px,1fr))] gap-3 mb-6">
               <div />
               {cars.map((car) => (
-                <div key={car._id} className="relative group">
+                <div key={car._id} className="relative group pt-2 px-2 -mx-2">
                   <button
                     onClick={() => handleRemove(car._id)}
-                    className="absolute -top-2 -right-2 z-10 p-1.5 bg-white border border-gray-200 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-50 hover:border-red-200"
+                    className="absolute top-0 right-0 z-20 p-1.5 bg-white border border-gray-200 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-50 hover:border-red-200"
                   >
                     <X className="w-3.5 h-3.5 text-red-500" />
                   </button>
@@ -474,9 +513,7 @@ export default function ComparePage() {
                         <p className="text-white font-bold text-sm truncate">
                           {car.name}
                         </p>
-                        <p className="text-white/80 text-xs">
-                          {car.modelYear}
-                        </p>
+                        <p className="text-white/80 text-xs">{car.modelYear}</p>
                       </div>
                     </div>
                   </Link>
@@ -491,10 +528,13 @@ export default function ComparePage() {
                 {cars.map((car, idx) => {
                   const prices = cars.map((c) => c.price || 0).filter(Boolean);
                   const minPrice = Math.min(...prices);
-                  const mileages = cars.map((c) => c.mileage || 0).filter(Boolean);
+                  const mileages = cars
+                    .map((c) => c.mileage || 0)
+                    .filter(Boolean);
                   const minMileage = Math.min(...mileages);
                   const isBestPrice = car.price === minPrice;
-                  const isLowestMileage = mileages.length > 0 && car.mileage === minMileage;
+                  const isLowestMileage =
+                    mileages.length > 0 && car.mileage === minMileage;
                   const badges = [];
                   if (isBestPrice) badges.push("Best Price");
                   if (isLowestMileage) badges.push("Lowest Mileage");
@@ -518,7 +558,7 @@ export default function ComparePage() {
             {/* Spec Groups */}
             {specGroups.map((group) => {
               if (!hasAnySpec(group.specs)) return null;
-              
+
               return (
                 <div key={group.title} className="mb-10">
                   <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
@@ -542,7 +582,10 @@ export default function ComparePage() {
                           </span>
                         </div>
                         {cars.map((car) => (
-                          <div key={car._id} className="text-sm text-gray-900 font-medium">
+                          <div
+                            key={car._id}
+                            className="text-sm text-gray-900 font-medium"
+                          >
                             {getSpecValue(car, spec)}
                           </div>
                         ))}
@@ -566,9 +609,9 @@ export default function ComparePage() {
                   {Array.from(
                     new Set(
                       cars.flatMap((c) =>
-                        Array.isArray(c.features) ? c.features : []
-                      )
-                    )
+                        Array.isArray(c.features) ? c.features : [],
+                      ),
+                    ),
                   ).map((feature, idx) => (
                     <div
                       key={idx}
@@ -608,9 +651,9 @@ export default function ComparePage() {
                   {Array.from(
                     new Set(
                       cars.flatMap((c) =>
-                        Array.isArray(c.safety) ? c.safety : []
-                      )
-                    )
+                        Array.isArray(c.safety) ? c.safety : [],
+                      ),
+                    ),
                   ).map((item, idx) => (
                     <div
                       key={idx}
@@ -618,9 +661,7 @@ export default function ComparePage() {
                         idx % 2 === 0 ? "bg-gray-50" : "bg-white"
                       }`}
                     >
-                      <span className="text-sm text-gray-600 pl-3">
-                        {item}
-                      </span>
+                      <span className="text-sm text-gray-600 pl-3">{item}</span>
                       {cars.map((car) => (
                         <div key={car._id} className="flex items-center">
                           {Array.isArray(car.safety) &&
@@ -650,9 +691,9 @@ export default function ComparePage() {
                   {Array.from(
                     new Set(
                       cars.flatMap((c) =>
-                        Array.isArray(c.awards) ? c.awards : []
-                      )
-                    )
+                        Array.isArray(c.awards) ? c.awards : [],
+                      ),
+                    ),
                   ).map((item, idx) => (
                     <div
                       key={idx}
@@ -660,9 +701,7 @@ export default function ComparePage() {
                         idx % 2 === 0 ? "bg-gray-50" : "bg-white"
                       }`}
                     >
-                      <span className="text-sm text-gray-600 pl-3">
-                        {item}
-                      </span>
+                      <span className="text-sm text-gray-600 pl-3">{item}</span>
                       {cars.map((car) => (
                         <div key={car._id} className="flex items-center">
                           {Array.isArray(car.awards) &&
@@ -700,7 +739,18 @@ export default function ComparePage() {
 
 // Need to add DollarSign import
 const DollarSign = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
     <line x1="12" y1="2" x2="12" y2="22"></line>
     <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
   </svg>
