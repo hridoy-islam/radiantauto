@@ -3,6 +3,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import { Toaster } from "../components/ui/toaster";
 import AdminRedirectGuard from "../components/shared/AdminRedirectGuard";
+import HeadScriptInjector from "./components/HeadScriptInjector";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -91,6 +92,7 @@ export default function RootLayout({ children }) {
       </head>
       <body className={inter.className}>
         <Providers>
+          <HeadScriptInjector />
           <AdminRedirectGuard>
             <main className="flex-1">{children}</main>
           </AdminRedirectGuard>

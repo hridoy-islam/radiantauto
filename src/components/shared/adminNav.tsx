@@ -24,7 +24,8 @@ import {
   ArrowRightLeft,
   CarFrontIcon,
   CarIcon,
-  WalletCards
+  WalletCards,
+  Code
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "../ui/sheet";
 import { Button } from "../ui/button";
@@ -51,6 +52,7 @@ export function AdminSidebar() {
     { label: "Trade In", href: "/admin/trade-in", icon: ArrowRightLeft  },
     { label: "Sell Cars", href: "/admin/sell-cars", icon: CarFrontIcon  },
     { label: "Car Brand", href: "/admin/car-brand", icon: Layers   },
+    { label: "Head Script", href: "/admin/head-script", icon: Code   },
     
     // { 
     //   label: "Settings", 

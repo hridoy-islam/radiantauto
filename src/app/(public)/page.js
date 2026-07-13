@@ -146,22 +146,22 @@ export default function Home() {
   }, []);
 
 const testimonials = [
-  { name: "Michael Rodriguez", image: "/testimonials/testimonial-1.jpg", rating: 5 },
-  { name: "James Wilson", image: "/testimonials/testimonial-2.jpg", rating: 5 },
-  { name: "Omar Farooq", image: "/testimonials/testimonial-3.jpg", rating: 4.5 },
-  { name: "John Anderson", image: "/testimonials/testimonial-4.jpg", rating: 5 },
-  { name: "Sarah Anderson", image: "/testimonials/testimonial-5.jpg", rating: 5 },
-  { name: "William Carter", image: "/testimonials/testimonial-6.jpg", rating: 5 },
-  { name: "Richard Kim", image: "/testimonials/testimonial-7.jpg", rating: 4.5 },
-  { name: "Christopher White", image: "/testimonials/testimonial-8.jpg", rating: 5 },
-  { name: "Thomas Harris", image: "/testimonials/testimonial-9.jpg", rating: 5 },
-  { name: "Daniel Clark", image: "/testimonials/testimonial-10.jpg", rating: 4.5 },
-  { name: "Kevin Lewis", image: "/testimonials/testimonial-11.jpg", rating: 5 },
-  { name: "Steven Hall", image: "/testimonials/testimonial-12.jpg", rating: 5 },
-  { name: "Mark Allen", image: "/testimonials/testimonial-13.jpg", rating: 5 },
-  { name: "Anthony Torres", image: "/testimonials/testimonial-14.jpg", rating: 5 },
-  { name: "Brian Murphy", image: "/testimonials/testimonial-15.jpg", rating: 5 },
-  { name: "Scott Brooks", image: "/testimonials/testimonial-16.jpg", rating: 5 },
+  { name: "Michael Rodriguez", image: "/testimonials/testimonial-1.jpg", rating: 5, text: "Honestly, I was nervous walking onto a lot — but the guys here made it feel like I was just chatting with a buddy who knows cars. Drove off in a truck I actually love." },
+  { name: "James Wilson", image: "/testimonials/testimonial-2.jpg", rating: 5, text: "Came in for an oil change, ended up trading my old sedan for an SUV. No pressure, no games. Just a fair deal and a handshake. That's rare these days." },
+  { name: "Omar Farooq", image: "/testimonials/testimonial-3.jpg", rating: 4.5, text: "I've bought three cars in my life. This was the first time I didn't feel like I needed a lawyer with me. Straight talk, straight price. My wife loves the car too." },
+  { name: "John Anderson", image: "/testimonials/testimonial-4.jpg", rating: 5, text: "Drove up from Moose Jaw after seeing a listing online. Made the whole deal over the phone, and the truck was washed and ready when I arrived. No waiting around, no bait and switch. That's how it should be." },
+  { name: "Sarah Anderson", image: "/testimonials/testimonial-5.jpg", rating: 5, text: "I'm not a car person. I told them my budget and what I needed, and they handed me the keys to exactly that. No upsell, no runaround. Just good people." },
+  { name: "William Carter", image: "/testimonials/testimonial-6.jpg", rating: 5, text: "Needed an SUV before winter hit — two kids and a dog don't fit in a coupe. They found me something well within budget and I drove it home same day. Handled the snow like a champ all season." },
+  { name: "Richard Kim", image: "/testimonials/testimonial-7.jpg", rating: 4.5, text: "Sold my old car to them. Got way more than the dealership down the street offered, and the whole thing took maybe an hour. Painless, honestly." },
+  { name: "Christopher White", image: "/testimonials/testimonial-8.jpg", rating: 5, text: "My daughter bought her first car here. They treated her with respect, explained everything clearly, and didn't talk down to her. That meant a lot to me as a dad." },
+  { name: "Thomas Harris", image: "/testimonials/testimonial-9.jpg", rating: 5, text: "Drove from Regina after seeing their inventory online. Worth every kilometer. The car was even cleaner in person. These folks run an honest shop." },
+  { name: "Daniel Clark", image: "/testimonials/testimonial-10.jpg", rating: 4.5, text: "Not gonna lie — I walked in ready to haggle. Turns out they don't do that. The price on the window is the price. Saved me a headache and probably some money." },
+  { name: "Kevin Lewis", image: "/testimonials/testimonial-11.jpg", rating: 5, text: "Bought a winter beater for my son. They could've sold me anything, but they pointed me to the one that was actually reliable and safe. Appreciate the honesty." },
+  { name: "Steven Hall", image: "/testimonials/testimonial-12.jpg", rating: 5, text: "The warranty sold me. When my alternator went out three months in, they fixed it no questions asked. Most places would've found a loophole. Not these guys." },
+  { name: "Mark Allen", image: "/testimonials/testimonial-13.jpg", rating: 5, text: "Traded in my old clunker and drove home in a minivan that didn't smell like french fries. My kids were stoked. Honestly? So was I. Great experience." },
+  { name: "Anthony Torres", image: "/testimonials/testimonial-14.jpg", rating: 5, text: "I've been sending everyone I know here. Three of my coworkers have bought cars from Radiant in the last year. That should tell you everything." },
+  { name: "Brian Murphy", image: "/testimonials/testimonial-15.jpg", rating: 5, text: "They delivered my car right to my door in Warman. No extra charge, no hassle. Sat down, signed the papers in my own kitchen. Felt like the old days." },
+  { name: "Scott Brooks", image: "/testimonials/testimonial-16.jpg", rating: 5, text: "Financing was supposed to be a nightmare — bad credit, all that. They found me a rate that actually made sense. First time I've felt good about a car payment." },
 ];
 
   function StarRating({ rating }) {
@@ -206,10 +206,11 @@ const testimonials = [
           alt={testimonial.name}
           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
       </div>
 
       <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5">
+        <p className="text-white/90 text-xs leading-relaxed mb-3 line-clamp-3 italic">&ldquo;{testimonial.text}&rdquo;</p>
         <div className="flex items-center gap-2">
           <h4 className="text-white font-semibold text-sm truncate">{testimonial.name}</h4>
           <StarRating rating={testimonial.rating} />
